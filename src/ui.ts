@@ -1,6 +1,10 @@
 // Imports:
 import { randomIdGenerator } from "./utils";
 
+// Firebase Imports:
+import { auth, db,  } from "./firebase";
+import { setDoc, doc, getDoc } from "firebase/firestore";
+
 const pageContainer = document.getElementById('pageContainer');
 
 function buildUI() {
@@ -90,13 +94,32 @@ function createIndexPageUI() {
             setDoc(doc(db, 'watchParties', id), obj);
             console.log("Document written with ID: ", id);
         } catch (e) {
-            console.error("Error adding documenet: ", e);
+            console.error("Error adding document: ", e);
         }
           
     })
 }
 
-function createDemoPageUI() {
+async function createDemoPageUI() {
+
+    // This should look through the 00-demoWatchParty document in the Firestore database 
+    // and create an editable UI.
+
+    const docRef = doc(db, "watchParties", "00-demoWatchParty");
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        // Create the Demo Page UI.
+        console.log("Document data:", docSnap.data());
+    } else {
+        // Demo Page UI not working.  Make UI that says "error, not working, go back to index page."
+        // docSnap.data() will be undefined in this case
+        console.log("No such document!");
+    }
+
+
+
+
     pageContainer?.insertAdjacentHTML('afterbegin', `
         <div id='watchPartyContainer' class='main-container'>
             <h1>Welcome To "Name" Watch Party</h1>

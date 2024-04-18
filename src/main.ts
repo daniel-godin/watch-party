@@ -2,20 +2,24 @@ import "./style.css";
 import './fav-96.png';
 // import "./demo.html";
 import './ui.ts';
+import './data.ts';
 
 // Firebase Imports:
 import { app, db, auth } from "./firebase.ts";
 import { doc, setDoc } from "firebase/firestore";
+import { demoPartyObject } from "./data.ts";
 // import { signInAnonymously, onAuthStateChanged } from "firebase/auth";
 
-interface movie {
-	title: string;
-	// id: string;
-	// links: {
-	// 	trailer: string;
-	// 	tmdb: string;
-	// };
+function createDemoPartyDocument() {
+	try {
+		setDoc(doc(db, 'watchParties', '00-demoWatchParty'), demoPartyObject);
+		console.log('demo watch party doc created');
+	} catch (e) {
+		console.error("Error adding document: ", e);
+	}
 }
+
+createDemoPartyDocument();
 
 // signInAnonymously(auth)
 // 	.then(() => {
