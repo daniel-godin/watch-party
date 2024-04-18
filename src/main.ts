@@ -19,7 +19,7 @@ function createDemoPartyDocument() {
 	}
 }
 
-createDemoPartyDocument();
+// createDemoPartyDocument(); // This is to create temporarily the demo doc.
 
 // signInAnonymously(auth)
 // 	.then(() => {

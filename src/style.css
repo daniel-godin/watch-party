@@ -29,8 +29,27 @@ nav {
   width: 90%;
 }
 
-#newWatchPartyForm {
+#watchPartyForm {
+  width: 90%;
+
   display: grid;
   grid-template-columns: 1fr;
   row-gap: 1rem;
 }
+
+.option-container {
+  padding: 1rem;
+  
+
+  display: flex; /* Maybe change to grid later */
+  gap: 1rem;
+
+  border: 1px solid blue;
+  border-radius: 15px;
+}
+
+.vote-container {
+
+}
+
+

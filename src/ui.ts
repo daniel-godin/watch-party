@@ -3,7 +3,7 @@ import { randomIdGenerator } from "./utils";
 
 // Firebase Imports:
 import { auth, db,  } from "./firebase";
-import { setDoc, doc, getDoc, onSnapshot } from "firebase/firestore";
+import { setDoc, doc, getDoc, onSnapshot, updateDoc, arrayUnion } from "firebase/firestore";
 
 const pageContainer = document.getElementById('pageContainer');
 
@@ -124,14 +124,9 @@ async function createDemoPageUI() {
             <div id='demoWatchPartyContainer' class='main-container'>
                 <h1>Welcome to the ${watchPartyName} Watch Party Page</h1>
                 <p>Date of Party: ${dateOfWatchParty}</p>
+                <form id='watchPartyForm'>
+                </form>
             </div>
-            <form id='watchPartyForm'>
-                // Generates Titles From Document/Object.
-                <div id='addTitleContainer'>
-                    <input type='text' placeholder='Add Another Title Here' />
-                    <button type='button' class='button-add-title'>+</button>
-                </div>
-            </form>
         
         
         `)
@@ -156,8 +151,44 @@ async function createDemoPageUI() {
                     </div>
                 </div>
             `)
-
         }
+
+        if (titlesOptions.length < 10) {
+            watchPartyForm?.insertAdjacentHTML('beforeend', `
+                <div id='addTitleContainer'>
+                    <input type='text' id='addTitleInput' placeholder='Add Another Title Here' />
+                    <button type='button' id='btnAddTitle'>+</button>
+                </div>
+            `)
+
+            const addTitleInput = document.getElementById('addTitleInput');
+            const btnAddTitle = document.getElementById('btnAddTitle');
+
+            btnAddTitle?.addEventListener('click', async (e) => {
+                e.preventDefault();
+                console.log('add title button clicked');
+
+                const newObj = {
+                    title: addTitleInput.value,
+                    links: {
+                        tmdb: "https://link.com",
+                    },
+                    votes: {
+                        yes: 0,
+                        maybe: 0,
+                        no: 0
+                    }
+                }
+
+                await updateDoc(docRef, {
+                    titleOptions: arrayUnion(newObj)
+                });
+            })
+        };
+
+        if (titlesOptions >= 10) { console.log("Only 10 titles allowed at once") };
+
+
 
 
 
