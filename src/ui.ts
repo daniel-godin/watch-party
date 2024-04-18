@@ -125,7 +125,6 @@ async function createDemoPageUI() {
             const watchPartyName = data.watchPartyName;
             const dateCreated = data.dateCreated;
             const dateOfWatchParty = data.dateOfWatchParty;
-            // const titlesOptions = data.titleOptions;
     
             pageContainer?.insertAdjacentHTML('afterbegin', `
                 <div id='demoWatchPartyContainer' class='main-container'>
@@ -135,43 +134,6 @@ async function createDemoPageUI() {
                     </form>
                 </div>
             `)
-    
-
-    
-            // if (titlesOptions.length < 10) {
-            //     watchPartyForm?.insertAdjacentHTML('beforeend', `
-            //         <div id='addTitleContainer'>
-            //             <input type='text' id='addTitleInput' placeholder='Add Another Title Here' />
-            //             <button type='button' id='btnAddTitle'>+</button>
-            //         </div>
-            //     `)
-    
-            //     const addTitleInput = document.getElementById('addTitleInput');
-            //     const btnAddTitle = document.getElementById('btnAddTitle');
-    
-            //     btnAddTitle?.addEventListener('click', async (e) => {
-            //         e.preventDefault();
-            //         console.log('add title button clicked');
-    
-            //         const newObj = {
-            //             title: addTitleInput.value,
-            //             links: {
-            //                 tmdb: "https://link.com",
-            //             },
-            //             votes: {
-            //                 yes: 0,
-            //                 maybe: 0,
-            //                 no: 0
-            //             }
-            //         }
-    
-            //         await updateDoc(docRef, {
-            //             titleOptions: arrayUnion(newObj)
-            //         });
-            //     })
-            // };
-    
-            // if (titlesOptions >= 10) { console.log("Only 10 titles allowed at once") };
     
         } else {
             // Demo Page UI not working.  Make UI that says "error, not working, go back to index page."
@@ -185,11 +147,6 @@ async function createDemoPageUI() {
     });
 
     const colRef = collection(db, 'watchParties', '00-demoWatchParty', 'titleOptions');
-
-    // querySnapshot.forEach((doc) => {
-    //     // doc.data() is never undefined for query doc snapshots
-    //     console.log(doc.id, " => ", doc.data());
-    // });
 
     onSnapshot(colRef, (snapshot) => {
 
@@ -277,8 +234,6 @@ async function createDemoPageUI() {
         }
 
         if (count >= 10) { console.log('Only 10 options allowed at this time.  Please remove a title if you wish to add a different one.')}
-
-        
     })
 }
 
