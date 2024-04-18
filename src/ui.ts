@@ -8,6 +8,7 @@ import { setDoc, doc, getDoc, getDocs, onSnapshot, updateDoc, arrayUnion, arrayR
 const pageContainer = document.getElementById('pageContainer');
 
 function buildUI() {
+    console.log('buildUI function triggered');
     createNavUI();
     createMainUI();
     createFooterUI();
@@ -55,13 +56,14 @@ function createFooterUI() {
     `)
 }
 
-function createIndexPageUI() {
+async function createIndexPageUI() {
+    console.log('createIndexPageUI triggered');
     pageContainer?.insertAdjacentHTML('afterbegin', `
         <div id='newWatchPartyContainer' class='main-container'>
             <h1>Create Your Watch Party (save the link/unique watch party id)</h1>
             <form id='newWatchPartyForm'>
                 <label>Add Your First Movie:
-                    <input id='inputMovie0' type='text' required>
+                    <input id='inputTitle' type='text' required>
                 </label>
                 <button id='btnCreateWatchParty' type='submit'>Create Watch Party</button>
             </form>
@@ -69,30 +71,42 @@ function createIndexPageUI() {
     `)
 
     const newWatchPartyForm = document.getElementById('newWatchPartyForm');
-    const inputMovie0 = document.getElementById('inputMovie0');
+    const inputTitle = document.getElementById('inputTitle');
     const btnCreateWatchParty = document.getElementById('btnCreateWatchParty');
 
 
-    newWatchPartyForm.addEventListener('submit', async (e) => {
+    newWatchPartyForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
           // console.log('newWatchPartyForm submitted');
-        const id = randomIdGenerator();
+        const watchPartyID = randomIdGenerator();
     
-        const obj = {
-            watchPartyID: id,
+        const watchPartyObj = {
+            watchPartyID: watchPartyID,
             dateCreated: "date string",
             dateOfWatchParty: 'date string',
-            guests: 'array of guest names in strings',
-            movies: {
-                movie0: inputMovie0.value,
-            },
-            
+            guests: 'array of guest names in strings',            
         }
-    
-        // console.log(obj);
+
+        const titleID = randomIdGenerator();
+
+        const newTitleObject = {
+            id: titleID,
+            title: inputTitle.value,
+            links: {
+                tmdb: "https://link.com",
+            },
+            votes: {
+                yes: 0,
+                maybe: 0,
+                no: 0
+            }
+        } 
+
         try {
-            setDoc(doc(db, 'watchParties', id), obj);
-            console.log("Document written with ID: ", id);
+            setDoc(doc(db, 'watchParties', watchPartyID), watchPartyObj);
+            setDoc(doc(db, 'watchParties', watchPartyID, 'titleOptions', titleID), newTitleObject);
+            console.log("Watch Party Document written with ID: ", watchPartyID);
+            console.log("Title Doc created with ID: ", titleID);
         } catch (e) {
             console.error("Error adding document: ", e);
         }

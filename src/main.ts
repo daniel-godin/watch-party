@@ -1,6 +1,6 @@
 import "./style.css";
 import './fav-96.png';
-// import "./demo.html";
+
 import './ui.ts';
 import './data.ts';
 
