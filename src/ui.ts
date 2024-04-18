@@ -136,45 +136,7 @@ async function createDemoPageUI() {
                 </div>
             `)
     
-            // const watchPartyForm = document.getElementById('watchPartyForm');
-    
-            // for (let i = 0; i < titlesOptions.length; i++) {
 
-            //     const title = titlesOptions[i].title;
-
-
-            //     watchPartyForm?.insertAdjacentHTML('beforeend', `
-            //         <div class='option-container'>
-            //             <div class='vote-container'>
-            //                 <button type='button' class="vote-buttons">Yes</button>
-            //                 <button type='button' class="vote-buttons">Maybe</button>
-            //                 <button type='button' class="vote-buttons">No</button>
-            //             </div>
-                        
-            //             <div class='title-container'>
-            //                 <p>${title}</p>
-            //             </div>
-                        
-            //             <div class='add-or-remove-button-container'>
-            //                 <button type='button' class='button-remove-title' data-title='${title}'>-</button>
-            //             </div>
-            //         </div>
-            //     `)
-            // }
-
-            // const arrayOfBtnRemoveTitle = document.getElementsByClassName('button-remove-title');
-
-            // for (let i = 0; i < arrayOfBtnRemoveTitle.length && i < 11; i++) {
-            //     arrayOfBtnRemoveTitle[i].addEventListener('click', async (e) => {
-            //         console.log('Minus Clicked: ', e.target.dataset.title);
-
-            //         await updateDoc(docRef, {
-            //             titleOptions: arrayRemove(
-
-            //             )
-            //         })
-            //     })
-            // }
     
             // if (titlesOptions.length < 10) {
             //     watchPartyForm?.insertAdjacentHTML('beforeend', `
@@ -236,7 +198,10 @@ async function createDemoPageUI() {
 
         watchPartyForm.innerHTML = '';
 
+        let count = 0;
+
         snapshot.forEach((document) => {
+            count++;
             const data = document.data();
 
             const title = data.title;
@@ -272,6 +237,48 @@ async function createDemoPageUI() {
                 await deleteDoc(doc(db, "watchParties", "00-demoWatchParty", 'titleOptions', e.target.dataset.id));
             });
         }
+
+        if (count < 10) {
+            watchPartyForm?.insertAdjacentHTML('beforeend', `
+                    <div id='addTitleContainer'>
+                        <input type='text' id='addTitleInput' placeholder='Add Another Title Here' />
+                        <button type='button' id='btnAddTitle'>+</button>
+                    </div>
+                `)
+    
+                const addTitleInput = document.getElementById('addTitleInput');
+                const btnAddTitle = document.getElementById('btnAddTitle');
+    
+                btnAddTitle?.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    console.log('add title button clicked');
+
+                    const id = randomIdGenerator();
+    
+                    const newTitleObject = {
+                        id: id,
+                        title: addTitleInput.value,
+                        links: {
+                            tmdb: "https://link.com",
+                        },
+                        votes: {
+                            yes: 0,
+                            maybe: 0,
+                            no: 0
+                        }
+                    }
+
+                    try {
+                        setDoc(doc(db, 'watchParties', '00-demoWatchParty', 'titleOptions', id), newTitleObject);
+                    } catch (e) {
+                        console.error("Eerror adding document: ", e);
+                    }
+                })
+        }
+
+        if (count >= 10) { console.log('Only 10 options allowed at this time.  Please remove a title if you wish to add a different one.')}
+
+        
     })
 }
 
