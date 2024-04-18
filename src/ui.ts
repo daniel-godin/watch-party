@@ -3,7 +3,7 @@ import { randomIdGenerator } from "./utils";
 
 // Firebase Imports:
 import { auth, db,  } from "./firebase";
-import { setDoc, doc, getDoc } from "firebase/firestore";
+import { setDoc, doc, getDoc, onSnapshot } from "firebase/firestore";
 
 const pageContainer = document.getElementById('pageContainer');
 
@@ -111,42 +111,75 @@ async function createDemoPageUI() {
     if (docSnap.exists()) {
         // Create the Demo Page UI.
         console.log("Document data:", docSnap.data());
-    } else {
-        // Demo Page UI not working.  Make UI that says "error, not working, go back to index page."
-        // docSnap.data() will be undefined in this case
-        console.log("No such document!");
-    }
 
+        const data = docSnap.data();
 
+        const watchPartyID = data.watchPartyID;
+        const watchPartyName = data.watchPartyName;
+        const dateCreated = data.dateCreated;
+        const dateOfWatchParty = data.dateOfWatchParty;
+        const titles = data.titleOptions;
 
-
-    pageContainer?.insertAdjacentHTML('afterbegin', `
-        <div id='watchPartyContainer' class='main-container'>
-            <h1>Welcome To "Name" Watch Party</h1>
+        pageContainer?.insertAdjacentHTML('afterbegin', `
+            <div id='demoWatchPartyContainer' class='main-container'>
+                <h1>Welcome to the ${watchPartyName} Watch Party Page</h1>
+                <p>Date of Party: ${dateOfWatchParty}</p>
+            </div>
             <form id='watchPartyForm'>
-                <div class='option-container'>
-                    <div class='vote-container'>
-                        <button type='button' class="vote-buttons">Yes</button>
-                        <button type='button' class="vote-buttons">Maybe</button>
-                        <button type='button' class="vote-buttons">No</button>
-                    </div>
-                    
-                    <div class='title-container'>
-                        <p>Movie Title</p>
-                    </div>
-                    
-                    <div class='add-or-remove-button-container'>
-                        <button type='button' class='button-remove-title'>-</button>
-                    </div>
-                </div>
+                // Generates Titles From Document/Object.
                 <div id='addTitleContainer'>
                     <input type='text' placeholder='Add Another Title Here' />
                     <button type='button' class='button-add-title'>+</button>
                 </div>
             </form>
-        </div>
-        </div>
-    `)
+        
+        
+        `)
+
+        // const watchPartyForm = document.getElementById('watchPartyForm');
+
+        for (let [key, value] of Object.entries(titles)) {
+            console.log("in object:", key, value);
+        }
+
+    //     watchPartyForm?.insertAdjacentHTML('afterbegin', `
+
+    //                 <div class='option-container'>
+    //                     <div class='vote-container'>
+    //                         <button type='button' class="vote-buttons">Yes</button>
+    //                         <button type='button' class="vote-buttons">Maybe</button>
+    //                         <button type='button' class="vote-buttons">No</button>
+    //                     </div>
+                        
+    //                     <div class='title-container'>
+    //                         <p>Movie Title</p>
+    //                     </div>
+                        
+    //                     <div class='add-or-remove-button-container'>
+    //                         <button type='button' class='button-remove-title'>-</button>
+    //                     </div>
+    //                 </div>
+
+
+
+    // `)
+
+
+
+    } else {
+        // Demo Page UI not working.  Make UI that says "error, not working, go back to index page."
+        // docSnap.data() will be undefined in this case
+        console.log("No such document!");
+
+        pageContainer?.insertAdjacentHTML('afterbegin', `
+            <p>Error:  Document not loading.  Please go back to <a href='./index.html'>Main Page</a>.</p>
+        `)
+    }
+
+
+
+
+
 }
 
 function createWatchPartyUI() {

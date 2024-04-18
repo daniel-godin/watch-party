@@ -11,6 +11,7 @@ interface movie {
 
 export const demoPartyObject = {
     watchPartyID: "00-demoWatchParty",
+    watchPartyName: "Demo Watch Party",
     dateCreated: "",
     dateOfWatchParty: "",
     titleOptions: [
