@@ -106,101 +106,197 @@ async function createDemoPageUI() {
     // and create an editable UI.
 
     const docRef = doc(db, "watchParties", "00-demoWatchParty");
-    const docSnap = await getDoc(docRef);
+    // const docSnap = await getDoc(docRef);
 
-    if (docSnap.exists()) {
-        // Create the Demo Page UI.
-        console.log("Document data:", docSnap.data());
+    await onSnapshot(docRef, (snapshot) => {
 
-        const data = docSnap.data();
-
-        const watchPartyID = data.watchPartyID;
-        const watchPartyName = data.watchPartyName;
-        const dateCreated = data.dateCreated;
-        const dateOfWatchParty = data.dateOfWatchParty;
-        const titlesOptions = data.titleOptions;
-
-        pageContainer?.insertAdjacentHTML('afterbegin', `
-            <div id='demoWatchPartyContainer' class='main-container'>
-                <h1>Welcome to the ${watchPartyName} Watch Party Page</h1>
-                <p>Date of Party: ${dateOfWatchParty}</p>
-                <form id='watchPartyForm'>
-                </form>
-            </div>
+        pageContainer.innerHTML = ''; // This resets the pageContainer DOM so it doesn't duplicate when it's updated.
         
-        
-        `)
-
-        const watchPartyForm = document.getElementById('watchPartyForm');
-
-        for (let i = 0; i < titlesOptions.length; i++) {
-            watchPartyForm?.insertAdjacentHTML('beforeend', `
-                <div class='option-container'>
-                    <div class='vote-container'>
-                        <button type='button' class="vote-buttons">Yes</button>
-                        <button type='button' class="vote-buttons">Maybe</button>
-                        <button type='button' class="vote-buttons">No</button>
-                    </div>
-                    
-                    <div class='title-container'>
-                        <p>${titlesOptions[i].title}</p>
-                    </div>
-                    
-                    <div class='add-or-remove-button-container'>
-                        <button type='button' class='button-remove-title'>-</button>
-                    </div>
+        console.log("onSnapshot function triggered: ", snapshot);
+        if (snapshot.exists()) {
+            // Create the Demo Page UI.
+            // console.log("Document data:", docSnap.data());
+    
+            const data = snapshot.data();
+    
+            const watchPartyID = data.watchPartyID;
+            const watchPartyName = data.watchPartyName;
+            const dateCreated = data.dateCreated;
+            const dateOfWatchParty = data.dateOfWatchParty;
+            const titlesOptions = data.titleOptions;
+    
+            pageContainer?.insertAdjacentHTML('afterbegin', `
+                <div id='demoWatchPartyContainer' class='main-container'>
+                    <h1>Welcome to the ${watchPartyName} Watch Party Page</h1>
+                    <p>Date of Party: ${dateOfWatchParty}</p>
+                    <form id='watchPartyForm'>
+                    </form>
                 </div>
+            
+            
+            `)
+    
+            const watchPartyForm = document.getElementById('watchPartyForm');
+    
+            for (let i = 0; i < titlesOptions.length; i++) {
+                watchPartyForm?.insertAdjacentHTML('beforeend', `
+                    <div class='option-container'>
+                        <div class='vote-container'>
+                            <button type='button' class="vote-buttons">Yes</button>
+                            <button type='button' class="vote-buttons">Maybe</button>
+                            <button type='button' class="vote-buttons">No</button>
+                        </div>
+                        
+                        <div class='title-container'>
+                            <p>${titlesOptions[i].title}</p>
+                        </div>
+                        
+                        <div class='add-or-remove-button-container'>
+                            <button type='button' class='button-remove-title'>-</button>
+                        </div>
+                    </div>
+                `)
+            }
+    
+            if (titlesOptions.length < 10) {
+                watchPartyForm?.insertAdjacentHTML('beforeend', `
+                    <div id='addTitleContainer'>
+                        <input type='text' id='addTitleInput' placeholder='Add Another Title Here' />
+                        <button type='button' id='btnAddTitle'>+</button>
+                    </div>
+                `)
+    
+                const addTitleInput = document.getElementById('addTitleInput');
+                const btnAddTitle = document.getElementById('btnAddTitle');
+    
+                btnAddTitle?.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    console.log('add title button clicked');
+    
+                    const newObj = {
+                        title: addTitleInput.value,
+                        links: {
+                            tmdb: "https://link.com",
+                        },
+                        votes: {
+                            yes: 0,
+                            maybe: 0,
+                            no: 0
+                        }
+                    }
+    
+                    await updateDoc(docRef, {
+                        titleOptions: arrayUnion(newObj)
+                    });
+                })
+            };
+    
+            if (titlesOptions >= 10) { console.log("Only 10 titles allowed at once") };
+    
+        } else {
+            // Demo Page UI not working.  Make UI that says "error, not working, go back to index page."
+            // docSnap.data() will be undefined in this case
+            console.log("No such document!");
+    
+            pageContainer?.insertAdjacentHTML('afterbegin', `
+                <p>Error:  Document not loading.  Please go back to <a href='./index.html'>Main Page</a>.</p>
             `)
         }
+    });
 
-        if (titlesOptions.length < 10) {
-            watchPartyForm?.insertAdjacentHTML('beforeend', `
-                <div id='addTitleContainer'>
-                    <input type='text' id='addTitleInput' placeholder='Add Another Title Here' />
-                    <button type='button' id='btnAddTitle'>+</button>
-                </div>
-            `)
+    // if (docSnap.exists()) {
+    //     // Create the Demo Page UI.
+    //     // console.log("Document data:", docSnap.data());
 
-            const addTitleInput = document.getElementById('addTitleInput');
-            const btnAddTitle = document.getElementById('btnAddTitle');
+    //     const data = docSnap.data();
 
-            btnAddTitle?.addEventListener('click', async (e) => {
-                e.preventDefault();
-                console.log('add title button clicked');
+    //     const watchPartyID = data.watchPartyID;
+    //     const watchPartyName = data.watchPartyName;
+    //     const dateCreated = data.dateCreated;
+    //     const dateOfWatchParty = data.dateOfWatchParty;
+    //     const titlesOptions = data.titleOptions;
 
-                const newObj = {
-                    title: addTitleInput.value,
-                    links: {
-                        tmdb: "https://link.com",
-                    },
-                    votes: {
-                        yes: 0,
-                        maybe: 0,
-                        no: 0
-                    }
-                }
+    //     pageContainer?.insertAdjacentHTML('afterbegin', `
+    //         <div id='demoWatchPartyContainer' class='main-container'>
+    //             <h1>Welcome to the ${watchPartyName} Watch Party Page</h1>
+    //             <p>Date of Party: ${dateOfWatchParty}</p>
+    //             <form id='watchPartyForm'>
+    //             </form>
+    //         </div>
+        
+        
+    //     `)
 
-                await updateDoc(docRef, {
-                    titleOptions: arrayUnion(newObj)
-                });
-            })
-        };
+    //     const watchPartyForm = document.getElementById('watchPartyForm');
 
-        if (titlesOptions >= 10) { console.log("Only 10 titles allowed at once") };
+    //     for (let i = 0; i < titlesOptions.length; i++) {
+    //         watchPartyForm?.insertAdjacentHTML('beforeend', `
+    //             <div class='option-container'>
+    //                 <div class='vote-container'>
+    //                     <button type='button' class="vote-buttons">Yes</button>
+    //                     <button type='button' class="vote-buttons">Maybe</button>
+    //                     <button type='button' class="vote-buttons">No</button>
+    //                 </div>
+                    
+    //                 <div class='title-container'>
+    //                     <p>${titlesOptions[i].title}</p>
+    //                 </div>
+                    
+    //                 <div class='add-or-remove-button-container'>
+    //                     <button type='button' class='button-remove-title'>-</button>
+    //                 </div>
+    //             </div>
+    //         `)
+    //     }
+
+    //     if (titlesOptions.length < 10) {
+    //         watchPartyForm?.insertAdjacentHTML('beforeend', `
+    //             <div id='addTitleContainer'>
+    //                 <input type='text' id='addTitleInput' placeholder='Add Another Title Here' />
+    //                 <button type='button' id='btnAddTitle'>+</button>
+    //             </div>
+    //         `)
+
+    //         const addTitleInput = document.getElementById('addTitleInput');
+    //         const btnAddTitle = document.getElementById('btnAddTitle');
+
+    //         btnAddTitle?.addEventListener('click', async (e) => {
+    //             e.preventDefault();
+    //             console.log('add title button clicked');
+
+    //             const newObj = {
+    //                 title: addTitleInput.value,
+    //                 links: {
+    //                     tmdb: "https://link.com",
+    //                 },
+    //                 votes: {
+    //                     yes: 0,
+    //                     maybe: 0,
+    //                     no: 0
+    //                 }
+    //             }
+
+    //             await updateDoc(docRef, {
+    //                 titleOptions: arrayUnion(newObj)
+    //             });
+    //         })
+    //     };
+
+    //     if (titlesOptions >= 10) { console.log("Only 10 titles allowed at once") };
 
 
 
 
 
-    } else {
-        // Demo Page UI not working.  Make UI that says "error, not working, go back to index page."
-        // docSnap.data() will be undefined in this case
-        console.log("No such document!");
+    // } else {
+    //     // Demo Page UI not working.  Make UI that says "error, not working, go back to index page."
+    //     // docSnap.data() will be undefined in this case
+    //     console.log("No such document!");
 
-        pageContainer?.insertAdjacentHTML('afterbegin', `
-            <p>Error:  Document not loading.  Please go back to <a href='./index.html'>Main Page</a>.</p>
-        `)
-    }
+    //     pageContainer?.insertAdjacentHTML('afterbegin', `
+    //         <p>Error:  Document not loading.  Please go back to <a href='./index.html'>Main Page</a>.</p>
+    //     `)
+    // }
 
 
 
