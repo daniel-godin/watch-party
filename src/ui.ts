@@ -118,7 +118,7 @@ async function createDemoPageUI() {
         const watchPartyName = data.watchPartyName;
         const dateCreated = data.dateCreated;
         const dateOfWatchParty = data.dateOfWatchParty;
-        const titles = data.titleOptions;
+        const titlesOptions = data.titleOptions;
 
         pageContainer?.insertAdjacentHTML('afterbegin', `
             <div id='demoWatchPartyContainer' class='main-container'>
@@ -136,33 +136,28 @@ async function createDemoPageUI() {
         
         `)
 
-        // const watchPartyForm = document.getElementById('watchPartyForm');
+        const watchPartyForm = document.getElementById('watchPartyForm');
 
-        for (let [key, value] of Object.entries(titles)) {
-            console.log("in object:", key, value);
+        for (let i = 0; i < titlesOptions.length; i++) {
+            watchPartyForm?.insertAdjacentHTML('beforeend', `
+                <div class='option-container'>
+                    <div class='vote-container'>
+                        <button type='button' class="vote-buttons">Yes</button>
+                        <button type='button' class="vote-buttons">Maybe</button>
+                        <button type='button' class="vote-buttons">No</button>
+                    </div>
+                    
+                    <div class='title-container'>
+                        <p>${titlesOptions[i].title}</p>
+                    </div>
+                    
+                    <div class='add-or-remove-button-container'>
+                        <button type='button' class='button-remove-title'>-</button>
+                    </div>
+                </div>
+            `)
+
         }
-
-    //     watchPartyForm?.insertAdjacentHTML('afterbegin', `
-
-    //                 <div class='option-container'>
-    //                     <div class='vote-container'>
-    //                         <button type='button' class="vote-buttons">Yes</button>
-    //                         <button type='button' class="vote-buttons">Maybe</button>
-    //                         <button type='button' class="vote-buttons">No</button>
-    //                     </div>
-                        
-    //                     <div class='title-container'>
-    //                         <p>Movie Title</p>
-    //                     </div>
-                        
-    //                     <div class='add-or-remove-button-container'>
-    //                         <button type='button' class='button-remove-title'>-</button>
-    //                     </div>
-    //                 </div>
-
-
-
-    // `)
 
 
 
