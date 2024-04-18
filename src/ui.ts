@@ -3,7 +3,7 @@ import { randomIdGenerator } from "./utils";
 
 // Firebase Imports:
 import { auth, db,  } from "./firebase";
-import { setDoc, doc, getDoc, onSnapshot, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { setDoc, doc, getDoc, getDocs, onSnapshot, updateDoc, arrayUnion, arrayRemove, query, where, collection, deleteDoc } from "firebase/firestore";
 
 const pageContainer = document.getElementById('pageContainer');
 
@@ -28,19 +28,19 @@ function createNavUI() {
 function createMainUI() {
     // if statements to decide which html to load.  if url is... index.html, demo.html, watch-party.html.
     const pathname = window.location.pathname;
-    console.log(pathname);
+    // console.log(pathname);
 
 
     if (pathname == '/index.html' ||  pathname == '/' || pathname.length === 0) {
-        console.log('createMainUI index Page Activated');
+        // console.log('createMainUI index Page Activated');
         createIndexPageUI();
     }
     if (pathname == '/demo.html') {
-        console.log('createMainUI Demo Page Activated');
+        // console.log('createMainUI Demo Page Activated');
         createDemoPageUI();
     }
     if (pathname == '/watch-party.html') {
-        console.log('createMainUI Watch Party Page Activated');
+        // console.log('createMainUI Watch Party Page Activated');
         createWatchPartyUI();
     }
 
@@ -108,7 +108,9 @@ async function createDemoPageUI() {
     const docRef = doc(db, "watchParties", "00-demoWatchParty");
     // const docSnap = await getDoc(docRef);
 
-    await onSnapshot(docRef, (snapshot) => {
+
+
+    onSnapshot(docRef, (snapshot) => {
 
         pageContainer.innerHTML = ''; // This resets the pageContainer DOM so it doesn't duplicate when it's updated.
         
@@ -123,7 +125,7 @@ async function createDemoPageUI() {
             const watchPartyName = data.watchPartyName;
             const dateCreated = data.dateCreated;
             const dateOfWatchParty = data.dateOfWatchParty;
-            const titlesOptions = data.titleOptions;
+            // const titlesOptions = data.titleOptions;
     
             pageContainer?.insertAdjacentHTML('afterbegin', `
                 <div id='demoWatchPartyContainer' class='main-container'>
@@ -132,84 +134,82 @@ async function createDemoPageUI() {
                     <form id='watchPartyForm'>
                     </form>
                 </div>
-            
-            
             `)
     
-            const watchPartyForm = document.getElementById('watchPartyForm');
+            // const watchPartyForm = document.getElementById('watchPartyForm');
     
-            for (let i = 0; i < titlesOptions.length; i++) {
+            // for (let i = 0; i < titlesOptions.length; i++) {
 
-                const title = titlesOptions[i].title;
+            //     const title = titlesOptions[i].title;
 
 
-                watchPartyForm?.insertAdjacentHTML('beforeend', `
-                    <div class='option-container'>
-                        <div class='vote-container'>
-                            <button type='button' class="vote-buttons">Yes</button>
-                            <button type='button' class="vote-buttons">Maybe</button>
-                            <button type='button' class="vote-buttons">No</button>
-                        </div>
+            //     watchPartyForm?.insertAdjacentHTML('beforeend', `
+            //         <div class='option-container'>
+            //             <div class='vote-container'>
+            //                 <button type='button' class="vote-buttons">Yes</button>
+            //                 <button type='button' class="vote-buttons">Maybe</button>
+            //                 <button type='button' class="vote-buttons">No</button>
+            //             </div>
                         
-                        <div class='title-container'>
-                            <p>${title}</p>
-                        </div>
+            //             <div class='title-container'>
+            //                 <p>${title}</p>
+            //             </div>
                         
-                        <div class='add-or-remove-button-container'>
-                            <button type='button' class='button-remove-title' data-title='${title}'>-</button>
-                        </div>
-                    </div>
-                `)
-            }
+            //             <div class='add-or-remove-button-container'>
+            //                 <button type='button' class='button-remove-title' data-title='${title}'>-</button>
+            //             </div>
+            //         </div>
+            //     `)
+            // }
 
-            const arrayOfBtnRemoveTitle = document.getElementsByClassName('button-remove-title');
+            // const arrayOfBtnRemoveTitle = document.getElementsByClassName('button-remove-title');
 
-            for (let i = 0; i < arrayOfBtnRemoveTitle.length && i < 11; i++) {
-                arrayOfBtnRemoveTitle[i].addEventListener('click', async (e) => {
-                    console.log('Minus Clicked: ', e.target.dataset.title);
+            // for (let i = 0; i < arrayOfBtnRemoveTitle.length && i < 11; i++) {
+            //     arrayOfBtnRemoveTitle[i].addEventListener('click', async (e) => {
+            //         console.log('Minus Clicked: ', e.target.dataset.title);
 
-                    await updateDoc(docRef, {
-                        titleOptions: arrayRemove(
-                            
-                        )
-                    })
-                })
-            }
+            //         await updateDoc(docRef, {
+            //             titleOptions: arrayRemove(
+
+            //             )
+            //         })
+            //     })
+            // }
     
-            if (titlesOptions.length < 10) {
-                watchPartyForm?.insertAdjacentHTML('beforeend', `
-                    <div id='addTitleContainer'>
-                        <input type='text' id='addTitleInput' placeholder='Add Another Title Here' />
-                        <button type='button' id='btnAddTitle'>+</button>
-                    </div>
-                `)
+            // if (titlesOptions.length < 10) {
+            //     watchPartyForm?.insertAdjacentHTML('beforeend', `
+            //         <div id='addTitleContainer'>
+            //             <input type='text' id='addTitleInput' placeholder='Add Another Title Here' />
+            //             <button type='button' id='btnAddTitle'>+</button>
+            //         </div>
+            //     `)
     
-                const addTitleInput = document.getElementById('addTitleInput');
-                const btnAddTitle = document.getElementById('btnAddTitle');
+            //     const addTitleInput = document.getElementById('addTitleInput');
+            //     const btnAddTitle = document.getElementById('btnAddTitle');
     
-                btnAddTitle?.addEventListener('click', async (e) => {
-                    e.preventDefault();
-                    console.log('add title button clicked');
+            //     btnAddTitle?.addEventListener('click', async (e) => {
+            //         e.preventDefault();
+            //         console.log('add title button clicked');
     
-                    const newObj = {
-                        title: addTitleInput.value,
-                        links: {
-                            tmdb: "https://link.com",
-                        },
-                        votes: {
-                            yes: 0,
-                            maybe: 0,
-                            no: 0
-                        }
-                    }
+            //         const newObj = {
+            //             title: addTitleInput.value,
+            //             links: {
+            //                 tmdb: "https://link.com",
+            //             },
+            //             votes: {
+            //                 yes: 0,
+            //                 maybe: 0,
+            //                 no: 0
+            //             }
+            //         }
     
-                    await updateDoc(docRef, {
-                        titleOptions: arrayUnion(newObj)
-                    });
-                })
-            };
+            //         await updateDoc(docRef, {
+            //             titleOptions: arrayUnion(newObj)
+            //         });
+            //     })
+            // };
     
-            if (titlesOptions >= 10) { console.log("Only 10 titles allowed at once") };
+            // if (titlesOptions >= 10) { console.log("Only 10 titles allowed at once") };
     
         } else {
             // Demo Page UI not working.  Make UI that says "error, not working, go back to index page."
@@ -221,6 +221,58 @@ async function createDemoPageUI() {
             `)
         }
     });
+
+    const colRef = collection(db, 'watchParties', '00-demoWatchParty', 'titleOptions');
+
+    // querySnapshot.forEach((doc) => {
+    //     // doc.data() is never undefined for query doc snapshots
+    //     console.log(doc.id, " => ", doc.data());
+    // });
+
+    onSnapshot(colRef, (snapshot) => {
+
+
+        const watchPartyForm = document.getElementById('watchPartyForm');
+
+        watchPartyForm.innerHTML = '';
+
+        snapshot.forEach((document) => {
+            const data = document.data();
+
+            const title = data.title;
+            const id = data.id;
+
+            watchPartyForm?.insertAdjacentHTML('beforeend', `
+                <div class='option-container'>
+                    <div class='vote-container'>
+                        <button type='button' class="vote-buttons">Yes</button>
+                        <button type='button' class="vote-buttons">Maybe</button>
+                        <button type='button' class="vote-buttons">No</button>
+                    </div>
+                    
+                    <div class='title-container'>
+                        <p>${title}</p>
+                    </div>
+                    
+                    <div class='add-or-remove-button-container'>
+                        <button type='button' class='button-remove-title' data-id='${id}'>-</button>
+                    </div>
+                </div>
+            `)
+            
+            console.log(document.id, " =>", document.data());
+        })
+
+        const arrayOfBtnRemoveTitle = document.getElementsByClassName('button-remove-title');
+
+        for (let i = 0; i < arrayOfBtnRemoveTitle.length && i < 11; i++) {
+            arrayOfBtnRemoveTitle[i].addEventListener('click', async (e) => {
+                console.log('Minus Clicked: ', e.target.dataset.id);
+
+                await deleteDoc(doc(db, "watchParties", "00-demoWatchParty", 'titleOptions', e.target.dataset.id));
+            });
+        }
+    })
 }
 
 function createWatchPartyUI() {
