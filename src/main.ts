@@ -1,21 +1,11 @@
 import "./style.css";
-import { app, db, auth } from "./firebase.ts";
-import { randomIdGenerator } from "./utils.ts";
+// import "./demo.html";
+import './ui.ts';
 
 // Firebase Imports:
+import { app, db, auth } from "./firebase.ts";
 import { doc, setDoc } from "firebase/firestore";
 // import { signInAnonymously, onAuthStateChanged } from "firebase/auth";
-
-const currentURL = window.location.href;
-console.log(currentURL);
-
-const pageContainer = document.getElementById('pageContainer');
-
-const newWatchPartyForm = document.getElementById('newWatchPartyForm');
-const inputMovie0 = document.getElementById('inputMovie0');
-const inputMovie1 = document.getElementById('inputMovie1');
-const inputMovie2 = document.getElementById('inputMovie2');
-const btnCreateWatchParty = document.getElementById('btnCreateWatchParty');
 
 interface movie {
 	title: string;
@@ -51,30 +41,4 @@ interface movie {
 // });
 
 
-newWatchPartyForm.addEventListener('submit', async (e) => {
-	e.preventDefault();
-  	// console.log('newWatchPartyForm submitted');
-	const id = randomIdGenerator();
 
-	const obj = {
-		watchPartyID: id,
-		dateCreated: "date string",
-		dateOfWatchParty: 'date string',
-		guests: 'array of guest names in strings',
-		movies: {
-			movie0: inputMovie0.value,
-			movie1: inputMovie1.value,
-			movie2: inputMovie2.value,
-		},
-		
-	}
-
-	// console.log(obj);
-	try {
-		setDoc(doc(db, 'watchParties', id), obj);
-		console.log("Document written with ID: ", id);
-	} catch (e) {
-		console.error("Error adding documenet: ", e);
-	}
-  	
-})
