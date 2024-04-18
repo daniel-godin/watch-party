@@ -6,20 +6,105 @@ import './data.ts';
 
 // Firebase Imports:
 import { app, db, auth } from "./firebase.ts";
-import { doc, setDoc } from "firebase/firestore";
-import { demoPartyObject } from "./data.ts";
+import { doc, setDoc, collection } from "firebase/firestore";
+import { randomIdGenerator } from "./utils.ts";
 // import { signInAnonymously, onAuthStateChanged } from "firebase/auth";
+
+export const demoPartyObject = {
+    watchPartyID: "00-demoWatchParty",
+    watchPartyName: "Demo Watch Party",
+    dateCreated: "",
+    dateOfWatchParty: "",
+    titleOptions: [
+        {
+            title: "1917",
+            links: {
+                tmdb: "https://www.themoviedb.org/movie/530915-1917",
+            },
+            votes: {
+                yes: 0,
+                maybe: 0,
+                no: 0
+            }
+        },
+        {
+            title: "Ex Machina",
+            links: {
+                tmdb: "https://www.themoviedb.org/movie/264660-ex-machina",
+            },
+            votes: {
+                yes: 0,
+                maybe: 0,
+                no: 0
+            },
+        },
+        {
+            title: "Lord of the Rings: Return of the King",
+            links: {
+                tmdb: "https://www.themoviedb.org/movie/122-the-lord-of-the-rings-the-return-of-the-king",
+            },
+            votes: {
+                yes: 0,
+                maybe: 0,
+                no: 0
+            },
+        },
+    ],
+}
+
+const title0 = {
+	id: randomIdGenerator(),
+	title: "1917",
+	links: {
+		tmdb: "https://www.themoviedb.org/movie/530915-1917",
+	},
+	votes: {
+		yes: 0,
+		maybe: 0,
+		no: 0
+	}
+}
+
+const title1 = {
+	id: randomIdGenerator(),
+	title: "Ex Machina",
+	links: {
+		tmdb: "https://www.themoviedb.org/movie/264660-ex-machina",
+	},
+	votes: {
+		yes: 0,
+		maybe: 0,
+		no: 0
+	},
+}
+
+const title2 = {
+	id: randomIdGenerator(),
+	title: "Lord of the Rings: Return of the King",
+	links: {
+		tmdb: "https://www.themoviedb.org/movie/122-the-lord-of-the-rings-the-return-of-the-king",
+	},
+	votes: {
+		yes: 0,
+		maybe: 0,
+		no: 0
+	},
+}
+
 
 function createDemoPartyDocument() {
 	try {
 		setDoc(doc(db, 'watchParties', '00-demoWatchParty'), demoPartyObject);
+		setDoc(doc(db, 'watchParties', '00-demoWatchParty', 'titleOptions', title0.id), title0);
+		setDoc(doc(db, 'watchParties', '00-demoWatchParty', 'titleOptions', title1.id), title1);
+		setDoc(doc(db, 'watchParties', '00-demoWatchParty', 'titleOptions', title2.id), title2);
 		console.log('demo watch party doc created');
 	} catch (e) {
 		console.error("Error adding document: ", e);
 	}
 }
 
-// createDemoPartyDocument(); // This is to create temporarily the demo doc.
+createDemoPartyDocument(); // This is to create temporarily the demo doc.
 
 // signInAnonymously(auth)
 // 	.then(() => {

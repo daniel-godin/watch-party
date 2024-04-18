@@ -3,7 +3,7 @@ import { randomIdGenerator } from "./utils";
 
 // Firebase Imports:
 import { auth, db,  } from "./firebase";
-import { setDoc, doc, getDoc, onSnapshot, updateDoc, arrayUnion } from "firebase/firestore";
+import { setDoc, doc, getDoc, onSnapshot, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 
 const pageContainer = document.getElementById('pageContainer');
 
@@ -139,6 +139,10 @@ async function createDemoPageUI() {
             const watchPartyForm = document.getElementById('watchPartyForm');
     
             for (let i = 0; i < titlesOptions.length; i++) {
+
+                const title = titlesOptions[i].title;
+
+
                 watchPartyForm?.insertAdjacentHTML('beforeend', `
                     <div class='option-container'>
                         <div class='vote-container'>
@@ -148,14 +152,28 @@ async function createDemoPageUI() {
                         </div>
                         
                         <div class='title-container'>
-                            <p>${titlesOptions[i].title}</p>
+                            <p>${title}</p>
                         </div>
                         
                         <div class='add-or-remove-button-container'>
-                            <button type='button' class='button-remove-title'>-</button>
+                            <button type='button' class='button-remove-title' data-title='${title}'>-</button>
                         </div>
                     </div>
                 `)
+            }
+
+            const arrayOfBtnRemoveTitle = document.getElementsByClassName('button-remove-title');
+
+            for (let i = 0; i < arrayOfBtnRemoveTitle.length && i < 11; i++) {
+                arrayOfBtnRemoveTitle[i].addEventListener('click', async (e) => {
+                    console.log('Minus Clicked: ', e.target.dataset.title);
+
+                    await updateDoc(docRef, {
+                        titleOptions: arrayRemove(
+                            
+                        )
+                    })
+                })
             }
     
             if (titlesOptions.length < 10) {
