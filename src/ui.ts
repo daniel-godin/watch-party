@@ -164,7 +164,6 @@ async function createDemoPageUI() {
 
     onSnapshot(colRef, (snapshot) => {
 
-
         const watchPartyForm = document.getElementById('watchPartyForm');
 
         watchPartyForm.innerHTML = '';
@@ -257,6 +256,16 @@ async function createWatchPartyUI() {
     // console.log("window.location.href: ", window.location.href);
     // console.log("window.location.pathname: ", window.location.pathname);
     // console.log('window.location.search', window.location.search);
+
+    const watchPartyIDFromURL = window.location.search;
+
+    let params = new URLSearchParams(document.location.search);
+
+    let name = params.get('?');
+
+    console.log('name: ', name);
+
+    console.log('watch Party ID From URL: ', watchPartyIDFromURL.slice(1));
 
     const testPartyID = '1713534667375-0e7ce2c4-ca14-4d06-b551-d506bc12e104';
 
