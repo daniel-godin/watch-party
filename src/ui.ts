@@ -40,7 +40,7 @@ function createMainUI() {
         // console.log('createMainUI Demo Page Activated');
         createDemoPageUI();
     }
-    if (pathname == '/watch-party.html') {
+    if (pathname == '/watch.html') {
         // console.log('createMainUI Watch Party Page Activated');
         createWatchPartyUI();
     }
@@ -251,8 +251,41 @@ async function createDemoPageUI() {
     })
 }
 
-function createWatchPartyUI() {
-    pageContainer?.insertAdjacentHTML('afterbegin', `
+async function createWatchPartyUI() {
+
+    // console.log("window.location: ", window.location)
+    // console.log("window.location.href: ", window.location.href);
+    // console.log("window.location.pathname: ", window.location.pathname);
+    // console.log('window.location.search', window.location.search);
+
+    const testPartyID = '1713534667375-0e7ce2c4-ca14-4d06-b551-d506bc12e104';
+
+    const docRef = doc(db, 'watchParties', testPartyID);
+    const colRef = collection(db, 'watchParties', testPartyID, 'titleOptions');
+
+    const docs = await getDocs(colRef);
+
+    docs.forEach((doc) => {
+        console.log(doc.id, " => ", doc.data());
+    })
+
+
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        console.log(docSnap.data());
+    } else {
+        console.log('doc does not exist');
+    }
+
+
+
+
+    const searchURL = window.location.search;
+
+    console.log(searchURL, typeof(searchURL));
+
+    // pageContainer?.insertAdjacentHTML('afterbegin', `
     
-    `)
+    // `)
 }
