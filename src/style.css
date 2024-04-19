@@ -52,4 +52,19 @@ nav {
 
 }
 
+.search-result-container {
+  padding: 1rem;
 
+  display: flex;
+  gap: 1rem;
+
+  border: 1px solid red;
+  border-radius: 15px;
+}
+
+#randomResultContainer {
+  width: 90%;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: 250px 1fr;
+}

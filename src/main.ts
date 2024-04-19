@@ -3,6 +3,7 @@ import './fav-96.png';
 
 import './ui.ts';
 import './data.ts';
+import './tmdbUtilities.ts';
 
 // Firebase Imports:
 import { app, db, auth } from "./firebase.ts";

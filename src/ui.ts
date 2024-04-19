@@ -1,5 +1,7 @@
 // Imports:
 import { randomIdGenerator } from "./utils";
+import { stargateSG1TestObject } from "./data";
+import { getTMDBImage } from "./tmdbUtilities";
 
 // Firebase Imports:
 import { auth, db,  } from "./firebase";
@@ -22,6 +24,7 @@ function createNavUI() {
             <a href='./index.html'>Home/Create Watch Party</a>
             <a href='./demo.html'>Demo</a>
             <a href='./watch.html'>Find Watch Party</a>
+            <a href='./random.html'>Random TV Episode</a>
         </nav>
     `)
 }
@@ -31,6 +34,7 @@ function createMainUI() {
     if (pathname == '/index.html' ||  pathname == '/' || pathname.length === 0) { createIndexPageUI(); };  
     if (pathname == '/demo.html') { createDemoPageUI(); };
     if (pathname == '/watch.html') { createWatchPartyUI(); };
+    if (pathname == '/random.html') { createRandomTVEpisodeUI(); };
 }
 
 function createFooterUI() {
@@ -414,7 +418,7 @@ async function createWatchPartyUI() {
                 <div class='option-container'>
                     <div class='vote-container'>
                         <button type='button' class="vote-buttons">Yes</button>
-                        <button type='button' class="vote-buttons">Maybe</button>
+                        <button type='button' class="vote-buttons">Maybe/Indifferent</button>
                         <button type='button' class="vote-buttons">No</button>
                     </div>
                     
@@ -440,16 +444,62 @@ async function createWatchPartyUI() {
         if (count < 5) {
             watchPartyForm?.insertAdjacentHTML('beforeend', `
                     <div id='addTitleContainer'>
-                        <input type='text' id='addTitleInput' placeholder='Add Another Title Here' />
-                        <button type='button' id='btnAddTitle'>+</button>
+                        <form id='formAddTitle'>
+                            <input type='text' id='addTitleInput' placeholder='Add Another Title Here' />
+                            <button type='submit' id='btnAddTitle'>+</button>
+                        </form>
                     </div>
                 `)
     
                 const addTitleInput = document.getElementById('addTitleInput');
                 const btnAddTitle = document.getElementById('btnAddTitle');
-    
-                btnAddTitle?.addEventListener('click', async (e) => {
+                const formAddTitle = document.getElementById('formAddTitle');
+
+                
+
+                formAddTitle?.addEventListener('submit', async (e) => {
                     e.preventDefault();
+
+
+                    let searchURL = new URL('https://api.themoviedb.org/3/search/movie');
+
+                    searchURL.searchParams.append('query', addTitleInput.value);
+
+                    const options = {
+                        method: 'GET',
+                        headers: {
+                          accept: 'application/json',
+                          Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxODY2ODI3NDRkOGY0ZDRiY2NiMWE4Y2RmYTEzNDQ0MiIsInN1YiI6IjVmZDY0NjNmOGM0MGY3MDA0MTJkNTk3ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.n29htxA5mGhXLSU6j3RKKmdV_vfjZvNnvrqaa8-hEDU'
+                        }
+                    };
+                    
+                    fetch(searchURL, options)
+                    .then(response => response.json())
+                    .then(response => chooseMovieAfterSearch(response))
+                    .catch(err => console.error(err));
+
+                    function chooseMovieAfterSearch(searchObj) {
+
+                        console.log('chooseMovie function triggered.  Here is the Object: ', searchObj);
+                        console.log('array of search results: ', searchObj.results); // This is an array of Objects.
+
+
+
+                        for (let i = 0; i < 5; i++) {
+
+                            let title = searchObj.results[i].title;
+                            let imgSRC = 'https://image.tmdb.org/t/p/w92' + searchObj.results[i].poster_path;
+
+
+                            pageContainer?.insertAdjacentHTML('beforeend', `
+                                <div class='search-result-container'>
+                                    <img src='${imgSRC}' class='search-img'>
+                                    <p>${title}</p>
+                                </div>
+                            `)
+                        }
+                    }
+
 
                     const id = randomIdGenerator();
     
@@ -474,7 +524,122 @@ async function createWatchPartyUI() {
                 })
         }
 
-        if (count >= 5) { console.log('Only 10 options allowed at this time.  Please remove a title if you wish to add a different one.')}
+        if (count >= 5) { console.log('Only 5 options allowed at this time.  Please remove a title if you wish to add a different one.')}
 
     })
+}
+
+async function createRandomTVEpisodeUI() {
+
+    const numOfSeasons: number = stargateSG1TestObject.numOfSeasons;
+    const randomSeason: number = getRandom(numOfSeasons);
+    const randomEpisode: number = getRandom(stargateSG1TestObject.numOfEpisodesInEachSeason[randomSeason].episode_count);
+
+    console.log(`Season ${randomSeason} Episode ${randomEpisode}`);
+
+    function getRandom (max: number) {
+        const minCeiled = Math.ceil(1);
+        const maxFloored = Math.floor(max);
+        return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
+    }
+
+    pageContainer?.insertAdjacentHTML('afterbegin', `
+        <div id='randomResultContainer'>
+        </div>
+        <div id='favoriteShowsContainer'>
+            <div class='favorite-show-card'>
+                <img>
+                <p>Stargate SG-1</p>
+                <button type='button' class='random-tv-button' id='btnStargateRandom'>Random</button>
+            </div>
+        </div>
+        <div id='addAFavoriteTVShow'>
+        </div>
+    `)
+    
+    const btnStargateRandom = document.getElementById('btnStargateRandom');
+    const randomResultContainer = document.getElementById('randomResultContainer');
+
+    btnStargateRandom?.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        randomResultContainer.innerHTML = '';
+
+        const showID = stargateSG1TestObject.id;
+        const numOfSeasons: number = stargateSG1TestObject.numOfSeasons;
+        const randomSeason: number = getRandom(numOfSeasons);
+        const randomEpisode: number = getRandom(stargateSG1TestObject.numOfEpisodesInEachSeason[randomSeason].episode_count);
+
+        let TVSearchURL = new URL(`https://api.themoviedb.org/3/tv/${showID}/season/${randomSeason}/episode/${randomEpisode}?language=en-US`);
+
+
+        const options = {
+            method: 'GET',
+            headers: {
+              accept: 'application/json',
+              Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxODY2ODI3NDRkOGY0ZDRiY2NiMWE4Y2RmYTEzNDQ0MiIsInN1YiI6IjVmZDY0NjNmOGM0MGY3MDA0MTJkNTk3ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.n29htxA5mGhXLSU6j3RKKmdV_vfjZvNnvrqaa8-hEDU'
+            }
+          };
+          
+          fetch(TVSearchURL, options)
+            .then(response => response.json())
+            .then(response => displayRandomEpisode(response))
+            .catch(err => console.error(err));
+
+
+        function displayRandomEpisode(ep) {
+
+            
+            let show: string = "Stargate SG-1"; // Change this to a variable later.
+            let showID: number = 4629;
+            let name: string = ep.name;
+            let description: string = ep.overview;
+            let airDate: string = ep.air_date;
+    
+            let season: number = ep.season_number;
+            let epNum: number = ep.episode_number;
+            let length: number = ep.runtime;
+
+            let poster: string = ep.still_path;
+            let stargateSG1PosterPath: string = '/dQjmI7XxI47v8IM2MUysHG0LuU2.jpg';
+
+            let imgSRC = getTMDBImage('w185', poster);
+            let showPosterIMG = getTMDBImage('w185', stargateSG1PosterPath)
+            let showURL: string = `https://themoviedb.org/tv/${showID}-stargate-sg-1/season/${season}/episode/${epNum}`;
+
+            randomResultContainer.insertAdjacentHTML('afterbegin', `
+
+                <div id='randomResultIMGContainer'>
+                    <img src='${showPosterIMG}' href='${showURL}'>
+                </div>
+                <div id='randomResultInfoContainer'>
+                    <p>${show}</p>
+                    <p>Season ${season} Episode ${epNum}</p>
+                    <p>${name} - Runtime: ${length}</p>
+                    <p>${description}</p>
+                    <p>Original Air Date: ${airDate}</p>
+                    <p><a target='_blank' href='${showURL}'>Link to The Movie DB Page For Full Information</a></p>
+                    <button id='btnReRandom'>Random Again</button>
+                </div>
+
+            `)
+
+            // Need to figure out random buttons later.
+        }
+        
+    
+
+
+    })
+
+    // const colRef = collection(db, 'users', 'testUser', 'favoriteTVShows');
+
+    // onSnapshot(colRef, (snapshot) => {
+    //     pageContainer.innerHTML = '';
+
+    //     snapshot.forEach((document) => {
+    //         const data = document.data();
+    //     })
+    // })
+
 }

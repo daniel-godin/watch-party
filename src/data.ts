@@ -49,3 +49,55 @@ interface movie {
 //         },
 //     ],
 // }
+
+export const stargateSG1TestObject = {
+	name: 'Stargate SG-1',
+	id: 4629,
+	numOfSeasons: 10,
+	numOfEpisodesInEachSeason: [
+		{
+			season: "Specials",
+			episode_count: 7,
+		},
+		{
+			season: "Season 1",
+			episode_count: 22,
+		},
+		{
+			season: "Season 2",
+			episode_count: 22,
+		},
+		{
+			season: "Season 3",
+			episode_count: 22,
+		},
+		{
+			season: "Season 4",
+			episode_count: 22,
+		},
+		{
+			season: "Season 5",
+			episode_count: 22,
+		},
+		{
+			season: "Season 6",
+			episode_count: 22,
+		},
+		{
+			season: "Season 7",
+			episode_count: 22,
+		},
+		{
+			season: "Season 8",
+			episode_count: 20,
+		},
+		{
+			season: "Season 9",
+			episode_count: 20,
+		},
+		{
+			season: "Season 10",
+			episode_count: 20,
+		},
+	] 
+}
