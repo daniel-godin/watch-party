@@ -343,19 +343,13 @@ async function createWatchPartyUI() {
             formSearchForWatchPartyID?.addEventListener('submit', (e) => {
                 e.preventDefault();
                 // Needs to redirect to url.com/watch.html?{Unique ID Here}.
-
-                const url = window.location.hostname;
-
-                let baseURL = 'http://127.0.0.1:5050/';
+                let baseURL = 'http://127.0.0.1:5050/';  // This honestly should change and not be hard coded.
 
                 let watchPartyURL = 'watch.html?' + inputSearchForWatchPartyID.value;
 
                 let findPartyURL = new URL(watchPartyURL, baseURL);
 
-                console.log(findPartyURL);
-
                 window.location.replace(findPartyURL);
-
             })
         }
     })
