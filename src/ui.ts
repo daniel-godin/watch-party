@@ -90,11 +90,48 @@ async function createIndexPageUI() {
             setDoc(doc(db, 'watchParties', watchPartyID, 'titleOptions', titleID), newTitleObject);
             console.log("Watch Party Document written with ID: ", watchPartyID);
             console.log("Title Doc created with ID: ", titleID);
+
+            // Should redirect to newly created watch party page.
+
+            pageContainer.innerHTML = '';
+
+            pageContainer?.insertAdjacentHTML('afterbegin', `
+                <p>Creating Your Watch Party Page.  You will be redirected in 3 seconds.</p>
+            `)
+
+            setTimeout(() => {
+
+                const docRef = doc(db, 'watchParties', watchPartyID); 
+                onSnapshot(docRef, (snapshot) => {
+                    if (snapshot.exists()) {
+                        console.log('what is the origin: ', window.location.origin);
+    
+                        let baseURL = window.location.origin;
+                    
+                        let partyURL = 'watch.html?' + watchPartyID;
+                    
+                        let fullPartyURL = new URL(partyURL, baseURL);
+                    
+                        window.location.replace(fullPartyURL);
+                    } else {
+                        console.log('snapshot did not load correctly');
+                    }
+                })
+
+            }, 3000)
+
+
+
+
+
         } catch (e) {
             console.error("Error adding document: ", e);
-        }  
+        }
+
+
     })
 }
+
 
 function createDemoPartyDocument() {
 
@@ -156,7 +193,6 @@ function createDemoPartyDocument() {
 }
 
 // createDemoPartyDocument(); // This is to create temporarily the demo doc.
-
 
 async function createDemoPageUI() {
     // This should look through the 00-demoWatchParty document in the Firestore database 
@@ -283,6 +319,10 @@ async function createWatchPartyUI() {
 
     let watchPartyIDFromURL = window.location.search;
     watchPartyIDFromURL = watchPartyIDFromURL.slice(1);
+
+    if (watchPartyIDFromURL.length < 1) { watchPartyIDFromURL = '?watchPartyNotDetected'; } // This is to fix the firestore check with an empty string.
+
+    console.log('createWatchPartyUI function triggered: ', watchPartyIDFromURL);
 
     const docRef = doc(db, 'watchParties', watchPartyIDFromURL);
     onSnapshot(docRef, (snapshot) => { // Live Listener that watches the main Watch Party Doc.  Sub-Coll under it with title docs.  That is in it's on onSnapshot Listener.
