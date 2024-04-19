@@ -128,7 +128,7 @@ async function createDemoPageUI() {
 
         pageContainer.innerHTML = ''; // This resets the pageContainer DOM so it doesn't duplicate when it's updated.
         
-        console.log("onSnapshot function triggered: ", snapshot);
+        // console.log("onSnapshot function triggered: ", snapshot);
         if (snapshot.exists()) {
             // Create the Demo Page UI.
             // console.log("Document data:", docSnap.data());
@@ -252,24 +252,48 @@ async function createDemoPageUI() {
 
 async function createWatchPartyUI() {
 
-    // console.log("window.location: ", window.location)
-    // console.log("window.location.href: ", window.location.href);
-    // console.log("window.location.pathname: ", window.location.pathname);
-    // console.log('window.location.search', window.location.search);
+    let watchPartyIDFromURL = window.location.search;
+    watchPartyIDFromURL = watchPartyIDFromURL.slice(1);
 
-    const watchPartyIDFromURL = window.location.search;
+    const docRef = doc(db, 'watchParties', watchPartyIDFromURL);
+    onSnapshot(docRef, (snapshot) => { // Live Listener that watches the main Watch Party Doc.  Sub-Coll under it with title docs.  That is in it's on onSnapshot Listener.
+        pageContainer.innerHTML = ''; // Resets pageContainer DOM.  Needs a better solution later.
 
-    let params = new URLSearchParams(document.location.search);
+        if (snapshot.exists()) {
+            const data = snapshot.data();
 
-    let name = params.get('?');
+            const watchPartyID = data.watchPartyID;
+            const watchPartyName = data.watchPartyName;
+            const dateCreated = data.dateCreated;
+            const dateOfWatchParty = data.dateOfWatchParty;
 
-    console.log('name: ', name);
+            pageContainer?.insertAdjacentHTML('afterbegin', `
+                <div id='demoWatchPartyContainer' class='main-container'>
+                    <h1>Welcome to the ${watchPartyName} Watch Party Page</h1>
+                    <p>Date of Party: ${dateOfWatchParty}</p>
+                    <form id='watchPartyForm'>
+                    </form>
+                </div>
+            `)
 
-    console.log('watch Party ID From URL: ', watchPartyIDFromURL.slice(1));
+        } else {
+            // Watch Page Didn't Find the document.  Load a quick page with a search form, a header, and a way to go back to index.
+            pageContainer?.insertAdjacentHTML('afterbegin', `
+                <h1>Watch Page Not Found</h1>
+                <p>Please search below, or <a href='./index.html'>Go Back To Home Page</a>.</p>
+                <form id='formSearchForWatchPartyID'>
+                    <input id='inputSearchForWatchPartyID' type='text' placeholder='Put Your Unique ID Here'>
+                    <button id='btnSearchForWatchPartyID' type='button'>
+                </form>
+            `)
+        }
+    })
+
+
 
     const testPartyID = '1713534667375-0e7ce2c4-ca14-4d06-b551-d506bc12e104';
 
-    const docRef = doc(db, 'watchParties', testPartyID);
+    
     const colRef = collection(db, 'watchParties', testPartyID, 'titleOptions');
 
     const docs = await getDocs(colRef);
