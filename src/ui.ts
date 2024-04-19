@@ -333,9 +333,30 @@ async function createWatchPartyUI() {
                 <p>Please search below, or <a href='./index.html'>Go Back To Home Page</a>.</p>
                 <form id='formSearchForWatchPartyID'>
                     <input id='inputSearchForWatchPartyID' type='text' placeholder='Put Your Unique ID Here'>
-                    <button id='btnSearchForWatchPartyID' type='button'>
+                    <button id='btnSearchForWatchPartyID' type='submit'>
                 </form>
             `)
+
+            const formSearchForWatchPartyID = document.getElementById('formSearchForWatchPartyID');
+            const inputSearchForWatchPartyID = document.getElementById('inputSearchForWatchPartyID');
+
+            formSearchForWatchPartyID?.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // Needs to redirect to url.com/watch.html?{Unique ID Here}.
+
+                const url = window.location.hostname;
+
+                let baseURL = 'http://127.0.0.1:5050/';
+
+                let watchPartyURL = 'watch.html?' + inputSearchForWatchPartyID.value;
+
+                let findPartyURL = new URL(watchPartyURL, baseURL);
+
+                console.log(findPartyURL);
+
+                window.location.replace(findPartyURL);
+
+            })
         }
     })
 
