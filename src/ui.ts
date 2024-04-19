@@ -296,7 +296,7 @@ async function createWatchPartyUI() {
             const dateCreated = data.dateCreated;
             const dateOfWatchParty = data.dateOfWatchParty;
 
-            const watchPartyURL = 'FIX THIS LATER';
+            const watchPartyURL = window.location.href;
 
             pageContainer?.insertAdjacentHTML('afterbegin', `
                 <div id='demoWatchPartyContainer' class='main-container'>
