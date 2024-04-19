@@ -144,6 +144,7 @@ async function createDemoPageUI() {
                 <div id='demoWatchPartyContainer' class='main-container'>
                     <h1>Welcome to the ${watchPartyName} Watch Party Page</h1>
                     <p>Date of Party: ${dateOfWatchParty}</p>
+                    <p>Watch Party Unique ID:  ${watchPartyID}</p>
                     <form id='watchPartyForm'>
                     </form>
                 </div>
@@ -267,14 +268,41 @@ async function createWatchPartyUI() {
             const dateCreated = data.dateCreated;
             const dateOfWatchParty = data.dateOfWatchParty;
 
+            const watchPartyURL = 'FIX THIS LATER';
+
             pageContainer?.insertAdjacentHTML('afterbegin', `
                 <div id='demoWatchPartyContainer' class='main-container'>
                     <h1>Welcome to the ${watchPartyName} Watch Party Page</h1>
                     <p>Date of Party: ${dateOfWatchParty}</p>
+                    <p>Watch Party Unique ID:  <span id='txtWatchPartyID'>${watchPartyID}</span></p>
+                        <button id='btnCopyWatchPartyID' type='button'>Copy ID</button>
+                    <p>Watch Party Unique URL:  <span id='txtWatchPartyURL'>${watchPartyURL}</span></p>
+                        <button id='btnCopyWatchPartyURL' type='button'>Copy URL</button>
                     <form id='watchPartyForm'>
                     </form>
                 </div>
             `)
+
+            const copyWatchPartyIDText = document.getElementById('txtWatchPartyID')?.innerText;
+            const copyWatchPartyURLText = document.getElementById('txtWatchPartyURL')?.innerText;
+            const btnCopyWatchPartyID = document.getElementById('btnCopyWatchPartyID');
+            const btnCopyWatchPartyURL = document.getElementById('btnCopyWatchPartyURL');
+
+            console.log('copyTest', copyWatchPartyIDText, copyWatchPartyURLText);
+
+            btnCopyWatchPartyID.addEventListener('click', () => {
+                navigator.clipboard.writeText(copyWatchPartyIDText);
+                console.log('Copied Unique Watch Party ID');
+            })
+
+            btnCopyWatchPartyURL.addEventListener('click', () => {
+                navigator.clipboard.writeText(copyWatchPartyURLText);
+                console.log('Copied Unique Watch Party URL');
+            })
+
+
+
+
 
         } else {
             // Watch Page Didn't Find the document.  Load a quick page with a search form, a header, and a way to go back to index.
