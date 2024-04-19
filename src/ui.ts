@@ -96,6 +96,68 @@ async function createIndexPageUI() {
     })
 }
 
+function createDemoPartyDocument() {
+
+	const demoPartyObject = {
+		watchPartyID: "00-demoWatchParty",
+		watchPartyName: "Demo Watch Party",
+		dateCreated: "",
+		dateOfWatchParty: "",
+	}
+
+	const title0 = {
+		id: randomIdGenerator(),
+		title: "1917",
+		links: {
+			tmdb: "https://www.themoviedb.org/movie/530915-1917",
+		},
+		votes: {
+			yes: 0,
+			maybe: 0,
+			no: 0
+		}
+	}
+	
+	const title1 = {
+		id: randomIdGenerator(),
+		title: "Ex Machina",
+		links: {
+			tmdb: "https://www.themoviedb.org/movie/264660-ex-machina",
+		},
+		votes: {
+			yes: 0,
+			maybe: 0,
+			no: 0
+		},
+	}
+	
+	const title2 = {
+		id: randomIdGenerator(),
+		title: "Lord of the Rings: Return of the King",
+		links: {
+			tmdb: "https://www.themoviedb.org/movie/122-the-lord-of-the-rings-the-return-of-the-king",
+		},
+		votes: {
+			yes: 0,
+			maybe: 0,
+			no: 0
+		},
+	}
+
+	try {
+		setDoc(doc(db, 'watchParties', '00-demoWatchParty'), demoPartyObject);
+		setDoc(doc(db, 'watchParties', '00-demoWatchParty', 'titleOptions', title0.id), title0);
+		setDoc(doc(db, 'watchParties', '00-demoWatchParty', 'titleOptions', title1.id), title1);
+		setDoc(doc(db, 'watchParties', '00-demoWatchParty', 'titleOptions', title2.id), title2);
+		console.log('demo watch party doc created');
+	} catch (e) {
+		console.error("Error adding document: ", e);
+	}
+}
+
+// createDemoPartyDocument(); // This is to create temporarily the demo doc.
+
+
 async function createDemoPageUI() {
     // This should look through the 00-demoWatchParty document in the Firestore database 
     // and create an editable UI.
