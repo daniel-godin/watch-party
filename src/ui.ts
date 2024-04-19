@@ -289,36 +289,91 @@ async function createWatchPartyUI() {
         }
     })
 
+    const colRef = collection(db, 'watchParties', watchPartyIDFromURL, 'titleOptions');
 
+    onSnapshot(colRef, (snapshot) => {
+        const watchPartyForm = document.getElementById('watchPartyForm');
+        watchPartyForm.innerHTML = '';
+        let count = 0;
+
+        snapshot.forEach((document) => {
+            count++;
+            const data = document.data();
+
+            const title = data.title;
+            const id = data.id;
+
+            watchPartyForm?.insertAdjacentHTML('beforeend', `
+                <div class='option-container'>
+                    <div class='vote-container'>
+                        <button type='button' class="vote-buttons">Yes</button>
+                        <button type='button' class="vote-buttons">Maybe</button>
+                        <button type='button' class="vote-buttons">No</button>
+                    </div>
+                    
+                    <div class='title-container'>
+                        <p>${title}</p>
+                    </div>
+                    
+                    <div class='add-or-remove-button-container'>
+                        <button type='button' class='button-remove-title' data-id='${id}'>-</button>
+                    </div>
+                </div>
+            `)
+        });
+
+        const arrayOfBtnRemoveTitle = document.getElementsByClassName('button-remove-title');
+
+        for (let i = 0; i < arrayOfBtnRemoveTitle.length && i < 11; i++) {
+            arrayOfBtnRemoveTitle[i].addEventListener('click', async (e) => {
+                console.log('Minus Clicked: ', e.target.dataset.id);
+
+                await deleteDoc(doc(db, "watchParties", watchPartyIDFromURL, 'titleOptions', e.target.dataset.id));
+            });
+        };
+
+        if (count < 10) {
+            watchPartyForm?.insertAdjacentHTML('beforeend', `
+                    <div id='addTitleContainer'>
+                        <input type='text' id='addTitleInput' placeholder='Add Another Title Here' />
+                        <button type='button' id='btnAddTitle'>+</button>
+                    </div>
+                `)
+    
+                const addTitleInput = document.getElementById('addTitleInput');
+                const btnAddTitle = document.getElementById('btnAddTitle');
+    
+                btnAddTitle?.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    console.log('add title button clicked');
+
+                    const id = randomIdGenerator();
+    
+                    const newTitleObject = {
+                        id: id,
+                        title: addTitleInput.value,
+                        links: {
+                            tmdb: "https://link.com",
+                        },
+                        votes: {
+                            yes: 0,
+                            maybe: 0,
+                            no: 0
+                        }
+                    }
+
+                    try {
+                        setDoc(doc(db, 'watchParties', watchPartyIDFromURL, 'titleOptions', id), newTitleObject);
+                    } catch (e) {
+                        console.error("Eerror adding document: ", e);
+                    }
+                })
+        }
+
+        if (count >= 10) { console.log('Only 10 options allowed at this time.  Please remove a title if you wish to add a different one.')}
+
+    })
 
     const testPartyID = '1713534667375-0e7ce2c4-ca14-4d06-b551-d506bc12e104';
 
-    
-    const colRef = collection(db, 'watchParties', testPartyID, 'titleOptions');
-
-    const docs = await getDocs(colRef);
-
-    docs.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
-    })
-
-
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-        console.log(docSnap.data());
-    } else {
-        console.log('doc does not exist');
-    }
-
-
-
-
-    const searchURL = window.location.search;
-
-    console.log(searchURL, typeof(searchURL));
-
-    // pageContainer?.insertAdjacentHTML('afterbegin', `
-    
-    // `)
 }
