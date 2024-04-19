@@ -274,7 +274,7 @@ async function createDemoPageUI() {
             });
         }
 
-        if (count < 10) {
+        if (count < 5) {
             watchPartyForm?.insertAdjacentHTML('beforeend', `
                 <div id='addTitleContainer'>
                     <input type='text' id='addTitleInput' placeholder='Add Another Title Here' />
@@ -311,7 +311,7 @@ async function createDemoPageUI() {
             })
         }
 
-        if (count >= 10) { console.log('Only 10 options allowed at this time.  Please remove a title if you wish to add a different one.')}
+        if (count >= 5) { console.log('Only 10 options allowed at this time.  Please remove a title if you wish to add a different one.')}
     })
 }
 
@@ -437,7 +437,7 @@ async function createWatchPartyUI() {
             });
         };
 
-        if (count < 10) {
+        if (count < 5) {
             watchPartyForm?.insertAdjacentHTML('beforeend', `
                     <div id='addTitleContainer'>
                         <input type='text' id='addTitleInput' placeholder='Add Another Title Here' />
@@ -474,7 +474,7 @@ async function createWatchPartyUI() {
                 })
         }
 
-        if (count >= 10) { console.log('Only 10 options allowed at this time.  Please remove a title if you wish to add a different one.')}
+        if (count >= 5) { console.log('Only 10 options allowed at this time.  Please remove a title if you wish to add a different one.')}
 
     })
 }
