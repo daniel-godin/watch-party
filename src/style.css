@@ -79,7 +79,38 @@ nav {
 
 .favorite-tv-show-result-container {
   width: 100%;
-  padding: .5rem;
+  padding: 1rem;
   display: flex;
   gap: 1rem;
+}
+
+#favoriteShowsContainer {
+  width: 100%;
+  padding: 1rem;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.favorite-show-card {
+  background-color: lightgray;
+  width: 200px;
+  padding: .5rem;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  
+  gap: .5rem;
+  
+
+  border: 1px solid blue;
+  border-radius: .5rem;
+}
+
+#formAddFavoriteTVShow {
+  display: grid;
+  gap: .5rem;
+  align-items: center;
+  justify-items: center;
 }
