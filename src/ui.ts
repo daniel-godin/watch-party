@@ -20,7 +20,7 @@ buildUI(); // Triggers the UI build.
 
 function createNavUI() {
     pageContainer?.insertAdjacentHTML('beforebegin', `
-        <nav>
+        <nav id='navTopBar'>
             <a href='./index.html'>Home/Create Watch Party</a>
             <a href='./demo.html'>Demo</a>
             <a href='./watch.html'>Find Watch Party</a>
