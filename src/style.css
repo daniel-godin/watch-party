@@ -13,6 +13,22 @@ html {
   width: 100dvw;
 }
 
+footer {
+  height: 40px;
+  width: 100%;
+  background-color: lightgray;
+
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
+  justify-items: center;
+  align-items: center;
+}
+
 #pageContainer {
   display: grid;
   place-items: center;

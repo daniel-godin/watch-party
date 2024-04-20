@@ -39,10 +39,11 @@ function createMainUI() {
 }
 
 function createFooterUI() {
-    const footerDOM = document.getElementById('footer');
-
-    footerDOM?.insertAdjacentHTML('afterend', `
+    pageContainer?.insertAdjacentHTML('afterend', `
+    <footer>
         <p>Created by <a href='http://danielgodin.org'>Daniel Godin</p>
+        <p>All Movie and TV Data is from <a href='https://themoviedb.org'>The Movie DB</a></p>
+    </footer>
     `)
 }
 
