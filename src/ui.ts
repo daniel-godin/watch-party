@@ -536,21 +536,21 @@ async function createRandomTVEpisodeUI() {
         <div id='randomTVShowPageContainer'>
             <div id='randomResultContainer'>
             </div>
-            <div id='favoriteShowsContainer'>
+            <div id='favoriteShowsContainer' class='random-tv-show-content-container'>
             </div>
-            <div id='searchResultsAddFavoriteTVShowContainer'>
+            <div id='searchResultsAddFavoriteTVShowContainer' class='random-tv-show-content-container'>
             </div>
         </div>
     `)
     const randomTVShowPageContainer = document.getElementById('randomTVShowPageContainer');
     const favoriteShowsContainer = document.getElementById('favoriteShowsContainer');
     const randomResultContainer = document.getElementById('randomResultContainer');
+    const searchResultsAddFavoriteTVShowContainer = document.getElementById('searchResultsAddFavoriteTVShowContainer');
 
     const colRef = collection(db, 'users', 'testUser', 'favoriteTVShows');
 
     onSnapshot(colRef, (snapshot) => {
         favoriteShowsContainer.innerHTML = '';
-
 
         snapshot.forEach((document) => {
             const data = document.data();
@@ -573,119 +573,12 @@ async function createRandomTVEpisodeUI() {
         favoriteShowsContainer?.insertAdjacentHTML('beforeend', `
             <div id='addFavoriteTVShowContainer' class='favorite-show-card'>
                 <form id='formAddFavoriteTVShow'>
+                    <img height='231' width='154'>
                     <input id='inputAddFavoriteTVShow' type='text' placeholder='Add A Favorite Show'>
                     <button id='btnAddFavoriteTVShow' type='submit'>Search</button>
                 </form>
             </div>
         `)
-
-        const formAddFavoriteTVShow = document.getElementById('formAddFavoriteTVShow');
-        const inputAddFavoriteTVShow = document.getElementById('inputAddFavoriteTVShow');
-        const searchResultsAddFavoriteTVShowContainer = document.getElementById('searchResultsAddFavoriteTVShowContainer');
-    
-    
-        formAddFavoriteTVShow.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const searchTerm = inputAddFavoriteTVShow.value;
-    
-            let searchURL = new URL('https://api.themoviedb.org/3/search/tv');
-            searchURL.searchParams.append('query', searchTerm);
-            
-            const options = {
-                method: 'GET',
-                headers: {
-                  accept: 'application/json',
-                  Authorization: TMDBAPIKEY
-                }
-              };
-              
-              fetch(searchURL, options)
-                .then(response => response.json())
-                .then(response => createAddFavoriteTVShowSection(response))
-                .catch(err => console.error(err));
-    
-    
-            function createAddFavoriteTVShowSection (dataObj) {
-    
-                console.log('tv data object: ', dataObj);
-    
-                const results = dataObj.results;
-    
-                for (let i = 0; i < results.length; i++) {
-    
-                    let title = results[i].name;
-                    let showID = results[i].id;
-                    let posterPath = results[i].poster_path;
-    
-    
-    
-                    searchResultsAddFavoriteTVShowContainer?.insertAdjacentHTML('beforeend', `
-                        <div class='favorite-tv-show-result-container'>
-                            <p>${title}</p>
-                            <button class='btn-add-favorite-tv-show' data-show-id='${showID}'>Add To Favorites</button>
-                        </div>
-                    `)
-    
-                }
-    
-                const arrayOfAddFavoriteShowButtons = document.getElementsByClassName('btn-add-favorite-tv-show');
-    
-                for (let i = 0; i < arrayOfAddFavoriteShowButtons.length; i++) {
-                    arrayOfAddFavoriteShowButtons[i].addEventListener('click', (e) => {
-                        console.log('Added Favorite Show!');
-                        console.log(e.target.dataset.showId);
-    
-                        const showId = e.target.dataset.showId;
-    
-                        const options = {
-                            method: 'GET',
-                            headers: {
-                              accept: 'application/json',
-                              Authorization: TMDBAPIKEY
-                            }
-                          };
-                          
-                          fetch(`https://api.themoviedb.org/3/tv/${showId}?language=en-US`, options)
-                            .then(response => response.json())
-                            .then(response => getTVShow(response))
-                            .catch(err => console.error(err));
-    
-                        // Add show to my users/ favorite shows docs.  Use showID as it's doc name.
-    
-                        async function getTVShow(showObject) {
-                            console.log(showObject);
-    
-    
-                            const dataObject = {
-                                name: showObject.name,
-                                id: showObject.id,
-                                numOfSeasons: showObject.number_of_seasons,
-                                numOfEpisodes: showObject.number_of_episodes,
-                                description: showObject.overview,
-                                posterPath: showObject.poster_path,
-                                seasons: showObject.seasons,
-                            }
-    
-                            console.log('dataObject', dataObject)
-    
-    
-                            try {
-                                setDoc(doc(db, 'users', 'testUser', 'favoriteTVShows', showId), dataObject);
-                                console.log('Favorite TV Show Added to FireStore', dataObject);
-                            } catch (e) {
-                                console.error ("Error Adding TV to Favorites: ", e);
-                            }
-                        }
-    
-    
-    
-                    })
-                }
-    
-    
-            }
-        })
-    
 
         const randomEpisodeButtons = document.getElementsByClassName('random-tv-button');
 
@@ -761,6 +654,114 @@ async function createRandomTVEpisodeUI() {
                 };
             })
         }
+
+        const formAddFavoriteTVShow = document.getElementById('formAddFavoriteTVShow');
+        const inputAddFavoriteTVShow = document.getElementById('inputAddFavoriteTVShow');    
+    
+        formAddFavoriteTVShow.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const searchTerm = inputAddFavoriteTVShow.value;
+    
+            let searchURL = new URL('https://api.themoviedb.org/3/search/tv');
+            searchURL.searchParams.append('query', searchTerm);
+            
+            const options = {
+                method: 'GET',
+                headers: {
+                  accept: 'application/json',
+                  Authorization: TMDBAPIKEY
+                }
+              };
+              
+              fetch(searchURL, options)
+                .then(response => response.json())
+                .then(response => createAddFavoriteTVShowSection(response))
+                .catch(err => console.error(err));
+    
+    
+            function createAddFavoriteTVShowSection (dataObj) {
+    
+                console.log('tv data object: ', dataObj);
+    
+                const results = dataObj.results;
+    
+                for (let i = 0; i < results.length; i++) {
+    
+                    let title = results[i].name;
+                    let showID = results[i].id;
+                    let posterPath = results[i].poster_path;
+    
+                    let showPoster = getTMDBImage('w154', posterPath);
+    
+                    searchResultsAddFavoriteTVShowContainer?.insertAdjacentHTML('beforeend', `
+                        <div class='favorite-show-card'>
+                            <img src='${showPoster}'>
+                            <p>${title}</p>
+                            <button class='btn-add-favorite-tv-show' data-show-id='${showID}'>Add To Favorites</button>
+                        </div>
+                    `)
+    
+                }
+    
+                const arrayOfAddFavoriteShowButtons = document.getElementsByClassName('btn-add-favorite-tv-show');
+    
+                for (let i = 0; i < arrayOfAddFavoriteShowButtons.length; i++) {
+                    arrayOfAddFavoriteShowButtons[i].addEventListener('click', (e) => {
+                        console.log('Added Favorite Show!');
+                        console.log(e.target.dataset.showId);
+    
+                        const showId = e.target.dataset.showId;
+    
+                        const options = {
+                            method: 'GET',
+                            headers: {
+                              accept: 'application/json',
+                              Authorization: TMDBAPIKEY
+                            }
+                          };
+                          
+                          fetch(`https://api.themoviedb.org/3/tv/${showId}?language=en-US`, options)
+                            .then(response => response.json())
+                            .then(response => getTVShow(response))
+                            .catch(err => console.error(err));
+    
+                        // Add show to my users/ favorite shows docs.  Use showID as it's doc name.
+    
+                        async function getTVShow(showObject) {
+                            console.log(showObject);
+    
+    
+                            const dataObject = {
+                                name: showObject.name,
+                                id: showObject.id,
+                                numOfSeasons: showObject.number_of_seasons,
+                                numOfEpisodes: showObject.number_of_episodes,
+                                description: showObject.overview,
+                                posterPath: showObject.poster_path,
+                                seasons: showObject.seasons,
+                            }
+    
+                            console.log('dataObject', dataObject)
+    
+    
+                            try {
+                                setDoc(doc(db, 'users', 'testUser', 'favoriteTVShows', showId), dataObject);
+                                console.log('Favorite TV Show Added to FireStore', dataObject);
+                            } catch (e) {
+                                console.error ("Error Adding TV to Favorites: ", e);
+                            }
+                        }
+    
+    
+    
+                    })
+                }
+    
+    
+            }
+        })
+    
+ 
     })
 
     function getRandom (max: number) {

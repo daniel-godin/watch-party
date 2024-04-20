@@ -71,26 +71,34 @@ nav {
 }
 
 #randomResultContainer {
-  width: 90%;
+  width: 100%;
   padding: 1rem;
   display: grid;
   grid-template-columns: 250px 1fr;
 }
 
-.favorite-tv-show-result-container {
+.random-tv-show-content-container {
   width: 100%;
   padding: 1rem;
-  display: flex;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  justify-items: center;
   gap: 1rem;
 }
 
-#favoriteShowsContainer {
+/* #favoriteShowsContainer {
   width: 100%;
   padding: 1rem;
 
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
+} */
+
+#searchResultsAddFavoriteTVShowContainer {j
+  border: 1px solid red;
+  border-radius: 1rem;
 }
 
 .favorite-show-card {
