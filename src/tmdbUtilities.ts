@@ -1,4 +1,4 @@
-
+import { TMDBAPIKEY } from "../api-keys";
 
 export function getTMDBImage(size: string, path: string) {
 
@@ -16,3 +16,11 @@ export function getTMDBImage(size: string, path: string) {
 
     return baseTMDBPath + size + path;
 }
+
+export const TMDBOptions = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: TMDBAPIKEY
+    }
+};
