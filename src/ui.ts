@@ -681,7 +681,7 @@ async function createRandomTVEpisodeUI() {
     
             function createAddFavoriteTVShowSection (dataObj) {
     
-                console.log('tv data object: ', dataObj);
+                // console.log('tv data object: ', dataObj);
     
                 const results = dataObj.results;
     
@@ -728,8 +728,7 @@ async function createRandomTVEpisodeUI() {
                         // Add show to my users/ favorite shows docs.  Use showID as it's doc name.
     
                         async function getTVShow(showObject) {
-                            console.log(showObject);
-    
+                            // console.log(showObject);
     
                             const dataObject = {
                                 name: showObject.name,
@@ -741,8 +740,7 @@ async function createRandomTVEpisodeUI() {
                                 seasons: showObject.seasons,
                             }
     
-                            console.log('dataObject', dataObject)
-    
+                            // console.log('dataObject', dataObject)
     
                             try {
                                 setDoc(doc(db, 'users', 'testUser', 'favoriteTVShows', showId), dataObject);
@@ -751,17 +749,10 @@ async function createRandomTVEpisodeUI() {
                                 console.error ("Error Adding TV to Favorites: ", e);
                             }
                         }
-    
-    
-    
                     })
                 }
-    
-    
             }
         })
-    
- 
     })
 
     function getRandom (max: number) {
@@ -769,5 +760,4 @@ async function createRandomTVEpisodeUI() {
         const maxFloored = Math.floor(max);
         return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
     }
-
 }
