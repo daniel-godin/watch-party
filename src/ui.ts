@@ -2,6 +2,7 @@
 import { randomIdGenerator } from "./utils";
 import { stargateSG1TestObject } from "./data";
 import { getTMDBImage } from "./tmdbUtilities";
+import { TMDBAPIKEY } from '../api-keys.ts';
 
 // Firebase Imports:
 import { auth, db,  } from "./firebase";
@@ -469,7 +470,7 @@ async function createWatchPartyUI() {
                         method: 'GET',
                         headers: {
                           accept: 'application/json',
-                          Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxODY2ODI3NDRkOGY0ZDRiY2NiMWE4Y2RmYTEzNDQ0MiIsInN1YiI6IjVmZDY0NjNmOGM0MGY3MDA0MTJkNTk3ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.n29htxA5mGhXLSU6j3RKKmdV_vfjZvNnvrqaa8-hEDU'
+                          Authorization: TMDBAPIKEY
                         }
                     };
                     
@@ -563,8 +564,8 @@ async function createRandomTVEpisodeUI() {
     //         method: 'GET',
     //         headers: {
     //           accept: 'application/json',
-    //           Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxODY2ODI3NDRkOGY0ZDRiY2NiMWE4Y2RmYTEzNDQ0MiIsInN1YiI6IjVmZDY0NjNmOGM0MGY3MDA0MTJkNTk3ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.n29htxA5mGhXLSU6j3RKKmdV_vfjZvNnvrqaa8-hEDU'
-    //         }
+    //           Authorization: TMDBAPIKEY
+// }
     //       };
           
     //       fetch(TVSearchURL, options)
@@ -643,7 +644,7 @@ async function createRandomTVEpisodeUI() {
             method: 'GET',
             headers: {
               accept: 'application/json',
-              Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxODY2ODI3NDRkOGY0ZDRiY2NiMWE4Y2RmYTEzNDQ0MiIsInN1YiI6IjVmZDY0NjNmOGM0MGY3MDA0MTJkNTk3ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.n29htxA5mGhXLSU6j3RKKmdV_vfjZvNnvrqaa8-hEDU'
+              Authorization: TMDBAPIKEY
             }
           };
           
@@ -689,7 +690,7 @@ async function createRandomTVEpisodeUI() {
                         method: 'GET',
                         headers: {
                           accept: 'application/json',
-                          Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxODY2ODI3NDRkOGY0ZDRiY2NiMWE4Y2RmYTEzNDQ0MiIsInN1YiI6IjVmZDY0NjNmOGM0MGY3MDA0MTJkNTk3ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.n29htxA5mGhXLSU6j3RKKmdV_vfjZvNnvrqaa8-hEDU'
+                          Authorization: TMDBAPIKEY
                         }
                       };
                       
@@ -788,7 +789,7 @@ async function createRandomTVEpisodeUI() {
                     method: 'GET',
                     headers: {
                       accept: 'application/json',
-                      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxODY2ODI3NDRkOGY0ZDRiY2NiMWE4Y2RmYTEzNDQ0MiIsInN1YiI6IjVmZDY0NjNmOGM0MGY3MDA0MTJkNTk3ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.n29htxA5mGhXLSU6j3RKKmdV_vfjZvNnvrqaa8-hEDU'
+                      Authorization: TMDBAPIKEY
                     }
                   };
                   
