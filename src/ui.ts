@@ -536,6 +536,9 @@ async function createRandomTVEpisodeUI() {
         <div id='randomTVShowPageContainer'>
             <div id='randomResultContainer'>
             </div>
+            <div id='randomAllButtonContainer'>
+                <button id='btnRandomAll'>Random Episode From All Your Shows</button>
+            </div>
             <div id='favoriteShowsContainer' class='random-tv-show-content-container'>
             </div>
             <div id='searchResultsAddFavoriteTVShowContainer' class='random-tv-show-content-container'>
@@ -543,6 +546,8 @@ async function createRandomTVEpisodeUI() {
         </div>
     `)
     const randomTVShowPageContainer = document.getElementById('randomTVShowPageContainer');
+    const randomAllButtonContainer = document.getElementById('randomAllButtonContainer');
+    const btnRandomAll = document.getElementById('btnRandomAll');
     const favoriteShowsContainer = document.getElementById('favoriteShowsContainer');
     const randomResultContainer = document.getElementById('randomResultContainer');
     const searchResultsAddFavoriteTVShowContainer = document.getElementById('searchResultsAddFavoriteTVShowContainer');
@@ -563,7 +568,7 @@ async function createRandomTVEpisodeUI() {
 
             favoriteShowsContainer?.insertAdjacentHTML('beforeend', `
                 <div class='favorite-show-card'>
-                    <img src='${showPoster}'>
+                    <img src='${showPoster}' class='image-favorite-tv-show-posters'>
                     <p>${title}</p>
                     <button type='button' class='random-tv-button' data-show-id='${id}'>Random ${title} Episode</button>
                 </div>
@@ -694,7 +699,7 @@ async function createRandomTVEpisodeUI() {
                     let showPoster = getTMDBImage('w154', posterPath);
     
                     searchResultsAddFavoriteTVShowContainer?.insertAdjacentHTML('beforeend', `
-                        <div class='favorite-show-card'>
+                        <div class='favorite-show-card red-border'>
                             <img src='${showPoster}'>
                             <p>${title}</p>
                             <button class='btn-add-favorite-tv-show' data-show-id='${showID}'>Add To Favorites</button>

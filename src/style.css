@@ -77,6 +77,12 @@ nav {
   grid-template-columns: 250px 1fr;
 }
 
+#randomAllButtonContainer {
+  padding: .5rem;
+  display: grid;
+  place-items: center;
+}
+
 .random-tv-show-content-container {
   width: 100%;
   padding: 1rem;
@@ -96,10 +102,10 @@ nav {
   gap: 1rem;
 } */
 
-#searchResultsAddFavoriteTVShowContainer {
+/* #searchResultsAddFavoriteTVShowContainer {
   border: 1px solid red;
   border-radius: 1rem;
-}
+} */
 
 .favorite-show-card {
   background-color: lightgray;
@@ -114,6 +120,15 @@ nav {
 
   border: 1px solid blue;
   border-radius: .5rem;
+}
+
+.red-border {
+  border: 1px solid red;
+  border-radius: .5rem;
+}
+
+.image-favorite-tv-show-posters {
+  border-radius: .25rem;
 }
 
 #formAddFavoriteTVShow {
