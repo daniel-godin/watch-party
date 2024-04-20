@@ -58,7 +58,7 @@ export async function createRandomTVEpisodeUI() {
                 <form id='formAddFavoriteTVShow'>
                     <img height='231' width='154'>
                     <input id='inputAddFavoriteTVShow' type='text' placeholder='Add A Favorite Show'>
-                    <button id='btnAddFavoriteTVShow' type='submit'>Search</button>
+                    <button id='btnAddFavoriteTVShow' class='random-tv-button' type='submit'>Search</button>
                 </form>
             </div>
         `)

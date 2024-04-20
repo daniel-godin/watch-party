@@ -161,11 +161,31 @@ footer {
   border-radius: .25rem;
 }
 
+.random-tv-button {
+  margin: 0;
+  padding: 5px;
+  width: 180px;
+  height: 50px;
+  text-align: center;
+}
+
+#btnRandomAll {
+  margin: 0;
+  padding: 5px;
+  height: 30px;
+}
+
 #formAddFavoriteTVShow {
   display: grid;
   gap: .5rem;
   align-items: center;
   justify-items: center;
+}
+
+#inputAddFavoriteTVShow {
+  width: 180px;
+  margin: 0;
+  padding: 5px;
 }
 
 #randomResultInfoContainer {
