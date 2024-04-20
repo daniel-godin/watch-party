@@ -532,92 +532,20 @@ async function createWatchPartyUI() {
 
 async function createRandomTVEpisodeUI() {
 
-
-
     pageContainer?.insertAdjacentHTML('afterbegin', `
-        <div id='randomResultContainer'>
-        </div>
-        <div id='favoriteShowsContainer'>
-        </div>
-        <div id='addAFavoriteTVShowContainer'>
+        <div id='randomTVShowPageContainer'>
+            <div id='randomResultContainer'>
+            </div>
+            <div id='favoriteShowsContainer'>
+            </div>
+            <div id='addAFavoriteTVShowContainer'>
+            </div>
         </div>
     `)
+    const randomTVShowPageContainer = document.getElementById('randomTVShowPageContainer');
     const favoriteShowsContainer = document.getElementById('favoriteShowsContainer');
     const randomResultContainer = document.getElementById('randomResultContainer');
     const addAFavoriteTVShowContainer = document.getElementById('addAFavoriteTVShowContainer');
-
-    const btnStargateRandom = document.getElementById('btnStargateRandom');
-    // btnStargateRandom?.addEventListener('click', (e) => {
-    //     e.preventDefault();
-
-    //     randomResultContainer.innerHTML = '';
-
-    //     const showID = stargateSG1TestObject.id;
-    //     const numOfSeasons: number = stargateSG1TestObject.numOfSeasons;
-    //     const randomSeason: number = getRandom(numOfSeasons);
-    //     const randomEpisode: number = getRandom(stargateSG1TestObject.numOfEpisodesInEachSeason[randomSeason].episode_count);
-
-    //     let TVSearchURL = new URL(`https://api.themoviedb.org/3/tv/${showID}/season/${randomSeason}/episode/${randomEpisode}?language=en-US`);
-
-
-    //     const options = {
-    //         method: 'GET',
-    //         headers: {
-    //           accept: 'application/json',
-    //           Authorization: TMDBAPIKEY
-// }
-    //       };
-          
-    //       fetch(TVSearchURL, options)
-    //         .then(response => response.json())
-    //         .then(response => displayRandomEpisode(response))
-    //         .catch(err => console.error(err));
-
-
-    //     function displayRandomEpisode(ep) {
-
-            
-    //         let show: string = "Stargate SG-1"; // Change this to a variable later.
-    //         let showID: number = 4629;
-    //         let name: string = ep.name;
-    //         let description: string = ep.overview;
-    //         let airDate: string = ep.air_date;
-    
-    //         let season: number = ep.season_number;
-    //         let epNum: number = ep.episode_number;
-    //         let length: number = ep.runtime;
-
-    //         let poster: string = ep.still_path;
-    //         let stargateSG1PosterPath: string = '/dQjmI7XxI47v8IM2MUysHG0LuU2.jpg';
-
-    //         let imgSRC = getTMDBImage('w185', poster);
-    //         let showPosterIMG = getTMDBImage('w185', stargateSG1PosterPath)
-    //         let showURL: string = `https://themoviedb.org/tv/${showID}-stargate-sg-1/season/${season}/episode/${epNum}`;
-
-    //         randomResultContainer.insertAdjacentHTML('afterbegin', `
-
-    //             <div id='randomResultIMGContainer'>
-    //                 <img src='${showPosterIMG}' href='${showURL}'>
-    //             </div>
-    //             <div id='randomResultInfoContainer'>
-    //                 <p>${show}</p>
-    //                 <p>Season ${season} Episode ${epNum}</p>
-    //                 <p>${name} - Runtime: ${length}</p>
-    //                 <p>${description}</p>
-    //                 <p>Original Air Date: ${airDate}</p>
-    //                 <p><a target='_blank' href='${showURL}'>Link to The Movie DB Page For Full Information</a></p>
-    //                 <button id='btnReRandom'>Random Again</button>
-    //             </div>
-
-    //         `)
-
-    //         // Need to figure out random buttons later.
-    //     }
-        
-    
-
-
-    // })
 
     addAFavoriteTVShowContainer?.insertAdjacentHTML('afterbegin', `
         <form id='formAddFavoriteTVShow'>
@@ -815,11 +743,10 @@ async function createRandomTVEpisodeUI() {
                     let showPoster: string = showObject.posterPath;
         
                     let getEpisodePoster = getTMDBImage('w185', episodePoster);
-                    let getShowPoster = getTMDBImage('w185', showPoster)
+                    let getShowPoster = getTMDBImage('w185', showPoster);
                     let showURL: string = `https://themoviedb.org/tv/${showID}-stargate-sg-1/season/${season}/episode/${epNum}`;
         
                     randomResultContainer.insertAdjacentHTML('afterbegin', `
-        
                         <div id='randomResultIMGContainer'>
                             <img src='${getShowPoster}' href='${showURL}'>
                         </div>
