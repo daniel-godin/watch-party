@@ -558,10 +558,13 @@ async function createRandomTVEpisodeUI() {
 
             const title = data.name;
             const id = data.id;
+            const showPosterPath = data.posterPath;
+
+            const showPoster = getTMDBImage('w154', showPosterPath);
 
             favoriteShowsContainer?.insertAdjacentHTML('beforeend', `
                 <div class='favorite-show-card'>
-                    <img>
+                    <img src='${showPoster}'>
                     <p>${title}</p>
                     <button type='button' class='random-tv-button' data-show-id='${id}'>Random ${title} Episode</button>
                 </div>
