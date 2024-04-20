@@ -547,6 +547,104 @@ async function createRandomTVEpisodeUI() {
     const randomResultContainer = document.getElementById('randomResultContainer');
     const addAFavoriteTVShowContainer = document.getElementById('addAFavoriteTVShowContainer');
 
+    const colRef = collection(db, 'users', 'testUser', 'favoriteTVShows');
+
+    onSnapshot(colRef, (snapshot) => {
+        favoriteShowsContainer.innerHTML = '';
+
+
+        snapshot.forEach((document) => {
+            const data = document.data();
+
+            const title = data.name;
+            const id = data.id;
+
+            favoriteShowsContainer?.insertAdjacentHTML('beforeend', `
+                <div class='favorite-show-card'>
+                    <img>
+                    <p>${title}</p>
+                    <button type='button' class='random-tv-button' data-show-id='${id}'>Random ${title} Episode</button>
+                </div>
+            `)
+        })
+
+        const randomEpisodeButtons = document.getElementsByClassName('random-tv-button');
+
+        for (let i = 0; i < randomEpisodeButtons.length; i++) {
+            randomEpisodeButtons[i].addEventListener('click', async (e) => {
+                e.preventDefault();
+    
+                randomResultContainer.innerHTML = '';
+    
+                const docRef = doc(db, 'users', 'testUser', 'favoriteTVShows', e.target.dataset.showId);
+                const docSnap = await getDoc(docRef);
+
+                const showObject = docSnap.data();
+
+                const showID = showObject.id;
+                const numOfSeasons = showObject.numOfSeasons;
+                const randomSeason = getRandom(numOfSeasons);
+                const randomEpisode = getRandom(showObject.seasons[randomSeason].episode_count);
+        
+                let TVSearchURL = new URL(`https://api.themoviedb.org/3/tv/${showID}/season/${randomSeason}/episode/${randomEpisode}?language=en-US`);
+        
+                const options = {
+                    method: 'GET',
+                    headers: {
+                      accept: 'application/json',
+                      Authorization: TMDBAPIKEY
+                    }
+                  };
+                  
+                  fetch(TVSearchURL, options)
+                    .then(response => response.json())
+                    .then(response => displayRandomEpisode(response))
+                    .catch(err => console.error(err));
+        
+        
+                function displayRandomEpisode(ep) {
+
+                    console.log('displayRandomEpisodeTriggered.  Object: ', ep);
+
+
+                    let show: string = showObject.name;
+                    let showID: number = showObject.id;
+                    let name: string = ep.name;
+                    let description: string = ep.overview;
+                    let airDate: string = ep.air_date;
+            
+                    let season: number = ep.season_number;
+                    let epNum: number = ep.episode_number;
+                    let length: number = ep.runtime;
+        
+                    let episodePoster: string = ep.still_path;
+                    let showPoster: string = showObject.posterPath;
+        
+                    let getEpisodePoster = getTMDBImage('w185', episodePoster);
+                    let getShowPoster = getTMDBImage('w185', showPoster);
+                    let showURL: string = `https://themoviedb.org/tv/${showID}-stargate-sg-1/season/${season}/episode/${epNum}`;
+        
+                    randomResultContainer.insertAdjacentHTML('afterbegin', `
+                        <div id='randomResultIMGContainer'>
+                            <img src='${getShowPoster}' href='${showURL}'>
+                        </div>
+                        <div id='randomResultInfoContainer'>
+                            <p>${show}</p>
+                            <p>Season ${season} Episode ${epNum}</p>
+                            <p>${name} - Runtime: ${length}</p>
+                            <p>${description}</p>
+                            <p>Original Air Date: ${airDate}</p>
+                            <p><a target='_blank' href='${showURL}'>Link to The Movie DB Page For Full Information</a></p>
+                            <button id='btnReRandom'>Random Again</button>
+                        </div>
+        
+                    `)
+                };
+            })
+        }
+    })
+
+
     addAFavoriteTVShowContainer?.insertAdjacentHTML('afterbegin', `
         <form id='formAddFavoriteTVShow'>
             <input id='inputAddFavoriteTVShow' type='text' placeholder='Search For A TV Show'>
@@ -669,100 +767,4 @@ async function createRandomTVEpisodeUI() {
         return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
     }
 
-    const colRef = collection(db, 'users', 'testUser', 'favoriteTVShows');
-
-    onSnapshot(colRef, (snapshot) => {
-        favoriteShowsContainer.innerHTML = '';
-
-
-        snapshot.forEach((document) => {
-            const data = document.data();
-
-            const title = data.name;
-            const id = data.id;
-
-            favoriteShowsContainer?.insertAdjacentHTML('beforeend', `
-                <div class='favorite-show-card'>
-                    <img>
-                    <p>${title}</p>
-                    <button type='button' class='random-tv-button' data-show-id='${id}'>Random ${title} Episode</button>
-                </div>
-            `)
-        })
-
-        const randomEpisodeButtons = document.getElementsByClassName('random-tv-button');
-
-        for (let i = 0; i < randomEpisodeButtons.length; i++) {
-            randomEpisodeButtons[i].addEventListener('click', async (e) => {
-                e.preventDefault();
-    
-                randomResultContainer.innerHTML = '';
-    
-                const docRef = doc(db, 'users', 'testUser', 'favoriteTVShows', e.target.dataset.showId);
-                const docSnap = await getDoc(docRef);
-
-                const showObject = docSnap.data();
-
-                const showID = showObject.id;
-                const numOfSeasons = showObject.numOfSeasons;
-                const randomSeason = getRandom(numOfSeasons);
-                const randomEpisode = getRandom(showObject.seasons[randomSeason].episode_count);
-        
-                let TVSearchURL = new URL(`https://api.themoviedb.org/3/tv/${showID}/season/${randomSeason}/episode/${randomEpisode}?language=en-US`);
-        
-                const options = {
-                    method: 'GET',
-                    headers: {
-                      accept: 'application/json',
-                      Authorization: TMDBAPIKEY
-                    }
-                  };
-                  
-                  fetch(TVSearchURL, options)
-                    .then(response => response.json())
-                    .then(response => displayRandomEpisode(response))
-                    .catch(err => console.error(err));
-        
-        
-                function displayRandomEpisode(ep) {
-
-                    console.log('displayRandomEpisodeTriggered.  Object: ', ep);
-
-
-                    let show: string = showObject.name;
-                    let showID: number = showObject.id;
-                    let name: string = ep.name;
-                    let description: string = ep.overview;
-                    let airDate: string = ep.air_date;
-            
-                    let season: number = ep.season_number;
-                    let epNum: number = ep.episode_number;
-                    let length: number = ep.runtime;
-        
-                    let episodePoster: string = ep.still_path;
-                    let showPoster: string = showObject.posterPath;
-        
-                    let getEpisodePoster = getTMDBImage('w185', episodePoster);
-                    let getShowPoster = getTMDBImage('w185', showPoster);
-                    let showURL: string = `https://themoviedb.org/tv/${showID}-stargate-sg-1/season/${season}/episode/${epNum}`;
-        
-                    randomResultContainer.insertAdjacentHTML('afterbegin', `
-                        <div id='randomResultIMGContainer'>
-                            <img src='${getShowPoster}' href='${showURL}'>
-                        </div>
-                        <div id='randomResultInfoContainer'>
-                            <p>${show}</p>
-                            <p>Season ${season} Episode ${epNum}</p>
-                            <p>${name} - Runtime: ${length}</p>
-                            <p>${description}</p>
-                            <p>Original Air Date: ${airDate}</p>
-                            <p><a target='_blank' href='${showURL}'>Link to The Movie DB Page For Full Information</a></p>
-                            <button id='btnReRandom'>Random Again</button>
-                        </div>
-        
-                    `)
-                };
-            })
-        }
-    })
 }
