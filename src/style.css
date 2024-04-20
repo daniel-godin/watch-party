@@ -21,8 +21,22 @@ html {
 
 #navTopBar {
   width: 100%;
-  height: 75px;
+  height: 50px;
   background-color: darkgrey;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
+  justify-items: center;
+  align-items: center;
+}
+
+#navTopBar > a {
+  text-decoration: none;
+  color: black;
+}
+
+#navTopBar > a:hover {
+  background-color: white;
 }
 
 .main-container {
