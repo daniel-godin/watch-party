@@ -1,11 +1,10 @@
 // Imports:
 import { randomIdGenerator } from "./utils";
 import { TMDBOptions, getTMDBImage } from "./tmdbUtilities";
-import { TMDBAPIKEY } from '../api-keys.ts';
 
 // Firebase Imports:
 import { auth, db,  } from "./firebase";
-import { setDoc, doc, onSnapshot, updateDoc, collection, getDoc, deleteDoc, getCountFromServer } from "firebase/firestore";
+import { setDoc, doc, onSnapshot, updateDoc, collection, getDoc, deleteDoc, } from "firebase/firestore";
 
 const pageContainer = document.getElementById('pageContainer'); // This is on every html page.  Maybe change to use body later?
 
@@ -315,7 +314,7 @@ async function createDemoPageUI() {
             })
         }
 
-        if (count >= 5) { console.log('Only 10 options allowed at this time.  Please remove a title if you wish to add a different one.')}
+        if (count >= 5) { console.log('Only 5 options allowed at this time.  Please remove a title if you wish to add a different one.')}
     })
 }
 
@@ -464,16 +463,8 @@ async function createWatchPartyUI() {
                     let searchURL = new URL('https://api.themoviedb.org/3/search/movie');
 
                     searchURL.searchParams.append('query', addTitleInput.value);
-
-                    const options = {
-                        method: 'GET',
-                        headers: {
-                          accept: 'application/json',
-                          Authorization: TMDBAPIKEY
-                        }
-                    };
                     
-                    fetch(searchURL, options)
+                    fetch(searchURL, TMDBOptions)
                     .then(response => response.json())
                     .then(response => chooseMovieAfterSearch(response))
                     .catch(err => console.error(err));
@@ -611,16 +602,8 @@ async function createRandomTVEpisodeUI() {
     
             let searchURL = new URL('https://api.themoviedb.org/3/search/tv');
             searchURL.searchParams.append('query', searchTerm);
-            
-            const options = {
-                method: 'GET',
-                headers: {
-                  accept: 'application/json',
-                  Authorization: TMDBAPIKEY
-                }
-              };
               
-              fetch(searchURL, options)
+              fetch(searchURL, TMDBOptions)
                 .then(response => response.json())
                 .then(response => createAddFavoriteTVShowSection(response))
                 .catch(err => console.error(err));
@@ -658,16 +641,8 @@ async function createRandomTVEpisodeUI() {
                         console.log(e.target.dataset.showId);
     
                         const showId = e.target.dataset.showId;
-    
-                        const options = {
-                            method: 'GET',
-                            headers: {
-                              accept: 'application/json',
-                              Authorization: TMDBAPIKEY
-                            }
-                          };
                           
-                          fetch(`https://api.themoviedb.org/3/tv/${showId}?language=en-US`, options)
+                          fetch(`https://api.themoviedb.org/3/tv/${showId}?language=en-US`, TMDBOptions)
                             .then(response => response.json())
                             .then(response => getTVShow(response))
                             .catch(err => console.error(err));
