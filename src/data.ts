@@ -50,6 +50,10 @@ interface movie {
 //     ],
 // }
 
+type favoriteTVShow = {
+	
+}
+
 export const stargateSG1TestObject = {
 	name: 'Stargate SG-1',
 	id: 4629,
