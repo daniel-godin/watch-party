@@ -137,3 +137,8 @@ nav {
   align-items: center;
   justify-items: center;
 }
+
+#randomResultInfoContainer {
+  display: grid;
+  gap: .1rem;
+}

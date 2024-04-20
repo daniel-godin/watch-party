@@ -700,36 +700,20 @@ async function createRandomTVEpisodeUI() {
                 }
             }
         })
-
-
-
     })
-
-    function getRandom (max: number) {
-        const minCeiled = Math.ceil(1);
-        const maxFloored = Math.floor(max);
-        return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
-    }
 }
 
 async function displayRandomEpisode(showID, DOMAttachmentPoint) {
-    console.log('displayRandomEpisode Function Triggered: ', showID, DOMAttachmentPoint);
+    // console.log('displayRandomEpisode Function Triggered: ', showID, DOMAttachmentPoint);
 
     DOMAttachmentPoint.innerHTML = '';
-
-    console.log('after dom attachment point');
 
     showID = String(showID); // Needed to change this into a string because docRef wouldn't take a number.
 
     const docRef = doc(db, 'users', 'testUser', 'favoriteTVShows', showID);
-    console.log('before doc snap');
     const docSnap = await getDoc(docRef);
 
-    console.log('after doc snap');
-
     const showData = docSnap.data();
-
-    console.log('just after show data', showData);
 
     const numOfSeasons = showData.numOfSeasons;
     const randomSeason = getRandom(numOfSeasons);
@@ -737,13 +721,10 @@ async function displayRandomEpisode(showID, DOMAttachmentPoint) {
 
     let TVSearchURL = new URL(`https://api.themoviedb.org/3/tv/${showID}/season/${randomSeason}/episode/${randomEpisode}?language=en-US`);
 
-    console.log('just before fetch triggered');
-
     fetch(TVSearchURL, TMDBOptions)
         .then(response => response.json())
         .then(response => {
-
-            console.log('second fetch triggered');
+            // This part saves the variables and then creates the DOM from this data.
         
             const episodeData = response;
 
@@ -765,7 +746,7 @@ async function displayRandomEpisode(showID, DOMAttachmentPoint) {
 
             DOMAttachmentPoint.insertAdjacentHTML('afterbegin', `
                 <div id='randomResultIMGContainer'>
-                    <img src='${getShowPoster}' href='${showURL}'>
+                    <img src='${getShowPoster}' href='${showURL}' class='image-favorite-tv-show-posters'>
                 </div>
                 <div id='randomResultInfoContainer'>
                     <p>${show}</p>
@@ -774,7 +755,6 @@ async function displayRandomEpisode(showID, DOMAttachmentPoint) {
                     <p>${description}</p>
                     <p>Original Air Date: ${airDate}</p>
                     <p><a target='_blank' href='${showURL}'>Link to The Movie DB Page For Full Information</a></p>
-                    <button id='btnReRandom'>Random Again</button>
                 </div>
 
             `)
