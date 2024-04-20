@@ -41,8 +41,8 @@ function createMainUI() {
 function createFooterUI() {
     pageContainer?.insertAdjacentHTML('afterend', `
     <footer>
-        <p>Created by <a href='http://danielgodin.org'>Daniel Godin</a></p>
-        <p>All Movie and TV Data is from <a href='https://themoviedb.org'>The Movie DB</a></p>
+        <p>Created by <a href='http://danielgodin.org' target='_blank'>Daniel Godin</a></p>
+        <p>All Movie and TV Data is from <a href='https://themoviedb.org' target="_blank">The Movie DB</a></p>
     </footer>
     `)
 }
