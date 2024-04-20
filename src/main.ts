@@ -4,6 +4,7 @@ import './fav-96.png';
 import './ui.ts';
 import './data.ts';
 import './tmdbUtilities.ts';
+import './watch-party-demo.ts';
 
 // Firebase Imports:
 import { app, db, auth } from "./firebase.ts";
