@@ -26,3 +26,6 @@ dist-ssr
 # Firebase Ignored Files & Directories:
 .firebase/*
 firebase-config.ts
+
+# Security Ignores:
+api-keys.ts
