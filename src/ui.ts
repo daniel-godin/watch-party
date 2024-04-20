@@ -11,7 +11,7 @@ import { setDoc, doc, onSnapshot, updateDoc, collection, getDoc, deleteDoc } fro
 const pageContainer = document.getElementById('pageContainer'); // This is on every html page.  Maybe change to use body later?
 
 function buildUI() {
-    console.log('buildUI function triggered');
+    // console.log('buildUI function triggered');
     createNavUI();
     createMainUI();
     createFooterUI();
@@ -771,13 +771,10 @@ async function createRandomTVEpisodeUI() {
                 randomResultContainer.innerHTML = '';
     
                 const docRef = doc(db, 'users', 'testUser', 'favoriteTVShows', e.target.dataset.showId);
-    
-
                 const docSnap = await getDoc(docRef);
 
                 const showObject = docSnap.data();
 
-    
                 const showID = showObject.id;
                 const numOfSeasons = showObject.numOfSeasons;
                 const randomSeason = getRandom(numOfSeasons);
@@ -800,10 +797,12 @@ async function createRandomTVEpisodeUI() {
         
         
                 function displayRandomEpisode(ep) {
-        
-                    
-                    let show: string = showObject.name; // Change this to a variable later.
-                    let showID: number = 4629;
+
+                    console.log('displayRandomEpisodeTriggered.  Object: ', ep);
+
+
+                    let show: string = showObject.name;
+                    let showID: number = showObject.id;
                     let name: string = ep.name;
                     let description: string = ep.overview;
                     let airDate: string = ep.air_date;
@@ -812,17 +811,17 @@ async function createRandomTVEpisodeUI() {
                     let epNum: number = ep.episode_number;
                     let length: number = ep.runtime;
         
-                    let poster: string = ep.still_path;
-                    let stargateSG1PosterPath: string = '/dQjmI7XxI47v8IM2MUysHG0LuU2.jpg';
+                    let episodePoster: string = ep.still_path;
+                    let showPoster: string = showObject.posterPath;
         
-                    let imgSRC = getTMDBImage('w185', poster);
-                    let showPosterIMG = getTMDBImage('w185', stargateSG1PosterPath)
+                    let getEpisodePoster = getTMDBImage('w185', episodePoster);
+                    let getShowPoster = getTMDBImage('w185', showPoster)
                     let showURL: string = `https://themoviedb.org/tv/${showID}-stargate-sg-1/season/${season}/episode/${epNum}`;
         
                     randomResultContainer.insertAdjacentHTML('afterbegin', `
         
                         <div id='randomResultIMGContainer'>
-                            <img src='${showPosterIMG}' href='${showURL}'>
+                            <img src='${getShowPoster}' href='${showURL}'>
                         </div>
                         <div id='randomResultInfoContainer'>
                             <p>${show}</p>
