@@ -1,5 +1,6 @@
 // Imports:
 import { TMDBOptions, getTMDBImage } from "./tmdbUtilities";
+import './delete-fav-show.svg';
 
 // Firebase Imports:
 import { auth, db,  } from "./firebase";
@@ -49,7 +50,13 @@ export async function createRandomTVEpisodeUI() {
                     <img src='${showPoster}' class='image-favorite-tv-show-posters'>
                     <div class='favorite-show-name-and-remove-btn-container'>
                         <p>${title}</p>
-                        <button type='button' class='button-remove-favorite-show'>Remove Show</button>
+                        <button type='button' class='button-remove-favorite-show' data-show-id='${id}'>
+                            <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 48 48" width="40px" height="40px" data-show-id='${id}'>
+                                <path fill="#f44336" d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z" data-show-id='${id}' />
+                                <path fill="#fff" d="M29.656,15.516l2.828,2.828l-14.14,14.14l-2.828-2.828L29.656,15.516z" data-show-id='${id}' />
+                                <path fill="#fff" d="M32.484,29.656l-2.828,2.828l-14.14-14.14l2.828-2.828L32.484,29.656z" data-show-id='${id}' />
+                            </svg>
+                        </button>
                     </div>
                     <button type='button' class='random-tv-button random-tv-button-style' data-show-id='${id}'>Random ${title} Episode</button>
                 </div>
@@ -78,6 +85,17 @@ export async function createRandomTVEpisodeUI() {
                 e.preventDefault();
 
                 displayRandomEpisode(e.target.dataset.showId, randomResultContainer);
+            })
+        }
+
+        const removeFavoriteShowButtons = document.getElementsByClassName('button-remove-favorite-show');
+        for (let i = 0; i < removeFavoriteShowButtons.length; i++) {
+            removeFavoriteShowButtons[i].addEventListener('click', async (e) => {
+                const showID = e.target.dataset.showId;
+                if (window.confirm('Do you want to remove INSERT SHOW NAME')) {
+                    // Remove show from the user's Firestore DB Collection of Favorited Shows.
+                    await deleteDoc(doc(db, 'users', 'testUser', 'favoriteTVShows', showID))
+                };
             })
         }
 
