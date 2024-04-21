@@ -47,7 +47,10 @@ export async function createRandomTVEpisodeUI() {
             favoriteShowsContainer?.insertAdjacentHTML('beforeend', `
                 <div class='favorite-show-card'>
                     <img src='${showPoster}' class='image-favorite-tv-show-posters'>
-                    <p>${title}</p>
+                    <div class='favorite-show-name-and-remove-btn-container'>
+                        <p>${title}</p>
+                        <button type='button' class='button-remove-favorite-show'>Remove Show</button>
+                    </div>
                     <button type='button' class='random-tv-button random-tv-button-style' data-show-id='${id}'>Random ${title} Episode</button>
                 </div>
             `)
