@@ -48,7 +48,7 @@ export async function createRandomTVEpisodeUI() {
                 <div class='favorite-show-card'>
                     <img src='${showPoster}' class='image-favorite-tv-show-posters'>
                     <p>${title}</p>
-                    <button type='button' class='random-tv-button' data-show-id='${id}'>Random ${title} Episode</button>
+                    <button type='button' class='random-tv-button random-tv-button-style' data-show-id='${id}'>Random ${title} Episode</button>
                 </div>
             `)
         })
@@ -58,7 +58,7 @@ export async function createRandomTVEpisodeUI() {
                 <form id='formAddFavoriteTVShow'>
                     <img height='231' width='154'>
                     <input id='inputAddFavoriteTVShow' type='text' placeholder='Add A Favorite Show'>
-                    <button id='btnAddFavoriteTVShow' class='random-tv-button' type='submit'>Search</button>
+                    <button id='btnAddFavoriteTVShow' class='random-tv-button-style' type='submit'>Search</button>
                 </form>
             </div>
         `)
@@ -96,7 +96,7 @@ export async function createRandomTVEpisodeUI() {
     
             function createAddFavoriteTVShowSection (dataObj) {
     
-                // console.log('tv data object: ', dataObj);
+                console.log('tv data object: ', dataObj);
     
                 const results = dataObj.results;
     
