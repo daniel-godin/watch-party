@@ -4,8 +4,9 @@ import { TMDBOptions, getTMDBImage } from "./tmdbUtilities";
 import './delete-fav-show.svg';
 
 // Firebase Imports:
-import { db,  } from "./firebase";
+import { db, auth } from "./firebase";
 import { setDoc, doc, onSnapshot, updateDoc, collection, getDoc, deleteDoc, } from "firebase/firestore";
+import { onAuthStateChanged, signInAnonymously } from "firebase/auth";
 
 
 export async function createRandomTVEpisodeUI(user) {
@@ -186,6 +187,8 @@ export async function createRandomTVEpisodeUI(user) {
             }
         })
     })
+
+
 }
 
 async function displayRandomEpisode(userID, showID, DOMAttachmentPoint) {

@@ -17,45 +17,47 @@ export const pageContainer = document.getElementById('pageContainer'); // This i
 // Code / Functionality:
 
 // Firebase Auth:
-signInAnonymously(auth)
-	.then(() => {
-		// console.log("anon signed in.")
-		// Signed in..
-	})
-	.catch((error) => {
-		const errorCode = error.code;
-		const errorMessage = error.message;
-		// ...
-		console.log("Anon Sign-In Error:", errorCode, errorMessage);
-});
+// signInAnonymously(auth)
+//   .then((user) => {
+//     // Signed in..
+//     console.log('Sign In Anonymously Triggered');
+//     console.log('Anonymous User: ', user.user.uid);
+//   })
+//   .catch((error) => {
+//     const errorCode = error.code;
+//     const errorMessage = error.message;
+//     // ...
+// });
 
 onAuthStateChanged(auth, (user) => {
-	if (user) {
+    if (user) {
         buildUI(user);
-		// User is signed in, see docs for a list of available properties
-		// https://firebase.google.com/docs/reference/js/auth.user
-		const uid = user.uid;
-		// console.log('User: ', user, user.uid, typeof(user));
-		// ...
-	} else {
-        buildUI();
-		// console.log("User Signed Out");
-		// User is signed out
-		// ...
-	}
-});
-
+    }
+    if (!user) {
+        signInAnonymously(auth)
+        .then((user) => {
+            // Signed in..
+            console.log('Sign In Anonymously Triggered');
+            console.log('Anonymous User: ', user.user.uid);
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // ...
+        });
+    }
+})
 
 function buildUI(user) {
     // console.log('buildUI function triggered'); // For Debugging Purposes.
-    createNavUI(user);
+    createNavUI();
     createMainUI(user);
     createFooterUI(user);
 }
 
 // buildUI(user); // Triggers the UI build.
 
-function createNavUI(user) {
+function createNavUI() {
 
     // if (temp user) { const status = "Temporary User"; }
     // if (user) { const status = "Logged In" } // LATER HAVE THIS BE A BUTTON TO CLICK INTO YOUR PROFILE.HTML PAGE.
@@ -82,7 +84,8 @@ function createMainUI(user) {
 }
 
 function createFooterUI(user) {
-    const userID = user.uid;
+    let userID = user.uid;
+    if (!userID) { userID = 'Not Logged In'; }
     pageContainer?.insertAdjacentHTML('afterend', `
     <footer>
         <p>Created by <a href='http://danielgodin.org' target='_blank'>Daniel Godin</a></p>

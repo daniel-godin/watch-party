@@ -30,6 +30,8 @@ footer {
 }
 
 #pageContainer {
+  margin: 0;
+  padding: 1rem;
   display: grid;
   place-items: center;
 
@@ -221,7 +223,24 @@ footer {
   place-content: center;
 }
 
-#formAuth {
+#authContainer {
+  margin: 0;
+  padding: 1rem;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+#authFormContainer {
   margin: 0;
   padding: 1rem;
 }
+
+/* .form-auth {
+  margin: 0;
+  padding: 1rem;
+} */
+
