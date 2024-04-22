@@ -33,12 +33,14 @@ export async function createRandomTVEpisodeUI(user) {
     const randomResultContainer = document.getElementById('randomResultContainer');
     const searchResultsAddFavoriteTVShowContainer = document.getElementById('searchResultsAddFavoriteTVShowContainer');
 
-    const arrayOfFavoriteShowsByID = [];
+    // const arrayOfFavoriteShowsByID = [];
 
     // const colRef = collection(db, 'users', 'testUser', 'favoriteTVShows'); // Use 'testUser' for non-variable user testing.
     const colRef = collection(db, 'users', userID, 'favoriteTVShows'); 
     onSnapshot(colRef, (snapshot) => {
         favoriteShowsContainer.innerHTML = '';
+
+        const arrayOfFavoriteShowsByID = [];
 
         snapshot.forEach((document) => {
             const data = document.data();
@@ -79,11 +81,19 @@ export async function createRandomTVEpisodeUI(user) {
             </div>
         `)
 
-        btnRandomAll?.addEventListener('click', async (e) => {
-            e.preventDefault();
-            const randomShow = arrayOfFavoriteShowsByID[Math.floor(Math.random() * arrayOfFavoriteShowsByID.length)];
-            displayRandomEpisode(userID, randomShow, randomResultContainer);
-        })
+        if (arrayOfFavoriteShowsByID.length === 0) { 
+            console.log('array of shows is zero'); }
+        if (arrayOfFavoriteShowsByID.length > 0) { 
+            btnRandomAll?.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const randomShow = arrayOfFavoriteShowsByID[Math.floor(Math.random() * arrayOfFavoriteShowsByID.length)];
+                displayRandomEpisode(userID, randomShow, randomResultContainer);
+            })
+            console.log('array of shows is greater than zero'); 
+        }
+
+
+
 
         const randomEpisodeButtons = document.getElementsByClassName('random-tv-button');
         for (let i = 0; i < randomEpisodeButtons.length; i++) { // Logic for buttons to choose random episode for that show.
@@ -97,8 +107,15 @@ export async function createRandomTVEpisodeUI(user) {
         for (let i = 0; i < removeFavoriteShowButtons.length; i++) {
             removeFavoriteShowButtons[i].addEventListener('click', async (e) => {
                 const showID = e.target.dataset.showId;
+
                 if (window.confirm('Do you want to remove INSERT SHOW NAME')) {
                     // Remove show from the user's Firestore DB Collection of Favorited Shows.
+                    // Use showID to search through arrayOfFavoriteShowsByID and remove it from the array.
+                    const deleteIndex = arrayOfFavoriteShowsByID.indexOf(Number(showID));
+                    console.log('delete Index: ', deleteIndex);
+                    console.log('before array delete: ', arrayOfFavoriteShowsByID);
+                    arrayOfFavoriteShowsByID.splice(deleteIndex, 1);
+                    console.log('after delete array: ', arrayOfFavoriteShowsByID)
                     await deleteDoc(doc(colRef, showID)); // This worked in testing.  Would prefer not to have to re-write this if I need to change colRef at top.
                 };
             })
