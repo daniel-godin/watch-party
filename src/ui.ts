@@ -3,15 +3,23 @@ import { randomIdGenerator } from "./utils";
 import { createRandomTVEpisodeUI } from "./random-TV-episode";
 import { createDemoPageUI } from "./watch-party-demo";
 import { createWatchPartyUI } from "./watch-party";
+import { createAuthPageUI } from "./auth";
 
 // Firebase Imports:
 import { auth, db,  } from "./firebase";
 import { setDoc, doc, onSnapshot } from "firebase/firestore";
 import { signInAnonymously, onAuthStateChanged } from "firebase/auth";
 
+// Global Variables:
+
+export const pageContainer = document.getElementById('pageContainer'); // This is on every html page.  Maybe change to use body later?
+
+// Code / Functionality:
+
+// Firebase Auth:
 signInAnonymously(auth)
 	.then(() => {
-		console.log("anon signed in.")
+		// console.log("anon signed in.")
 		// Signed in..
 	})
 	.catch((error) => {
@@ -27,17 +35,16 @@ onAuthStateChanged(auth, (user) => {
 		// User is signed in, see docs for a list of available properties
 		// https://firebase.google.com/docs/reference/js/auth.user
 		const uid = user.uid;
-		console.log('User: ', user, user.uid, typeof(user));
+		// console.log('User: ', user, user.uid, typeof(user));
 		// ...
 	} else {
         buildUI();
-		console.log("User Signed Out");
+		// console.log("User Signed Out");
 		// User is signed out
 		// ...
 	}
 });
 
-const pageContainer = document.getElementById('pageContainer'); // This is on every html page.  Maybe change to use body later?
 
 function buildUI(user) {
     // console.log('buildUI function triggered'); // For Debugging Purposes.
@@ -60,6 +67,7 @@ function createNavUI(user) {
             <a href='./demo.html'>Demo</a>
             <a href='./watch.html'>Find Watch Party</a>
             <a href='./random.html'>Random TV Episode</a>
+            <a href='./auth.html'>Sign In / Sign Up</a>
         </nav>
     `)
 }
@@ -70,6 +78,7 @@ function createMainUI(user) {
     if (pathname == '/demo.html') { createDemoPageUI(); };
     if (pathname == '/watch.html') { createWatchPartyUI(); };
     if (pathname == '/random.html') { createRandomTVEpisodeUI(user); };
+    if (pathname == '/auth.html') { createAuthPageUI(user); };
 }
 
 function createFooterUI(user) {

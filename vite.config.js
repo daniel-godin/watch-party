@@ -8,6 +8,7 @@ export default defineConfig({
         demo: './demo.html',
         watch: './watch.html',
         random: './random.html',
+        auth: './auth.html',
         // Add more entries for additional HTML files
       }
     }

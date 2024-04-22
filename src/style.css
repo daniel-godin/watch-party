@@ -220,3 +220,8 @@ footer {
   display: grid;
   place-content: center;
 }
+
+#formAuth {
+  margin: 0;
+  padding: 1rem;
+}
