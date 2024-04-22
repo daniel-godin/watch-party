@@ -3,10 +3,13 @@ import { TMDBOptions, getTMDBImage } from "./tmdbUtilities";
 import './delete-fav-show.svg';
 
 // Firebase Imports:
-import { auth, db,  } from "./firebase";
+import { db,  } from "./firebase";
 import { setDoc, doc, onSnapshot, updateDoc, collection, getDoc, deleteDoc, } from "firebase/firestore";
 
-export async function createRandomTVEpisodeUI() {
+
+export async function createRandomTVEpisodeUI(user) {
+
+    const userID:string = user.uid;
 
     pageContainer?.insertAdjacentHTML('afterbegin', `
         <div id='randomTVShowPageContainer'>
@@ -30,7 +33,8 @@ export async function createRandomTVEpisodeUI() {
 
     const arrayOfFavoriteShowsByID = [];
 
-    const colRef = collection(db, 'users', 'testUser', 'favoriteTVShows');
+    // const colRef = collection(db, 'users', 'testUser', 'favoriteTVShows'); // Use 'testUser' for non-variable user testing.
+    const colRef = collection(db, 'users', userID, 'favoriteTVShows'); 
     onSnapshot(colRef, (snapshot) => {
         favoriteShowsContainer.innerHTML = '';
 
@@ -76,15 +80,14 @@ export async function createRandomTVEpisodeUI() {
         btnRandomAll?.addEventListener('click', async (e) => {
             e.preventDefault();
             const randomShow = arrayOfFavoriteShowsByID[Math.floor(Math.random() * arrayOfFavoriteShowsByID.length)];
-            displayRandomEpisode(randomShow, randomResultContainer);
+            displayRandomEpisode(userID, randomShow, randomResultContainer);
         })
 
         const randomEpisodeButtons = document.getElementsByClassName('random-tv-button');
         for (let i = 0; i < randomEpisodeButtons.length; i++) { // Logic for buttons to choose random episode for that show.
             randomEpisodeButtons[i].addEventListener('click', async (e) => {
                 e.preventDefault();
-
-                displayRandomEpisode(e.target.dataset.showId, randomResultContainer);
+                displayRandomEpisode(userID, e.target.dataset.showId, randomResultContainer);
             })
         }
 
@@ -94,7 +97,7 @@ export async function createRandomTVEpisodeUI() {
                 const showID = e.target.dataset.showId;
                 if (window.confirm('Do you want to remove INSERT SHOW NAME')) {
                     // Remove show from the user's Firestore DB Collection of Favorited Shows.
-                    await deleteDoc(doc(db, 'users', 'testUser', 'favoriteTVShows', showID))
+                    await deleteDoc(doc(colRef, showID)); // This worked in testing.  Would prefer not to have to re-write this if I need to change colRef at top.
                 };
             })
         }
@@ -171,7 +174,7 @@ export async function createRandomTVEpisodeUI() {
                             // console.log('dataObject', dataObject)
     
                             try {
-                                setDoc(doc(db, 'users', 'testUser', 'favoriteTVShows', showId), dataObject);
+                                setDoc(doc(db, 'users', userID, 'favoriteTVShows', showId), dataObject);
                                 console.log('Favorite TV Show Added to FireStore', dataObject);
                             } catch (e) {
                                 console.error ("Error Adding TV to Favorites: ", e);
@@ -184,14 +187,14 @@ export async function createRandomTVEpisodeUI() {
     })
 }
 
-async function displayRandomEpisode(showID, DOMAttachmentPoint) {
+async function displayRandomEpisode(userID, showID, DOMAttachmentPoint) {
     // console.log('displayRandomEpisode Function Triggered: ', showID, DOMAttachmentPoint);
 
     DOMAttachmentPoint.innerHTML = '';
 
     showID = String(showID); // Needed to change this into a string because docRef wouldn't take a number.
 
-    const docRef = doc(db, 'users', 'testUser', 'favoriteTVShows', showID);
+    const docRef = doc(db, 'users', userID, 'favoriteTVShows', showID);
     const docSnap = await getDoc(docRef);
 
     const showData = docSnap.data();

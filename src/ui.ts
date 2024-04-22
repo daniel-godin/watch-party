@@ -7,19 +7,53 @@ import { createWatchPartyUI } from "./watch-party";
 // Firebase Imports:
 import { auth, db,  } from "./firebase";
 import { setDoc, doc, onSnapshot } from "firebase/firestore";
+import { signInAnonymously, onAuthStateChanged } from "firebase/auth";
+
+signInAnonymously(auth)
+	.then(() => {
+		console.log("anon signed in.")
+		// Signed in..
+	})
+	.catch((error) => {
+		const errorCode = error.code;
+		const errorMessage = error.message;
+		// ...
+		console.log("Anon Sign-In Error:", errorCode, errorMessage);
+});
+
+onAuthStateChanged(auth, (user) => {
+	if (user) {
+        buildUI(user);
+		// User is signed in, see docs for a list of available properties
+		// https://firebase.google.com/docs/reference/js/auth.user
+		const uid = user.uid;
+		console.log('User: ', user, user.uid, typeof(user));
+		// ...
+	} else {
+        buildUI();
+		console.log("User Signed Out");
+		// User is signed out
+		// ...
+	}
+});
 
 const pageContainer = document.getElementById('pageContainer'); // This is on every html page.  Maybe change to use body later?
 
-function buildUI() {
+function buildUI(user) {
     // console.log('buildUI function triggered'); // For Debugging Purposes.
-    createNavUI();
-    createMainUI();
-    createFooterUI();
+    createNavUI(user);
+    createMainUI(user);
+    createFooterUI(user);
 }
 
-buildUI(); // Triggers the UI build.
+// buildUI(user); // Triggers the UI build.
 
-function createNavUI() {
+function createNavUI(user) {
+
+    // if (temp user) { const status = "Temporary User"; }
+    // if (user) { const status = "Logged In" } // LATER HAVE THIS BE A BUTTON TO CLICK INTO YOUR PROFILE.HTML PAGE.
+    // if (no user) { const status = "" {} // empty.
+
     pageContainer?.insertAdjacentHTML('beforebegin', `
         <nav id='navTopBar'>
             <a href='./index.html'>Home/Create Watch Party</a>
@@ -30,19 +64,21 @@ function createNavUI() {
     `)
 }
 
-function createMainUI() {
+function createMainUI(user) {
     const pathname = window.location.pathname; // Finding pathname to sort which UI function to trigger.
     if (pathname == '/index.html' ||  pathname == '/' || pathname.length === 0) { createIndexPageUI(); };  
     if (pathname == '/demo.html') { createDemoPageUI(); };
     if (pathname == '/watch.html') { createWatchPartyUI(); };
-    if (pathname == '/random.html') { createRandomTVEpisodeUI(); };
+    if (pathname == '/random.html') { createRandomTVEpisodeUI(user); };
 }
 
-function createFooterUI() {
+function createFooterUI(user) {
+    const userID = user.uid;
     pageContainer?.insertAdjacentHTML('afterend', `
     <footer>
         <p>Created by <a href='http://danielgodin.org' target='_blank'>Daniel Godin</a></p>
         <p>All Movie and TV Data is from <a href='https://themoviedb.org' target="_blank">The Movie DB</a></p>
+        <p>Your User ID:  ${userID}</p>
     </footer>
     `)
 }
