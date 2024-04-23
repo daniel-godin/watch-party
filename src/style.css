@@ -248,3 +248,8 @@ footer {
   padding: 1rem;
 } */
 
+/* Keep this last: */
+
+.hidden {
+  display: none;
+}

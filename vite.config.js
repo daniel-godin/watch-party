@@ -9,6 +9,7 @@ export default defineConfig({
         watch: './watch.html',
         random: './random.html',
         auth: './auth.html',
+        profile: './profile.html',
         // Add more entries for additional HTML files
       }
     }

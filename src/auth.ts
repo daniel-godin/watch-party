@@ -1,5 +1,5 @@
 // Imports:
-import { pageContainer } from "./ui";
+
 
 // Firebase Imports:
 import { setDoc, doc } from "firebase/firestore";
@@ -157,4 +157,41 @@ export async function createAuthPageUI(mainContentContainer: HTMLElement, user) 
     }
     createAuthForm('Log In');
 
+}
+
+export async function createProfilePageUI(mainContentContainer: HTMLElement, user) {
+    mainContentContainer.innerHTML = '';
+    mainContentContainer.insertAdjacentHTML('afterbegin', `
+        <div id='profilePageContainer'>
+
+            <form id='formUpdateProfile'>
+                <label>Display Name:
+                    <input type='text' id='inputDisplayName'>
+                </label>
+                <label>Email:
+                    <input type='email' id='inputEmail'>
+                </label>
+
+                <button type='submit'>Update Profile</button>
+
+            </form>
+
+            <form id='formUpdatePassword'>
+
+                <label>Current Password:
+                    <input type='password' id='inputCurrentPassword' required>
+                </label>
+                <label>New Password:
+                    <input type='password' id='inputNewPassword1' required>
+                </label>
+                <label>Confirm New Password:
+                    <input type='password' id='inputNewPassword2' required>
+                </label>
+
+                <button type='submit'>Update Password</button>
+
+            </form>
+
+        </div>
+    `)
 }

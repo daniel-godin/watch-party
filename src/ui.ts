@@ -6,7 +6,7 @@ import { createIndexPageUI } from "./index.ts";
 import { createRandomTVEpisodeUI } from "./random-TV-episode";
 import { createDemoPageUI } from "./watch-party-demo";
 import { createWatchPartyUI } from "./watch-party";
-import { createAuthPageUI } from "./auth";
+import { createAuthPageUI, createProfilePageUI } from "./auth";
 
 // Firebase Imports:
 import { auth, db,  } from "./firebase";
@@ -40,7 +40,7 @@ function buildUI(user: object) {
     buildSkeletonUI();
     createNavUI();
     createMainUI(user);
-    createFooterUI();
+    createFooterUI(user);
 }
 
 export const pageContainer = document.getElementById('pageContainer') as HTMLElement; // This is on every html page.  Maybe change to use body later?
@@ -62,6 +62,7 @@ function createNavUI() {
         <a href='./demo.html'>Demo</a>
         <a href='./watch.html'>Find Watch Party</a>
         <a href='./random.html'>Random TV Episode</a>
+        <a href='./profile.html'>Profile</a>
         <a href='./auth.html'>Sign In / Sign Up</a>
     `)
 }
@@ -74,15 +75,23 @@ function createMainUI(user: object) {
     if (pathname == '/watch.html') { createWatchPartyUI(mainContentContainer, user); };
     if (pathname == '/random.html') { createRandomTVEpisodeUI(mainContentContainer, user); };
     if (pathname == '/auth.html') { createAuthPageUI(mainContentContainer, user); };
+    if (pathname == '/profile.html') {createProfilePageUI(mainContentContainer, user); };
 }
 
-function createFooterUI() {
+function createFooterUI(user: Object) {
     const footerContainer = document.getElementById('footerContainer') as HTMLElement;
     footerContainer.innerHTML = '';
+
+    console.log(user);
+    const anonCheck: boolean = user.isAnonymous;
+    let hideCheck: string = '';
+
+    if (anonCheck === true) { hideCheck = 'hidden'; }; // Checks whether a user isAnonymous.  If yes... applies 'hidden' class to signOut button.
+
     footerContainer.insertAdjacentHTML('afterbegin', `
         <p>Created by <a href='http://danielgodin.org' target='_blank'>Daniel Godin</a></p>
         <p>All Movie and TV Data is from <a href='https://themoviedb.org' target="_blank">The Movie DB</a></p>
-        <button type='button' id='btnSignOut'>Sign Out</button>
+        <button type='button' id='btnSignOut' class='${hideCheck}'>Sign Out</button>
     `)
 
     const btnSignOut = document.getElementById('btnSignOut') as HTMLButtonElement;
@@ -98,10 +107,11 @@ function createFooterUI() {
                 location.reload();
             }, (3000));
             // Sign-out successful.
-          }).catch((error) => {
+        }).catch((error) => {
             console.error('Sign Out Error: ', error.code, error.message);
             // An error happened.
-          });
+        });
     })
+    
 }
 
