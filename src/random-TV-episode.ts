@@ -130,6 +130,7 @@ export async function createRandomTVEpisodeUI(user) {
     
     
             function createAddFavoriteTVShowSection (dataObj) {
+                searchResultsAddFavoriteTVShowContainer.innerHTML = '';
     
                 const results = dataObj.results;
     
