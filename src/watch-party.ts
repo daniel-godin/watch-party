@@ -7,18 +7,16 @@ import { auth, db,  } from "./firebase";
 import { setDoc, doc, onSnapshot, collection, deleteDoc, } from "firebase/firestore";
 
 
-export async function createWatchPartyUI() {
+export async function createWatchPartyUI(mainContentContainer: HTMLElement, user: object) {
 
     let watchPartyIDFromURL = window.location.search;
     watchPartyIDFromURL = watchPartyIDFromURL.slice(1);
 
     if (watchPartyIDFromURL.length < 1) { watchPartyIDFromURL = '?watchPartyNotDetected'; } // This is to fix the firestore check with an empty string.
 
-    console.log('createWatchPartyUI function triggered: ', watchPartyIDFromURL);
-
     const docRef = doc(db, 'watchParties', watchPartyIDFromURL);
     onSnapshot(docRef, (snapshot) => { // Live Listener that watches the main Watch Party Doc.  Sub-Coll under it with title docs.  That is in it's on onSnapshot Listener.
-        pageContainer.innerHTML = ''; // Resets pageContainer DOM.  Needs a better solution later.
+        mainContentContainer.innerHTML = '';
 
         if (snapshot.exists()) {
             const data = snapshot.data();
@@ -30,7 +28,7 @@ export async function createWatchPartyUI() {
 
             const watchPartyURL = window.location.href;
 
-            pageContainer?.insertAdjacentHTML('afterbegin', `
+            mainContentContainer.insertAdjacentHTML('afterbegin', `
                 <div id='demoWatchPartyContainer' class='main-container'>
                     <h1>Welcome to the ${watchPartyName} Watch Party Page</h1>
                     <p>Date of Party: ${dateOfWatchParty}</p>
@@ -45,8 +43,8 @@ export async function createWatchPartyUI() {
 
             const copyWatchPartyIDText = document.getElementById('txtWatchPartyID')?.innerText;
             const copyWatchPartyURLText = document.getElementById('txtWatchPartyURL')?.innerText;
-            const btnCopyWatchPartyID = document.getElementById('btnCopyWatchPartyID');
-            const btnCopyWatchPartyURL = document.getElementById('btnCopyWatchPartyURL');
+            const btnCopyWatchPartyID = document.getElementById('btnCopyWatchPartyID') as HTMLButtonElement;
+            const btnCopyWatchPartyURL = document.getElementById('btnCopyWatchPartyURL') as HTMLButtonElement;
 
             btnCopyWatchPartyID.addEventListener('click', () => {
                 navigator.clipboard.writeText(copyWatchPartyIDText);
@@ -60,7 +58,7 @@ export async function createWatchPartyUI() {
 
         } else {
             // Watch Page Didn't Find the document.  Load a quick page with a search form, a header, and a way to go back to index.
-            pageContainer?.insertAdjacentHTML('afterbegin', `
+            mainContentContainer.insertAdjacentHTML('afterbegin', `
                 <h1>Watch Page Not Found</h1>
                 <p>Please search below, or <a href='./index.html'>Go Back To Home Page</a>.</p>
                 <form id='formSearchForWatchPartyID'>
@@ -89,12 +87,11 @@ export async function createWatchPartyUI() {
     const colRef = collection(db, 'watchParties', watchPartyIDFromURL, 'titleOptions');
 
     onSnapshot(colRef, (snapshot) => {
-        const watchPartyForm = document.getElementById('watchPartyForm');
-
-        watchPartyForm.innerHTML = '';
-
         let count = 0; // Count to keep titles to 10 or less.  Check if(statements) below.
 
+
+        const watchPartyForm = document.getElementById('watchPartyForm') as HTMLFormElement;
+        watchPartyForm.innerHTML = '';
         snapshot.forEach((document) => {
             count++;
             const data = document.data();
@@ -102,7 +99,7 @@ export async function createWatchPartyUI() {
             const title = data.title;
             const id = data.id;
 
-            watchPartyForm?.insertAdjacentHTML('beforeend', `
+            watchPartyForm.insertAdjacentHTML('beforeend', `
                 <div class='option-container'>
                     <div class='vote-container'>
                         <button type='button' class="vote-buttons">Yes</button>
@@ -130,7 +127,7 @@ export async function createWatchPartyUI() {
         };
 
         if (count < 5) {
-            watchPartyForm?.insertAdjacentHTML('beforeend', `
+            watchPartyForm.insertAdjacentHTML('beforeend', `
                     <div id='addTitleContainer'>
                         <form id='formAddTitle'>
                             <input type='text' id='addTitleInput' placeholder='Add Another Title Here' />
@@ -139,18 +136,16 @@ export async function createWatchPartyUI() {
                     </div>
                 `)
     
-                const addTitleInput = document.getElementById('addTitleInput');
-                const btnAddTitle = document.getElementById('btnAddTitle');
-                const formAddTitle = document.getElementById('formAddTitle');
+                const addTitleInput = document.getElementById('addTitleInput') as HTMLInputElement;
+                const btnAddTitle = document.getElementById('btnAddTitle') as HTMLButtonElement;
+                const formAddTitle = document.getElementById('formAddTitle') as HTMLFormElement;
 
                 
 
-                formAddTitle?.addEventListener('submit', async (e) => {
+                formAddTitle.addEventListener('submit', async (e) => {
                     e.preventDefault();
 
-
                     let searchURL = new URL('https://api.themoviedb.org/3/search/movie');
-
                     searchURL.searchParams.append('query', addTitleInput.value);
                     
                     fetch(searchURL, TMDBOptions)
@@ -171,7 +166,7 @@ export async function createWatchPartyUI() {
                             let imgSRC = 'https://image.tmdb.org/t/p/w92' + searchObj.results[i].poster_path;
 
 
-                            pageContainer?.insertAdjacentHTML('beforeend', `
+                            mainContentContainer.insertAdjacentHTML('beforeend', `
                                 <div class='search-result-container'>
                                     <img src='${imgSRC}' class='search-img'>
                                     <p>${title}</p>

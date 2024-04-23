@@ -68,18 +68,17 @@ function createDemoPartyDocument() {
 
 // createDemoPartyDocument(); // This is to create temporarily the demo doc.
 
-export async function createDemoPageUI() {
+export async function createDemoPageUI(mainContentContainer: HTMLElement, user: object) {
     // This should look through the 00-demoWatchParty document in the Firestore database 
     // and create an editable UI.
 
     // Later... Creates a shallow copy to play around with on a local level.  Does not alter main firebase doc, this way others can play with it too.
 
-    const docRef = doc(db, "watchParties", "00-demoWatchParty");
+    const docRef = doc(db, "watchParties", "00-demoWatchParty"); // Firestore Document Reference to Demo Page.
 
     onSnapshot(docRef, (snapshot) => {
 
-        pageContainer.innerHTML = ''; // This resets the pageContainer DOM so it doesn't duplicate when it's updated.
-        
+        mainContentContainer.innerHTML = '';
         if (snapshot.exists()) {
             const data = snapshot.data();
     
@@ -88,7 +87,7 @@ export async function createDemoPageUI() {
             const dateCreated = data.dateCreated;
             const dateOfWatchParty = data.dateOfWatchParty;
     
-            pageContainer?.insertAdjacentHTML('afterbegin', `
+            mainContentContainer.insertAdjacentHTML('afterbegin', `
                 <div id='demoWatchPartyContainer' class='main-container'>
                     <h1>Welcome to the ${watchPartyName} Watch Party Page</h1>
                     <p>Date of Party: ${dateOfWatchParty}</p>
@@ -100,7 +99,7 @@ export async function createDemoPageUI() {
     
         } else {
             // snapshot does not exist.  Creates an Error on the DOM and link to go back to home page.
-            pageContainer?.insertAdjacentHTML('afterbegin', `
+            mainContentContainer.insertAdjacentHTML('afterbegin', `
                 <p>Error:  Document not loading.  Please go back to <a href='./index.html'>Main Page</a>.</p>
             `)
         }
@@ -109,7 +108,7 @@ export async function createDemoPageUI() {
     const colRef = collection(db, 'watchParties', '00-demoWatchParty', 'titleOptions');
     onSnapshot(colRef, (snapshot) => {
 
-        const watchPartyForm = document.getElementById('watchPartyForm');
+        const watchPartyForm = document.getElementById('watchPartyForm') as HTMLFormElement;
 
         watchPartyForm.innerHTML = ''; // Resets DOM every time onSnapshot is triggered.  Prevents duplicates.
 
@@ -122,7 +121,7 @@ export async function createDemoPageUI() {
             const title = data.title;
             const id = data.id;
 
-            watchPartyForm?.insertAdjacentHTML('beforeend', `
+            watchPartyForm.insertAdjacentHTML('beforeend', `
                 <div class='option-container'>
                     <div class='vote-container'>
                         <button type='button' class="vote-buttons">Yes</button>
@@ -149,17 +148,17 @@ export async function createDemoPageUI() {
         }
 
         if (count < 5) {
-            watchPartyForm?.insertAdjacentHTML('beforeend', `
+            watchPartyForm.insertAdjacentHTML('beforeend', `
                 <div id='addTitleContainer'>
                     <input type='text' id='addTitleInput' placeholder='Add Another Title Here' />
                     <button type='button' id='btnAddTitle'>+</button>
                 </div>
             `)
     
-            const addTitleInput = document.getElementById('addTitleInput');
-            const btnAddTitle = document.getElementById('btnAddTitle');
+            const addTitleInput = document.getElementById('addTitleInput') as HTMLInputElement;
+            const btnAddTitle = document.getElementById('btnAddTitle') as HTMLButtonElement;
     
-            btnAddTitle?.addEventListener('click', async (e) => {
+            btnAddTitle.addEventListener('click', async (e) => {
                 e.preventDefault();
 
                 const id = randomIdGenerator();
