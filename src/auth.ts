@@ -142,6 +142,15 @@ export async function createAuthPageUI(user) {
               // Signed in 
               const user = userCredential.user;
               // ...
+              pageContainer.innerHTML = '';
+              pageContainer?.insertAdjacentHTML('afterbegin', `
+                  <p>Successfully Logged In.  You are being redirected in 3 seconds.</p>
+              `)
+
+              setTimeout(() => {
+                  history.back(); // This redirects user to their previous page.  Likely watch.html, random-tv.html, etc.  Or index.html.
+              }, 3000)
+
             })
             .catch((error) => {
               const errorCode = error.code;
