@@ -79,6 +79,8 @@ export async function createAuthPageUI(user) {
                     .then((usercred) => {
                         const user = usercred.user;
                         console.log("Anonymous Acount Successfully Upgraded.  User: ", user);
+
+                        // updateProfile called here to added a displayName property to Firebase Auth User Object.
                         updateProfile(usercred.user, {
                             displayName: displayName,
                         }).then(() => {
@@ -88,6 +90,16 @@ export async function createAuthPageUI(user) {
                             // An Error Occured 
                             console.error('updated profile error: ', error);
                         });
+
+                        const userDocObj = {
+                            displayName: displayName,
+                            email: email,
+                        }
+
+                        // Create/Update a user account in my firestore database.
+
+                        setDoc(doc(db, 'users', user.uid), userDocObj);
+
                     }).catch((error) => {
                         console.log("Error Upgrading Anonymous Account.  Error: ", error);
                     });
