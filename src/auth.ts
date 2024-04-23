@@ -1,23 +1,29 @@
 // Imports:
-// import { pageContainer } from "./ui";
+import { pageContainer } from "./ui";
 
 // Firebase Imports:
 import { setDoc, doc } from "firebase/firestore";
 import { auth, db } from "./firebase";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, 
+    EmailAuthProvider,
+    linkWithCredential,
+    Unsubscribe,
+} from "firebase/auth";
 
 // Global Variables:
-const pageContainer = document.getElementById('pageContainer');
+
 
 // Code/Functionality:
 
-console.log('auth.ts triggered, top of page');
+console.log('TEST: auth.ts triggered, top of page');
 
 export async function createAuthPageUI(user) {
     console.log("TESTING:  createAuthPageUI function triggered. TOP.");
 
-    if (user.isAnonymous == true) { console.log('ANONYMOUS USER'); };
-    if (user.isAnonymous == false) { console.log('Signed Up User.  NOT ANONYMOUS'); };
+    // if (user.isAnonymous == true) { console.log('ANONYMOUS USER'); };
+    // if (user.isAnonymous == false) { console.log('Signed Up User.  NOT ANONYMOUS'); };
 
     // There are two different things I want to display:  Sign In, and Sign Up.
 
@@ -41,31 +47,52 @@ export async function createAuthPageUI(user) {
 
     btnSignUp?.addEventListener('click', (e) => {
         e.preventDefault();
-        console.log('sign up button clicked.  Switch to sign up form');
+        // console.log('sign up button clicked.  Switch to sign up form');
         createAuthForm('Sign Up');
     });
 
     btnLogIn?.addEventListener('click', (e) => {
         e.preventDefault();
-        console.log('log in button clicked.  Switch to sign up form');
+        // console.log('log in button clicked.  Switch to sign up form');
         createAuthForm('Log In');
     })
 
-    function createAuthForm(type) {
+    function createAuthForm(form) {
         authFormContainer.innerHTML = '';
-        if (type == 'Sign Up') {
+        if (form === 'Sign Up') {
             authFormContainer?.insertAdjacentHTML('afterbegin', `
-                <form id='formAuth' class='form-auth'>
+                <form method='POST' id='formAuth' class='form-auth'>
                     <label>Email:
                         <input type='email' id='inputEmail' class='auth-input' required>
                     </label>
                     <label>Password:
                         <input type='password' id='inputPassword' class='auth-input' min='8' max='64' required>
                     </label>
-                    <button type='submit' id='btnAuthSignup' class='btn-auth'>Sign Up</button>
+                    <button type='submit' id='btnAuthSignup'>Sign Up</button>
                 </form>
             `)
-            return;
+            const formAuth = document.getElementById('formAuth');
+            formAuth?.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const inputEmail = document.getElementById('inputEmail');
+                const inputPassword = document.getElementById('inputPassword');
+        
+                const email: string = inputEmail.value;
+                const password: string  = inputPassword.value;
+        
+                // I should probably have some kind of REGEX check on email and passwords, in case user changed code then submitted.
+        
+                const credential = EmailAuthProvider.credential(email, password);
+                linkWithCredential(auth.currentUser, credential)
+                    .then((usercred) => {
+                        const user = usercred.user;
+                        console.log("Anonymous account successfully upgraded", user);
+                    }).catch((error) => {
+                        console.log("Error upgrading anonymous account", error);
+                    });
+            })
+            return; // Returning here so it doesn't automatically load up the "log in" page.
         }
 
         authFormContainer?.insertAdjacentHTML('afterbegin', `
@@ -76,70 +103,32 @@ export async function createAuthPageUI(user) {
                 <label>Password:
                     <input type='password' id='inputPassword' class='auth-input required'>
                 </label>
-                <button type='submit' id='btnAuthLogin' class='btn-auth'>Log In</buton>
+                <button type='submit' id='btnAuthLogin'>Log In</buton>
             </form>
         `)
-    }
+        const formAuthLogIn = document.getElementById('formAuthLogIn');
+        const inputEmail = document.getElementById('inputEmail');
+        const inputPassword = document.getElementById('inputPassword');
 
-    const formAuth = document.getElementById('formAuth');
-    const formAuthLogIn = document.getElementById('formAuthLogIn');
-    const inputEmail = document.getElementById('inputEmail');
-    const inputPassword = document.getElementById('inputPassword');
-    const btnAuth = document.getElementById('btnAuth');
-
-
-    formAuth?.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        console.log('TESTING:  formAuth submit triggered');
-
-        const email: string = inputEmail.value;
-        const password: string  = inputPassword.value;
-
-        // I should probably have some kind of REGEX check on email and passwords, in case user changed code then submitted.
-
-        createUserWithEmailAndPassword(auth, email, password)
+        formAuthLogIn?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email: string = inputEmail.value;
+            const password: string = inputPassword.value;
+            signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
-                console.log('userCredential: ', userCredential);
-                // Signed up 
-                const userObject = {
-                    displayName: 'Test User Display Name',
-                    email: userCredential.user.email,
-                    userID: userCredential.user.uid
-                }
-                setDoc(doc(db, 'users', userCredential.user.uid), userObject);
-
-                setTimeout(() => {
-                    history.back();
-                }, 3000)
-
-                // Create a document in Firebase:  users > userID.
-                
-                
+                console.log('log in user function triggered');
+              // Signed in 
+              const user = userCredential.user;
+              // ...
             })
             .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log('Error Creating User with Email/PW.', 'Error Code: ', errorCode, 'Error Message: ', errorMessage);
-            // ..
+              const errorCode = error.code;
+              const errorMessage = error.message;
             });
-    })
-
-    formAuthLogIn?.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const email: string = inputEmail.value;
-        const password: string = inputPassword.value;
-        signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            console.log('log in user function triggered');
-          // Signed in 
-          const user = userCredential.user;
-          // ...
         })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-        });
-    })
+    }
+
+    createAuthForm('Log In');
 
 }
 

@@ -91,8 +91,20 @@ function createFooterUI(user) {
         <p>Created by <a href='http://danielgodin.org' target='_blank'>Daniel Godin</a></p>
         <p>All Movie and TV Data is from <a href='https://themoviedb.org' target="_blank">The Movie DB</a></p>
         <p>Your User ID:  ${userID}</p>
+        <button type='button' id='btnSignOut'>Sign Out</button>
     </footer>
     `)
+
+    const btnSignOut = document.getElementById('btnSignout');
+    btnSignOut?.addEventListener('click', (e) => {
+        signOut(auth).then(() => {
+            console.log('Sign-out Successful');
+            // Sign-out successful.
+          }).catch((error) => {
+            console.error('Sign Out Error: ', error.code, error.message);
+            // An error happened.
+          });
+    })
 }
 
 async function createIndexPageUI() {
