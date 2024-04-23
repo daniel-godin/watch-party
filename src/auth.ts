@@ -80,16 +80,16 @@ export async function createAuthPageUI(user) {
                         const user = usercred.user;
                         console.log("Anonymous Acount Successfully Upgraded.  User: ", user);
 
-                        // updateProfile called here to added a displayName property to Firebase Auth User Object.
-                        updateProfile(usercred.user, {
-                            displayName: displayName,
-                        }).then(() => {
-                            // Profile updated!
-                            console.log('Updated Profile.  Display Name Added:', usercred.user);
-                        }).catch((error) => {
-                            // An Error Occured 
-                            console.error('updated profile error: ', error);
-                        });
+                            // updateProfile called here to added a displayName property to Firebase Auth User Object.
+                            updateProfile(usercred.user, {
+                                displayName: displayName,
+                            }).then(() => {
+                                // Profile updated!
+                                console.log('Updated Profile.  Display Name Added:', usercred.user);
+                            }).catch((error) => {
+                                // An Error Occured 
+                                console.error('updated profile error: ', error);
+                            });
 
                         const userDocObj = {
                             displayName: displayName,
@@ -100,6 +100,16 @@ export async function createAuthPageUI(user) {
                         // Create/Update a user account in my firestore database.
 
                         setDoc(doc(db, 'users', user.uid), userDocObj);
+
+                        pageContainer.innerHTML = '';
+                        pageContainer?.insertAdjacentHTML('afterbegin', `
+                            <p>Successfully Signed Up.  You are being redirected in 3 seconds.</p>
+                        `)
+
+                        setTimeout(() => {
+                            history.back(); // FOR NOW... This will redirect the user to the previous part of the site they were on.
+                            // Later... Redirect to profile.html.
+                        }, 3000)
 
                     }).catch((error) => {
                         console.log("Error Upgrading Anonymous Account.  Error: ", error);
