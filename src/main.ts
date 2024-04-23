@@ -1,6 +1,7 @@
 import "./style.css";
 import './fav-96.png';
 
+import './index.ts';
 import './ui.ts';
 import './data.ts';
 import './tmdbUtilities.ts';

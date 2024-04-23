@@ -31,10 +31,14 @@ footer {
 
 #pageContainer {
   margin: 0;
+  padding: 0;
+}
+
+#mainContentContainer {
+  margin: 0;
   padding: 1rem;
   display: grid;
   place-items: center;
-
 }
 
 #navTopBar {
