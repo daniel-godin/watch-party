@@ -17,14 +17,7 @@ import {
 
 // Code/Functionality:
 
-console.log('TEST: auth.ts triggered, top of page');
-
 export async function createAuthPageUI(user) {
-    console.log("TESTING:  createAuthPageUI function triggered. TOP.");
-
-    // if (user.isAnonymous == true) { console.log('ANONYMOUS USER'); };
-    // if (user.isAnonymous == false) { console.log('Signed Up User.  NOT ANONYMOUS'); };
-
     // There are two different things I want to display:  Sign In, and Sign Up.
 
     pageContainer?.insertAdjacentHTML('afterbegin', `
@@ -47,13 +40,11 @@ export async function createAuthPageUI(user) {
 
     btnSignUp?.addEventListener('click', (e) => {
         e.preventDefault();
-        // console.log('sign up button clicked.  Switch to sign up form');
         createAuthForm('Sign Up');
     });
 
     btnLogIn?.addEventListener('click', (e) => {
         e.preventDefault();
-        // console.log('log in button clicked.  Switch to sign up form');
         createAuthForm('Log In');
     })
 
@@ -87,9 +78,9 @@ export async function createAuthPageUI(user) {
                 linkWithCredential(auth.currentUser, credential)
                     .then((usercred) => {
                         const user = usercred.user;
-                        console.log("Anonymous account successfully upgraded", user);
+                        console.log("Anonymous Acount Successfully Upgraded.  User: ", user);
                     }).catch((error) => {
-                        console.log("Error upgrading anonymous account", error);
+                        console.log("Error Upgrading Anonymous Account.  Error: ", error);
                     });
             })
             return; // Returning here so it doesn't automatically load up the "log in" page.
@@ -116,7 +107,6 @@ export async function createAuthPageUI(user) {
             const password: string = inputPassword.value;
             signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
-                console.log('log in user function triggered');
               // Signed in 
               const user = userCredential.user;
               // ...
@@ -127,9 +117,6 @@ export async function createAuthPageUI(user) {
             });
         })
     }
-
     createAuthForm('Log In');
 
 }
-
-console.log('TESTING: end of auth page triggered');
