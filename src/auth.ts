@@ -10,6 +10,8 @@ import {
     linkWithCredential,
     updateProfile,
     updateEmail,
+    sendEmailVerification,
+
 } from "firebase/auth";
 
 // Global Variables:
@@ -172,7 +174,11 @@ export async function createProfilePageUI(mainContentContainer: HTMLElement, use
 
     const emailVerified:boolean = user.emailVerified;
     let emailVerificationDisplay:string = "false";
-    if (emailVerified === true) { emailVerificationDisplay = 'true'; }
+    let hideVerifyEmailButton:string = '';
+    if (emailVerified === true) { 
+        emailVerificationDisplay = 'true';
+        hideVerifyEmailButton = 'hidden';
+    }
 
     const displayName:string = user.displayName;
     const email:string = user.email;
@@ -192,7 +198,11 @@ export async function createProfilePageUI(mainContentContainer: HTMLElement, use
                     <input type='email' id='inputEmail' placeholder='${email}'>
                 </label>
 
-                <p>Email Verification Status:  ${emailVerificationDisplay}</p>
+                <div id='emailVerifyContainer'>
+                    <p>Email Verification Status:  ${emailVerificationDisplay}</p>
+                    <button id='btnSendVerificationEmail' class='${hideVerifyEmailButton}'>Resend Verify Email</button>
+                </div>
+
 
                 <button type='submit'>Update Profile</button>
 
@@ -257,5 +267,16 @@ export async function createProfilePageUI(mainContentContainer: HTMLElement, use
 
 
 
+    })
+
+    const btnSendVerificationEmail = document.getElementById('btnSendVerificationEmail') as HTMLButtonElement;
+    btnSendVerificationEmail.addEventListener('click', (e) => {
+        e.preventDefault();
+        sendEmailVerification(auth.currentUser)
+            .then(() => {
+                console.log('Verification Email Sent');
+                // Email verification sent!
+                // ...
+            });
     })
 }
