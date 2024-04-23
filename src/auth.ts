@@ -2,13 +2,14 @@
 
 
 // Firebase Imports:
-import { setDoc, doc } from "firebase/firestore";
 import { auth, db } from "./firebase";
+import { setDoc, doc } from "firebase/firestore";
 import { 
     signInWithEmailAndPassword, 
     EmailAuthProvider,
     linkWithCredential,
     updateProfile,
+    updateEmail,
 } from "firebase/auth";
 
 // Global Variables:
@@ -169,20 +170,29 @@ export async function createProfilePageUI(mainContentContainer: HTMLElement, use
         return;
     }
 
+    const emailVerified:boolean = user.emailVerified;
+    let emailVerificationDisplay:string = "false";
+    if (emailVerified === true) { emailVerificationDisplay = 'true'; }
+
+    const displayName:string = user.displayName;
+    const email:string = user.email;
+
     mainContentContainer.innerHTML = '';
     mainContentContainer.insertAdjacentHTML('afterbegin', `
         <div id='profilePageContainer'>
 
-            <form id='formUpdateProfile' class='profile-forms'>
+            <form method='POST' id='formUpdateProfile' class='profile-forms'>
 
                 <h2>Update Your Profile:</h2>
 
                 <label>Display Name:
-                    <input type='text' id='inputDisplayName'>
+                    <input type='text' id='inputDisplayName' placeholder='${displayName}' minlength='2' maxlength='64'>
                 </label>
                 <label>Email:
-                    <input type='email' id='inputEmail'>
+                    <input type='email' id='inputEmail' placeholder='${email}'>
                 </label>
+
+                <p>Email Verification Status:  ${emailVerificationDisplay}</p>
 
                 <button type='submit'>Update Profile</button>
 
@@ -208,4 +218,44 @@ export async function createProfilePageUI(mainContentContainer: HTMLElement, use
 
         </div>
     `)
+
+    const formUpdateProfile = document.getElementById('formUpdateProfile') as HTMLFormElement;
+    formUpdateProfile.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        console.log('Update Profile Form Clicked/Submitted');
+
+        const inputDisplayName = document.getElementById('inputDisplayName') as HTMLInputElement;
+        const inputEmail = document.getElementById('inputEmail') as HTMLInputElement;
+
+        const displayName = inputDisplayName.value;
+        const email = inputEmail.value;
+
+        updateProfile(auth.currentUser, {
+            displayName: displayName, 
+          }).then(() => {
+            console.log('profile updated');
+            // Profile updated!
+            // ...
+          }).catch((error) => {
+            console.error('Profile Update Failed. Error: ', error);
+            // An error occurred
+            // ...
+          });
+
+        updateEmail(auth.currentUser, email).then(() => {
+            console.log('email updated');
+            // Email updated!
+            // ...
+          }).catch((error) => {
+            console.error("Email Update Error: ", error);
+            // An error occurred
+            // ...
+          });
+
+
+
+
+
+    })
 }
