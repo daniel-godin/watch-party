@@ -1,5 +1,4 @@
 // Imports:
-import { pageContainer } from "./ui";
 import { TMDBOptions, getTMDBImage } from "./tmdbUtilities";
 import './delete-fav-show.svg';
 
@@ -9,11 +8,12 @@ import { setDoc, doc, onSnapshot, updateDoc, collection, getDoc, deleteDoc, } fr
 
 // Code/Functionality:
 
-export async function createRandomTVEpisodeUI(user) {
+export async function createRandomTVEpisodeUI(mainContentContainer: HTMLElement, user: any) {
 
     const userID:string = user.uid;
 
-    pageContainer?.insertAdjacentHTML('afterbegin', `
+    mainContentContainer.innerHTML = '';
+    mainContentContainer.insertAdjacentHTML('afterbegin', `
         <div id='randomTVShowPageContainer'>
             <div id='randomResultContainer'>
             </div>
@@ -26,31 +26,29 @@ export async function createRandomTVEpisodeUI(user) {
             </div>
         </div>
     `)
-    const btnRandomAll = document.getElementById('btnRandomAll');
-    const favoriteShowsContainer = document.getElementById('favoriteShowsContainer');
-    const randomResultContainer = document.getElementById('randomResultContainer');
-    const searchResultsAddFavoriteTVShowContainer = document.getElementById('searchResultsAddFavoriteTVShowContainer');
+    const btnRandomAll = document.getElementById('btnRandomAll') as HTMLButtonElement;
+    const randomResultContainer = document.getElementById('randomResultContainer') as HTMLElement;
+    const searchResultsAddFavoriteTVShowContainer = document.getElementById('searchResultsAddFavoriteTVShowContainer') as HTMLElement;
 
-    // const colRef = collection(db, 'users', 'testUser', 'favoriteTVShows'); // Use 'testUser' for non-variable user testing.
     const colRef = collection(db, 'users', userID, 'favoriteTVShows'); 
     onSnapshot(colRef, (snapshot) => {
+
+        const arrayOfFavoriteShowsByID: any[] = [];
+
+        const favoriteShowsContainer = document.getElementById('favoriteShowsContainer') as HTMLElement;
         favoriteShowsContainer.innerHTML = '';
-
-        const arrayOfFavoriteShowsByID = [];
-        // const randomEpisodeButtons;
-
         snapshot.forEach((document) => {
             const data = document.data();
 
             arrayOfFavoriteShowsByID.push(data.id);
 
-            const title = data.name;
+            const title: string = data.name;
             const id = data.id;
-            const showPosterPath = data.posterPath;
+            const showPosterPath: string = data.posterPath;
 
             const showPoster = getTMDBImage('w154', showPosterPath);
 
-            favoriteShowsContainer?.insertAdjacentHTML('beforeend', `
+            favoriteShowsContainer.insertAdjacentHTML('beforeend', `
                 <div class='favorite-show-card'>
                     <img src='${showPoster}' class='image-favorite-tv-show-posters'>
                     <div class='favorite-show-name-and-remove-btn-container'>
@@ -68,7 +66,7 @@ export async function createRandomTVEpisodeUI(user) {
             `)
         })
 
-        favoriteShowsContainer?.insertAdjacentHTML('beforeend', `
+        favoriteShowsContainer.insertAdjacentHTML('beforeend', `
             <div id='addFavoriteTVShowContainer' class='favorite-show-card'>
                 <form id='formAddFavoriteTVShow'>
                     <img height='231' width='154'>
@@ -78,11 +76,9 @@ export async function createRandomTVEpisodeUI(user) {
             </div>
         `)
 
-        if (arrayOfFavoriteShowsByID.length === 0) { 
-            // console.log('array of shows is zero'); 
-        };
+        if (arrayOfFavoriteShowsByID.length === 0) { console.log('array of shows is zero'); };
         if (arrayOfFavoriteShowsByID.length >= 1) { 
-            btnRandomAll?.addEventListener('click', async (e) => {
+            btnRandomAll.addEventListener('click', async (e) => {
                 e.preventDefault();
                 const randomShow = arrayOfFavoriteShowsByID[Math.floor(Math.random() * arrayOfFavoriteShowsByID.length)];
                 displayRandomEpisode(userID, randomShow, randomResultContainer);
@@ -113,8 +109,8 @@ export async function createRandomTVEpisodeUI(user) {
             })
         }
 
-        const formAddFavoriteTVShow = document.getElementById('formAddFavoriteTVShow');
-        const inputAddFavoriteTVShow = document.getElementById('inputAddFavoriteTVShow');    
+        const formAddFavoriteTVShow = document.getElementById('formAddFavoriteTVShow') as HTMLFormElement;
+        const inputAddFavoriteTVShow = document.getElementById('inputAddFavoriteTVShow') as HTMLInputElement;    
     
         formAddFavoriteTVShow.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -142,7 +138,7 @@ export async function createRandomTVEpisodeUI(user) {
     
                     let showPoster = getTMDBImage('w154', posterPath);
     
-                    searchResultsAddFavoriteTVShowContainer?.insertAdjacentHTML('beforeend', `
+                    searchResultsAddFavoriteTVShowContainer.insertAdjacentHTML('beforeend', `
                         <div class='favorite-show-card red-border'>
                             <img src='${showPoster}'>
                             <p>${title}</p>
@@ -195,10 +191,9 @@ export async function createRandomTVEpisodeUI(user) {
     })
 }
 
-async function displayRandomEpisode(userID, showID, DOMAttachmentPoint) {
+async function displayRandomEpisode(userID, showID, randomResultContainer) {
 
-
-    DOMAttachmentPoint.innerHTML = '';
+    randomResultContainer.innerHTML = '';
 
     showID = String(showID); // Needed to change this into a string because docRef wouldn't take a number.
 
@@ -236,7 +231,7 @@ async function displayRandomEpisode(userID, showID, DOMAttachmentPoint) {
             let getShowPoster = getTMDBImage('w185', showPoster);
             let showURL: string = `https://themoviedb.org/tv/${showID}-stargate-sg-1/season/${season}/episode/${epNum}`;
 
-            DOMAttachmentPoint.insertAdjacentHTML('afterbegin', `
+            randomResultContainer.insertAdjacentHTML('afterbegin', `
                 <div id='randomResultIMGContainer'>
                     <img src='${getShowPoster}' href='${showURL}' class='image-favorite-tv-show-posters'>
                 </div>
