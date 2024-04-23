@@ -79,19 +79,16 @@ function createMainUI(user: object) {
 }
 
 function createFooterUI(user: Object) {
+
+    let userCheck: string = '';
+    if (user.isAnonymous === true) { userCheck = 'hidden'; }; // Checks whether a user isAnonymous.  If yes... applies 'hidden' class to signOut button.
+
     const footerContainer = document.getElementById('footerContainer') as HTMLElement;
     footerContainer.innerHTML = '';
-
-    console.log(user);
-    const anonCheck: boolean = user.isAnonymous;
-    let hideCheck: string = '';
-
-    if (anonCheck === true) { hideCheck = 'hidden'; }; // Checks whether a user isAnonymous.  If yes... applies 'hidden' class to signOut button.
-
     footerContainer.insertAdjacentHTML('afterbegin', `
         <p>Created by <a href='http://danielgodin.org' target='_blank'>Daniel Godin</a></p>
         <p>All Movie and TV Data is from <a href='https://themoviedb.org' target="_blank">The Movie DB</a></p>
-        <button type='button' id='btnSignOut' class='${hideCheck}'>Sign Out</button>
+        <button type='button' id='btnSignOut' class='${userCheck}'>Sign Out</button>
     `)
 
     const btnSignOut = document.getElementById('btnSignOut') as HTMLButtonElement;

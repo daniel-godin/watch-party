@@ -248,8 +248,34 @@ footer {
   padding: 1rem;
 } */
 
-/* Keep this last: */
+#profilePageContainer {
+  margin: 0;
+  padding: 0;
 
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+
+}
+
+
+#formUpdateProfile {
+
+}
+
+.profile-forms {
+  margin: 0;
+  padding: 1rem;
+
+  border: 1px solid black;
+  border-radius: 10px;
+
+  display: grid;
+  gap: .5rem;
+
+}
+
+/* Keep this last: */
 .hidden {
   display: none;
 }

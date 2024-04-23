@@ -160,11 +160,23 @@ export async function createAuthPageUI(mainContentContainer: HTMLElement, user) 
 }
 
 export async function createProfilePageUI(mainContentContainer: HTMLElement, user) {
+
+    if (user.isAnonymous === true || user === false) {
+        mainContentContainer.innerHTML = '';
+        mainContentContainer.insertAdjacentHTML('afterbegin', `
+            <p>Please <a href='./auth.html'>Sign Up or Log In</a>.</p>
+        `)
+        return;
+    }
+
     mainContentContainer.innerHTML = '';
     mainContentContainer.insertAdjacentHTML('afterbegin', `
         <div id='profilePageContainer'>
 
-            <form id='formUpdateProfile'>
+            <form id='formUpdateProfile' class='profile-forms'>
+
+                <h2>Update Your Profile:</h2>
+
                 <label>Display Name:
                     <input type='text' id='inputDisplayName'>
                 </label>
@@ -176,7 +188,9 @@ export async function createProfilePageUI(mainContentContainer: HTMLElement, use
 
             </form>
 
-            <form id='formUpdatePassword'>
+            <form id='formUpdatePassword' class='profile-forms'>
+
+                <h2>Update Your Password:</h2>
 
                 <label>Current Password:
                     <input type='password' id='inputCurrentPassword' required>
