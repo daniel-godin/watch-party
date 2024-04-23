@@ -26,14 +26,10 @@ export async function createRandomTVEpisodeUI(user) {
             </div>
         </div>
     `)
-    const randomTVShowPageContainer = document.getElementById('randomTVShowPageContainer');
-    const randomAllButtonContainer = document.getElementById('randomAllButtonContainer');
     const btnRandomAll = document.getElementById('btnRandomAll');
     const favoriteShowsContainer = document.getElementById('favoriteShowsContainer');
     const randomResultContainer = document.getElementById('randomResultContainer');
     const searchResultsAddFavoriteTVShowContainer = document.getElementById('searchResultsAddFavoriteTVShowContainer');
-
-    // const arrayOfFavoriteShowsByID = [];
 
     // const colRef = collection(db, 'users', 'testUser', 'favoriteTVShows'); // Use 'testUser' for non-variable user testing.
     const colRef = collection(db, 'users', userID, 'favoriteTVShows'); 
@@ -135,8 +131,6 @@ export async function createRandomTVEpisodeUI(user) {
     
             function createAddFavoriteTVShowSection (dataObj) {
     
-                // console.log('tv data object: ', dataObj);
-    
                 const results = dataObj.results;
     
                 for (let i = 0; i < results.length; i++) {
@@ -185,12 +179,10 @@ export async function createRandomTVEpisodeUI(user) {
                                 posterPath: showObject.poster_path,
                                 seasons: showObject.seasons,
                             }
-    
-                            // console.log('dataObject', dataObject)
+
     
                             try {
-                                setDoc(doc(db, 'users', userID, 'favoriteTVShows', showId), dataObject);
-                                // console.log('Favorite TV Show Added to FireStore', dataObject);
+                                setDoc(doc(db, 'users', userID, 'favoriteTVShows', showId), dataObject); // Adds a doc to user > favoriteShows (coll) > doc.
                             } catch (e) {
                                 console.error ("Error Adding TV to Favorites: ", e);
                             }
@@ -203,7 +195,7 @@ export async function createRandomTVEpisodeUI(user) {
 }
 
 async function displayRandomEpisode(userID, showID, DOMAttachmentPoint) {
-    // console.log('displayRandomEpisode Function Triggered: ', showID, DOMAttachmentPoint);
+
 
     DOMAttachmentPoint.innerHTML = '';
 

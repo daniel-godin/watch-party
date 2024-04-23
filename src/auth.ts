@@ -94,6 +94,7 @@ export async function createAuthPageUI(user) {
                         const userDocObj = {
                             displayName: displayName,
                             email: email,
+                            userID: user.uid,
                         }
 
                         // Create/Update a user account in my firestore database.
