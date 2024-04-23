@@ -16,10 +16,11 @@ import {
 
 // Code/Functionality:
 
-export async function createAuthPageUI(user) {
+export async function createAuthPageUI(mainContentContainer: HTMLElement, user) {
     // There are two different things I want to display:  Sign In, and Sign Up.
 
-    pageContainer?.insertAdjacentHTML('afterbegin', `
+    mainContentContainer.innerHTML = '';
+    mainContentContainer.insertAdjacentHTML('afterbegin', `
         <div id='authContainer'>
             <div id='authChooseSignInSignUpContainer'>
                 <button type='button' id='btnLogIn'>Sign In</button>
@@ -30,27 +31,23 @@ export async function createAuthPageUI(user) {
         </div>
     `)
 
-    const authContainer = document.getElementById('authContainer');
-    const authChooseSignInSignUpContainer = document.getElementById('authChooseSignInSignUpContainer');
-    const btnLogIn = document.getElementById('btnLogIn');
-    const btnSignUp = document.getElementById('btnSignUp');
-    const authFormContainer = document.getElementById('authFormContainer');
-
-
-    btnSignUp?.addEventListener('click', (e) => {
+    const btnSignUp = document.getElementById('btnSignUp') as HTMLButtonElement;
+    btnSignUp.addEventListener('click', (e) => {
         e.preventDefault();
         createAuthForm('Sign Up');
     });
 
-    btnLogIn?.addEventListener('click', (e) => {
+    const btnLogIn = document.getElementById('btnLogIn') as HTMLButtonElement;
+    btnLogIn.addEventListener('click', (e) => {
         e.preventDefault();
         createAuthForm('Log In');
     })
 
-    function createAuthForm(form) {
+    function createAuthForm(form: string) {
+        const authFormContainer = document.getElementById('authFormContainer') as HTMLFormElement;
         authFormContainer.innerHTML = '';
         if (form === 'Sign Up') {
-            authFormContainer?.insertAdjacentHTML('afterbegin', `
+            authFormContainer.insertAdjacentHTML('afterbegin', `
                 <form method='POST' id='formAuth' class='form-auth'>
                     <label>Email:
                         <input type='email' id='inputEmail' class='auth-input' required>
@@ -61,12 +58,12 @@ export async function createAuthPageUI(user) {
                     <button type='submit' id='btnAuthSignup'>Sign Up</button>
                 </form>
             `)
-            const formAuth = document.getElementById('formAuth');
-            formAuth?.addEventListener('submit', (e) => {
+            const formAuth = document.getElementById('formAuth') as HTMLFormElement;
+            formAuth.addEventListener('submit', (e) => {
                 e.preventDefault();
 
-                const inputEmail = document.getElementById('inputEmail');
-                const inputPassword = document.getElementById('inputPassword');
+                const inputEmail = document.getElementById('inputEmail') as HTMLInputElement;
+                const inputPassword = document.getElementById('inputPassword') as HTMLInputElement;
         
                 const email: string = inputEmail.value;
                 const password: string  = inputPassword.value;
@@ -101,8 +98,8 @@ export async function createAuthPageUI(user) {
 
                         setDoc(doc(db, 'users', user.uid), userDocObj);
 
-                        pageContainer.innerHTML = '';
-                        pageContainer?.insertAdjacentHTML('afterbegin', `
+                        mainContentContainer.innerHTML = '';
+                        mainContentContainer.insertAdjacentHTML('afterbegin', `
                             <p>Successfully Signed Up.  You are being redirected in 3 seconds.</p>
                         `)
 
@@ -116,9 +113,8 @@ export async function createAuthPageUI(user) {
                     });
             })
             return; // Returning here so it doesn't automatically load up the "log in" page.
-        }
-
-        authFormContainer?.insertAdjacentHTML('afterbegin', `
+        } else {
+        authFormContainer.insertAdjacentHTML('afterbegin', `
             <form id='formAuthLogIn' class='form-auth'>
                 <label>Email:
                     <input type='email' id='inputEmail' class='auth-input' required>
@@ -129,11 +125,11 @@ export async function createAuthPageUI(user) {
                 <button type='submit' id='btnAuthLogin'>Log In</buton>
             </form>
         `)
-        const formAuthLogIn = document.getElementById('formAuthLogIn');
-        const inputEmail = document.getElementById('inputEmail');
-        const inputPassword = document.getElementById('inputPassword');
+        const formAuthLogIn = document.getElementById('formAuthLogIn') as HTMLFormElement;
+        const inputEmail = document.getElementById('inputEmail') as HTMLInputElement;
+        const inputPassword = document.getElementById('inputPassword') as HTMLInputElement;
 
-        formAuthLogIn?.addEventListener('submit', async (e) => {
+        formAuthLogIn.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email: string = inputEmail.value;
             const password: string = inputPassword.value;
@@ -142,8 +138,8 @@ export async function createAuthPageUI(user) {
               // Signed in 
               const user = userCredential.user;
               // ...
-              pageContainer.innerHTML = '';
-              pageContainer?.insertAdjacentHTML('afterbegin', `
+              mainContentContainer.innerHTML = '';
+              mainContentContainer.insertAdjacentHTML('afterbegin', `
                   <p>Successfully Logged In.  You are being redirected in 3 seconds.</p>
               `)
 
@@ -157,6 +153,7 @@ export async function createAuthPageUI(user) {
               const errorMessage = error.message;
             });
         })
+        }
     }
     createAuthForm('Log In');
 

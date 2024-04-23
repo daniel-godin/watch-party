@@ -70,10 +70,10 @@ function createMainUI(user: object) {
     const mainContentContainer = document.getElementById('mainContentContainer') as HTMLElement;
     const pathname: string = window.location.pathname; // Finding pathname to sort which UI function to trigger.
     if (pathname == '/index.html' ||  pathname == '/' || pathname.length === 0) { createIndexPageUI(mainContentContainer, user); };  
-    if (pathname == '/demo.html') { createDemoPageUI(); };
-    if (pathname == '/watch.html') { createWatchPartyUI(); };
-    if (pathname == '/random.html') { createRandomTVEpisodeUI(user); };
-    if (pathname == '/auth.html') { createAuthPageUI(user); };
+    if (pathname == '/demo.html') { createDemoPageUI(mainContentContainer, user); };
+    if (pathname == '/watch.html') { createWatchPartyUI(mainContentContainer, user); };
+    if (pathname == '/random.html') { createRandomTVEpisodeUI(mainContentContainer, user); };
+    if (pathname == '/auth.html') { createAuthPageUI(mainContentContainer, user); };
 }
 
 function createFooterUI() {
