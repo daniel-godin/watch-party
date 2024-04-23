@@ -11,7 +11,7 @@ import {
     updateProfile,
     updateEmail,
     sendEmailVerification,
-
+    deleteUser,
 } from "firebase/auth";
 
 // Global Variables:
@@ -233,6 +233,10 @@ export async function createProfilePageUI(mainContentContainer: HTMLElement, use
 
             </form>
 
+            <section id='deleteUserContainer'>
+                <button type='button' id='btnDeleteUser'>Delete Account (Warning!!!)</button>
+            </section>
+
         </div>
     `)
 
@@ -293,5 +297,33 @@ export async function createProfilePageUI(mainContentContainer: HTMLElement, use
                 // Email verification sent!
                 // ...
             });
+    })
+
+    const btnDeleteUser = document.getElementById('btnDeleteUser') as HTMLButtonElement;
+    btnDeleteUser.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log('Delete User Button Clicked');
+
+        // Confirm Box:
+        if (window.confirm("Do you want to delete your account?\n This is not reversable.")) {
+            const user = auth.currentUser;
+
+            deleteUser(user).then(() => {
+                console.log('User Deleted');
+                mainContentContainer.innerHTML = '';
+                mainContentContainer.insertAdjacentHTML('afterbegin', `
+                    <p>Account Deleted.  You will be redirected to the <a href='./index.html'>Home Page</a> in 5 seconds.</p>
+                `)
+
+                setTimeout(() => {
+                    window.location.href = "./index.html";
+                }, 5000)
+                // User deleted.
+              }).catch((error) => {
+                // An error ocurred
+                // ...
+              });
+        }
+
     })
 }
