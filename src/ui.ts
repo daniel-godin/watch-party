@@ -8,7 +8,7 @@ import { createAuthPageUI } from "./auth";
 // Firebase Imports:
 import { auth, db,  } from "./firebase";
 import { setDoc, doc, onSnapshot } from "firebase/firestore";
-import { signInAnonymously, onAuthStateChanged } from "firebase/auth";
+import { signInAnonymously, onAuthStateChanged, signOut, } from "firebase/auth";
 
 // Global Variables:
 
@@ -85,7 +85,7 @@ function createMainUI(user) {
 
 function createFooterUI(user) {
     let userID = user.uid;
-    if (!userID) { userID = 'Not Logged In'; }
+    // if (!userID) { userID = 'Not Logged In'; }
     pageContainer?.insertAdjacentHTML('afterend', `
     <footer>
         <p>Created by <a href='http://danielgodin.org' target='_blank'>Daniel Godin</a></p>
@@ -95,10 +95,18 @@ function createFooterUI(user) {
     </footer>
     `)
 
-    const btnSignOut = document.getElementById('btnSignout');
+    const btnSignOut = document.getElementById('btnSignOut');
     btnSignOut?.addEventListener('click', (e) => {
+        e.preventDefault();
         signOut(auth).then(() => {
             console.log('Sign-out Successful');
+            pageContainer.innerHTML = '';
+            pageContainer?.insertAdjacentHTML('afterbegin', `
+                <p>Signed Out Successfully.  This page is refreshing in 3 seconds.</p>
+            `)
+            setTimeout(() => {
+                location.reload();
+            }, (3000));
             // Sign-out successful.
           }).catch((error) => {
             console.error('Sign Out Error: ', error.code, error.message);
