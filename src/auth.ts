@@ -3,7 +3,7 @@
 
 // Firebase Imports:
 import { auth, db } from "./firebase";
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc, updateDoc } from "firebase/firestore";
 import { 
     signInWithEmailAndPassword, 
     EmailAuthProvider,
@@ -77,6 +77,14 @@ export async function createAuthPageUI(mainContentContainer: HTMLElement, user) 
                 const credential = EmailAuthProvider.credential(email, password);
                 linkWithCredential(auth.currentUser, credential)
                     .then((usercred) => {
+                        // Sends Verification Email
+                        sendEmailVerification(auth.currentUser)
+                            .then(() => {
+                                console.log('Email Verification Sent');
+                                // Email verification sent!
+                                // ...
+                            });
+
                         const user = usercred.user;
                         console.log("Anonymous Acount Successfully Upgraded.  User: ", user);
 
@@ -109,7 +117,7 @@ export async function createAuthPageUI(mainContentContainer: HTMLElement, user) 
                         setTimeout(() => {
                             history.back(); // FOR NOW... This will redirect the user to the previous part of the site they were on.
                             // Later... Redirect to profile.html.
-                        }, 3000)
+                        }, 5000)
 
                     }).catch((error) => {
                         console.log("Error Upgrading Anonymous Account.  Error: ", error);
@@ -203,7 +211,6 @@ export async function createProfilePageUI(mainContentContainer: HTMLElement, use
                     <button id='btnSendVerificationEmail' class='${hideVerifyEmailButton}'>Resend Verify Email</button>
                 </div>
 
-
                 <button type='submit'>Update Profile</button>
 
             </form>
@@ -243,8 +250,12 @@ export async function createProfilePageUI(mainContentContainer: HTMLElement, use
 
         updateProfile(auth.currentUser, {
             displayName: displayName, 
-          }).then(() => {
+          }).then( async () => {
             console.log('profile updated');
+            const userDocRef = doc(db, 'users', user.uid);
+            await updateDoc(userDocRef, {
+                displayName: displayName,
+            })
             // Profile updated!
             // ...
           }).catch((error) => {
@@ -253,8 +264,12 @@ export async function createProfilePageUI(mainContentContainer: HTMLElement, use
             // ...
           });
 
-        updateEmail(auth.currentUser, email).then(() => {
+        updateEmail(auth.currentUser, email).then( async () => {
             console.log('email updated');
+            const userDocRef = doc(db, 'users', user.uid);
+            await updateDoc(userDocRef, {
+                email: email,
+            })
             // Email updated!
             // ...
           }).catch((error) => {
