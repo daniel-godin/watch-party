@@ -5,11 +5,10 @@ import { pageContainer } from "./ui";
 import { setDoc, doc } from "firebase/firestore";
 import { auth, db } from "./firebase";
 import { 
-    createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
     EmailAuthProvider,
     linkWithCredential,
-    Unsubscribe,
+    updateProfile,
 } from "firebase/auth";
 
 // Global Variables:
@@ -71,6 +70,7 @@ export async function createAuthPageUI(user) {
         
                 const email: string = inputEmail.value;
                 const password: string  = inputPassword.value;
+                const displayName: string = 'Anonymous User';
         
                 // I should probably have some kind of REGEX check on email and passwords, in case user changed code then submitted.
         
@@ -79,6 +79,15 @@ export async function createAuthPageUI(user) {
                     .then((usercred) => {
                         const user = usercred.user;
                         console.log("Anonymous Acount Successfully Upgraded.  User: ", user);
+                        updateProfile(usercred.user, {
+                            displayName: displayName,
+                        }).then(() => {
+                            // Profile updated!
+                            console.log('Updated Profile.  Display Name Added:', usercred.user);
+                        }).catch((error) => {
+                            // An Error Occured 
+                            console.error('updated profile error: ', error);
+                        });
                     }).catch((error) => {
                         console.log("Error Upgrading Anonymous Account.  Error: ", error);
                     });
