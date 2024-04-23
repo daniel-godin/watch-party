@@ -16,19 +16,6 @@ export const pageContainer = document.getElementById('pageContainer'); // This i
 
 // Code / Functionality:
 
-// Firebase Auth:
-// signInAnonymously(auth)
-//   .then((user) => {
-//     // Signed in..
-//     console.log('Sign In Anonymously Triggered');
-//     console.log('Anonymous User: ', user.user.uid);
-//   })
-//   .catch((error) => {
-//     const errorCode = error.code;
-//     const errorMessage = error.message;
-//     // ...
-// });
-
 onAuthStateChanged(auth, (user) => {
     if (user) {
         buildUI(user);
@@ -49,19 +36,12 @@ onAuthStateChanged(auth, (user) => {
 })
 
 function buildUI(user) {
-    // console.log('buildUI function triggered'); // For Debugging Purposes.
     createNavUI();
     createMainUI(user);
     createFooterUI(user);
 }
 
-// buildUI(user); // Triggers the UI build.
-
 function createNavUI() {
-
-    // if (temp user) { const status = "Temporary User"; }
-    // if (user) { const status = "Logged In" } // LATER HAVE THIS BE A BUTTON TO CLICK INTO YOUR PROFILE.HTML PAGE.
-    // if (no user) { const status = "" {} // empty.
 
     pageContainer?.insertAdjacentHTML('beforebegin', `
         <nav id='navTopBar'>
@@ -194,14 +174,8 @@ async function createIndexPageUI() {
 
             }, 3000)
 
-
-
-
-
         } catch (e) {
             console.error("Error adding document: ", e);
         }
-
-
     })
 }
