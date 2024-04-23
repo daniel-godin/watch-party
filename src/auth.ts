@@ -305,7 +305,7 @@ export async function createProfilePageUI(mainContentContainer: HTMLElement, use
         console.log('Delete User Button Clicked');
 
         // Confirm Box:
-        if (window.confirm("Do you want to delete your account?\n This is not reversable.")) {
+        if (window.confirm("Do you want to delete your account?\nThis is not reversable.")) {
             const user = auth.currentUser;
 
             deleteUser(user).then(() => {
