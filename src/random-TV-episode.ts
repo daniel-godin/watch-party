@@ -83,14 +83,14 @@ export async function createRandomTVEpisodeUI(user) {
         `)
 
         if (arrayOfFavoriteShowsByID.length === 0) { 
-            console.log('array of shows is zero'); }
+            // console.log('array of shows is zero'); 
+        };
         if (arrayOfFavoriteShowsByID.length >= 1) { 
             btnRandomAll?.addEventListener('click', async (e) => {
                 e.preventDefault();
                 const randomShow = arrayOfFavoriteShowsByID[Math.floor(Math.random() * arrayOfFavoriteShowsByID.length)];
                 displayRandomEpisode(userID, randomShow, randomResultContainer);
             })
-            console.log('array of shows is greater than zero'); 
         }
 
         const randomEpisodeButtons = document.getElementsByClassName('random-tv-button');
@@ -111,10 +111,7 @@ export async function createRandomTVEpisodeUI(user) {
                     // Remove show from the user's Firestore DB Collection of Favorited Shows.
                     // Use showID to search through arrayOfFavoriteShowsByID and remove it from the array.
                     const deleteIndex = arrayOfFavoriteShowsByID.indexOf(Number(showID));
-                    console.log('delete Index: ', deleteIndex);
-                    console.log('before array delete: ', arrayOfFavoriteShowsByID);
                     arrayOfFavoriteShowsByID.splice(deleteIndex, 1);
-                    console.log('after delete array: ', arrayOfFavoriteShowsByID)
                     await deleteDoc(doc(colRef, showID)); // This worked in testing.  Would prefer not to have to re-write this if I need to change colRef at top.
                 };
             })
@@ -138,7 +135,7 @@ export async function createRandomTVEpisodeUI(user) {
     
             function createAddFavoriteTVShowSection (dataObj) {
     
-                console.log('tv data object: ', dataObj);
+                // console.log('tv data object: ', dataObj);
     
                 const results = dataObj.results;
     
@@ -164,8 +161,8 @@ export async function createRandomTVEpisodeUI(user) {
     
                 for (let i = 0; i < arrayOfAddFavoriteShowButtons.length; i++) {
                     arrayOfAddFavoriteShowButtons[i].addEventListener('click', (e) => {
-                        console.log('Added Favorite Show!');
-                        console.log(e.target.dataset.showId);
+                        // console.log('Added Favorite Show!');
+                        // console.log(e.target.dataset.showId);
     
                         const showId = e.target.dataset.showId;
                           
@@ -193,7 +190,7 @@ export async function createRandomTVEpisodeUI(user) {
     
                             try {
                                 setDoc(doc(db, 'users', userID, 'favoriteTVShows', showId), dataObject);
-                                console.log('Favorite TV Show Added to FireStore', dataObject);
+                                // console.log('Favorite TV Show Added to FireStore', dataObject);
                             } catch (e) {
                                 console.error ("Error Adding TV to Favorites: ", e);
                             }
