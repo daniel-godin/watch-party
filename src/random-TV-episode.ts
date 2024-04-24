@@ -83,7 +83,8 @@ export async function createRandomTVEpisodeUI(mainContentContainer: HTMLElement,
             btnRandomAll.addEventListener('click', async (e) => {
                 e.preventDefault();
                 const randomShow = arrayOfFavoriteShowsByID[Math.floor(Math.random() * arrayOfFavoriteShowsByID.length)];
-                displayRandomEpisode(userID, randomShow, randomResultContainer);
+                const arrayOfShows: any[] = [...arrayOfFavoriteShowsByID];
+                displayRandomEpisode(arrayOfShows, userID, randomShow, randomResultContainer);
             })
         }
 
@@ -91,7 +92,11 @@ export async function createRandomTVEpisodeUI(mainContentContainer: HTMLElement,
         for (let i = 0; i < randomEpisodeButtons.length; i++) { // Logic for buttons to choose random episode for that show.
             randomEpisodeButtons[i].addEventListener('click', async (e) => {
                 e.preventDefault();
-                displayRandomEpisode(userID, e.target.dataset.showId, randomResultContainer);
+                const showID: number = e.target.dataset.showId;
+                const showArray: number[] = [showID];
+
+
+                displayRandomEpisode(showArray, userID, showID, randomResultContainer);
             })
         }
 
@@ -147,15 +152,12 @@ export async function createRandomTVEpisodeUI(mainContentContainer: HTMLElement,
                             <button class='btn-add-favorite-tv-show' data-show-id='${showID}'>Add To Favorites</button>
                         </div>
                     `)
-    
                 }
     
                 const arrayOfAddFavoriteShowButtons = document.getElementsByClassName('btn-add-favorite-tv-show');
     
                 for (let i = 0; i < arrayOfAddFavoriteShowButtons.length; i++) {
                     arrayOfAddFavoriteShowButtons[i].addEventListener('click', (e) => {
-                        // console.log('Added Favorite Show!');
-                        // console.log(e.target.dataset.showId);
     
                         const showId = e.target.dataset.showId;
                           
@@ -167,7 +169,6 @@ export async function createRandomTVEpisodeUI(mainContentContainer: HTMLElement,
                         // Add show to my users/ favorite shows docs.  Use showID as it's doc name.
     
                         async function getTVShow(showObject) {
-                            // console.log(showObject);
     
                             const dataObject = {
                                 name: showObject.name,
@@ -179,7 +180,6 @@ export async function createRandomTVEpisodeUI(mainContentContainer: HTMLElement,
                                 seasons: showObject.seasons,
                             }
 
-    
                             try {
                                 setDoc(doc(db, 'users', userID, 'favoriteTVShows', showId), dataObject); // Adds a doc to user > favoriteShows (coll) > doc.
                             } catch (e) {
@@ -193,7 +193,7 @@ export async function createRandomTVEpisodeUI(mainContentContainer: HTMLElement,
     })
 }
 
-async function displayRandomEpisode(userID, showID, randomResultContainer: HTMLElement) {
+async function displayRandomEpisode(arrayOfShows: number[], userID, showID, randomResultContainer: HTMLElement) {
 
     randomResultContainer.innerHTML = '';
     randomResultContainer.insertAdjacentHTML('afterbegin', `
@@ -249,8 +249,16 @@ async function displayRandomEpisode(userID, showID, randomResultContainer: HTMLE
                         <p>${description}</p>
                         <p>Original Air Date: ${airDate}</p>
                         <p><a target='_blank' href='${showURL}'>Link to The Movie DB Page For Full Information</a></p>
+                        <button type='button' id='btnRandomAgain'>Random Again</button>
                     </div>
                 `)
+
+                const btnRandomAgain = document.getElementById('btnRandomAgain') as HTMLButtonElement;
+                btnRandomAgain.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const randomShowForReRandomButton = arrayOfShows[Math.floor(Math.random() * arrayOfShows.length)];
+                    displayRandomEpisode(arrayOfShows, userID, randomShowForReRandomButton, randomResultContainer);
+                })
             }, 1000)
 
         })
