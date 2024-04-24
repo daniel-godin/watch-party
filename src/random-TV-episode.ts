@@ -46,11 +46,13 @@ export async function createRandomTVEpisodeUI(mainContentContainer: HTMLElement,
             const id = data.id;
             const showPosterPath: string = data.posterPath;
 
+            const TMDBTVShowLink = new URL(`https://www.themoviedb.org/tv/${id}`);
+
             const showPoster = getTMDBImage('w154', showPosterPath);
 
             favoriteShowsContainer.insertAdjacentHTML('beforeend', `
                 <div class='favorite-show-card'>
-                    <img src='${showPoster}' class='image-favorite-tv-show-posters'>
+                    <a href='${TMDBTVShowLink}' target='_blank'><img src='${showPoster}' class='image-favorite-tv-show-posters'></a>
                     <div class='favorite-show-name-and-remove-btn-container'>
                         <p>${title}</p>
                         <button type='button' class='button-remove-favorite-show' data-show-id='${id}'>
