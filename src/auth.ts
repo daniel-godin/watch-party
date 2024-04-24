@@ -11,6 +11,7 @@ import {
     updateProfile,
     updateEmail,
     sendEmailVerification,
+    sendPasswordResetEmail,
     deleteUser,
 } from "firebase/auth";
 
@@ -215,23 +216,13 @@ export async function createProfilePageUI(mainContentContainer: HTMLElement, use
 
             </form>
 
-            <form id='formUpdatePassword' class='profile-forms'>
+            <section id='formUpdatePassword'>
 
                 <h2>Update Your Password:</h2>
 
-                <label>Current Password:
-                    <input type='password' id='inputCurrentPassword' required>
-                </label>
-                <label>New Password:
-                    <input type='password' id='inputNewPassword1' required>
-                </label>
-                <label>Confirm New Password:
-                    <input type='password' id='inputNewPassword2' required>
-                </label>
+                <button type='button' id='btnResetPassword'>Reset Password</button>
 
-                <button type='submit'>Update Password</button>
-
-            </form>
+            </section>
 
             <section id='deleteUserContainer'>
                 <button type='button' id='btnDeleteUser'>Delete Account (Warning!!!)</button>
@@ -296,6 +287,21 @@ export async function createProfilePageUI(mainContentContainer: HTMLElement, use
                 console.log('Verification Email Sent');
                 // Email verification sent!
                 // ...
+            });
+    })
+
+    const btnResetPassword = document.getElementById('btnResetPassword') as HTMLButtonElement;
+    btnResetPassword.addEventListener('click', (e) => {
+        e.preventDefault();
+        sendPasswordResetEmail(auth, email)
+            .then(() => {
+                // Password reset email sent!
+                window.alert('Password Reset!\nCheck Your Email.')
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // ..
             });
     })
 
