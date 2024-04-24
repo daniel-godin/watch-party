@@ -193,9 +193,12 @@ export async function createRandomTVEpisodeUI(mainContentContainer: HTMLElement,
     })
 }
 
-async function displayRandomEpisode(userID, showID, randomResultContainer) {
+async function displayRandomEpisode(userID, showID, randomResultContainer: HTMLElement) {
 
     randomResultContainer.innerHTML = '';
+    randomResultContainer.insertAdjacentHTML('afterbegin', `
+        <p>Your Random Show Is Loading.  Please Wait 1 Second Before Trying Again</p>
+    `)
 
     showID = String(showID); // Needed to change this into a string because docRef wouldn't take a number.
 
@@ -233,22 +236,31 @@ async function displayRandomEpisode(userID, showID, randomResultContainer) {
             let getShowPoster = getTMDBImage('w185', showPoster);
             let showURL: string = `https://themoviedb.org/tv/${showID}-stargate-sg-1/season/${season}/episode/${epNum}`;
 
-            randomResultContainer.insertAdjacentHTML('afterbegin', `
-                <div id='randomResultIMGContainer'>
-                    <img src='${getShowPoster}' href='${showURL}' class='image-favorite-tv-show-posters'>
-                </div>
-                <div id='randomResultInfoContainer'>
-                    <p>${show}</p>
-                    <p>Season ${season} Episode ${epNum}</p>
-                    <p>${name} - Runtime: ${length}</p>
-                    <p>${description}</p>
-                    <p>Original Air Date: ${airDate}</p>
-                    <p><a target='_blank' href='${showURL}'>Link to The Movie DB Page For Full Information</a></p>
-                </div>
+            setTimeout(() => {
+                randomResultContainer.innerHTML = '';
+                randomResultContainer.insertAdjacentHTML('afterbegin', `
+                    <div id='randomResultIMGContainer'>
+                        <img src='${getShowPoster}' href='${showURL}' class='image-favorite-tv-show-posters'>
+                    </div>
+                    <div id='randomResultInfoContainer'>
+                        <p>${show}</p>
+                        <p>Season ${season} Episode ${epNum}</p>
+                        <p>${name} - Runtime: ${length}</p>
+                        <p>${description}</p>
+                        <p>Original Air Date: ${airDate}</p>
+                        <p><a target='_blank' href='${showURL}'>Link to The Movie DB Page For Full Information</a></p>
+                    </div>
+                `)
+            }, 1000)
 
-            `)
         })
-        .catch(err => console.error(err));
+        .catch(err => {
+            console.error(err)
+            randomResultContainer.innerHTML = '';
+            randomResultContainer.insertAdjacentHTML('afterbegin', `
+                <p>Error Loading Random Episode From <a href='https://www.themoviedb.org'>The Movie Database</a>.  Please try again later.</p>
+            `)
+        });
 }
 
 function getRandom (max: number) {
