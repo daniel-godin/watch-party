@@ -4,7 +4,7 @@ import { randomIdGenerator } from "./utils";
 // UI/App Imports:
 import { createIndexPageUI } from "./index.ts";
 import { createRandomTVEpisodeUI } from "./random-TV-episode";
-import { createDemoPageUI } from "./watch-party-demo";
+import { createDemoPageUI } from "./watch-party";
 import { createWatchPartyUI } from "./watch-party";
 import { createAuthPageUI, createProfilePageUI } from "./auth";
 
