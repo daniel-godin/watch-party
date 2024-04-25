@@ -56,8 +56,8 @@ function createNavUI() {
     const navTopBar = document.getElementById('navTopBar') as HTMLElement;
     navTopBar.innerHTML= '';
     navTopBar.insertAdjacentHTML('afterbegin', `
-        <a href='./index.html'>Home/Create Watch Party</a>
-        <a href='./watch.html'>Find Watch Party</a>
+        <a href='./index.html'>Home</a>
+        <a href='./watch.html'>Watch Party</a>
         <a href='./random.html'>Random TV Episode</a>
         <a href='./profile.html'>Profile</a>
         <a href='./auth.html'>Sign In / Sign Up</a>
