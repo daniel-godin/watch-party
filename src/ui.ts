@@ -57,7 +57,6 @@ function createNavUI() {
     navTopBar.innerHTML= '';
     navTopBar.insertAdjacentHTML('afterbegin', `
         <a href='./index.html'>Home/Create Watch Party</a>
-        <a href='./demo.html'>Demo</a>
         <a href='./watch.html'>Find Watch Party</a>
         <a href='./random.html'>Random TV Episode</a>
         <a href='./profile.html'>Profile</a>
@@ -69,7 +68,6 @@ function createMainUI(user: object) {
     const mainContentContainer = document.getElementById('mainContentContainer') as HTMLElement;
     const pathname: string = window.location.pathname; // Finding pathname to sort which UI function to trigger.
     if (pathname == '/index.html' ||  pathname == '/' || pathname.length === 0) { createIndexPageUI(mainContentContainer, user); };  
-    if (pathname == '/demo.html') { createDemoPageUI(mainContentContainer, user); };
     if (pathname == '/watch.html') { createWatchPartyUI(mainContentContainer, user); };
     if (pathname == '/random.html') { createRandomTVEpisodeUI(mainContentContainer, user); };
     if (pathname == '/auth.html') { createAuthPageUI(mainContentContainer, user); };
