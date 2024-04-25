@@ -37,6 +37,7 @@ footer {
 #mainContentContainer {
   margin: 0;
   padding: 1rem;
+  /* width: 90%; This is to prevent main content from going up agains the edge of the container. */
   display: grid;
   place-items: center;
 }
@@ -281,6 +282,48 @@ footer {
 
   display: flex;
   justify-content: space-between;
+}
+
+#watchPartyPageContainer {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+  width: 90%;
+}
+
+#watchPartyPageContainer > section {
+  margin: 0;
+  padding: .5rem;
+
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+#watchPartyNewWatchParty {
+  display: grid;
+  gap: .5rem;
+}
+
+#newWatchPartySearchResults {
+  margin: 0;
+  padding: .5rem;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.movie-search-results {
+  background-color: lightgray;
+  width: 200px;
+  padding: .5rem;
+
+  display: grid;
+  place-items: center;
+  gap: .5rem;
+
+  border: 1px solid red;
+  border-radius: .5rem;
 }
 
 /* Keep this last: */

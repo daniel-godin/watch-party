@@ -40,18 +40,18 @@ export async function createIndexPageUI(mainContentContainer: HTMLElement, user:
 
         const titleID = randomIdGenerator();
 
-        const newTitleObject: object = {
-            id: titleID,
-            title: inputTitle.value,
-            links: {
-                tmdb: "https://link.com",
-            },
-            votes: {
-                yes: 0,
-                maybe: 0,
-                no: 0
-            }
-        } 
+        // const newTitleObject: object = {
+        //     id: titleID,
+        //     title: inputTitle.value,
+        //     links: {
+        //         tmdb: "https://link.com",
+        //     },
+        //     votes: {
+        //         yes: 0,
+        //         maybe: 0,
+        //         no: 0
+        //     }
+        // } 
 
         try {
             setDoc(doc(db, 'watchParties', watchPartyID), watchPartyObj);

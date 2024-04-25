@@ -4,8 +4,7 @@ import { randomIdGenerator } from "./utils";
 // UI/App Imports:
 import { createIndexPageUI } from "./index.ts";
 import { createRandomTVEpisodeUI } from "./random-TV-episode";
-import { createDemoPageUI } from "./watch-party";
-import { createWatchPartyUI } from "./watch-party";
+import { createDemoPageUI, createWatchPartyUI, newcreateWatchPartyUI } from "./watch-party";
 import { createAuthPageUI, createProfilePageUI } from "./auth";
 
 // Firebase Imports:
@@ -44,7 +43,6 @@ function buildUI(user: object) {
 }
 
 export const pageContainer = document.getElementById('pageContainer') as HTMLElement; // This is on every html page.  Maybe change to use body later?
-
 function buildSkeletonUI() {
     pageContainer.innerHTML = '';
     pageContainer.insertAdjacentHTML('afterbegin', `
@@ -72,7 +70,7 @@ function createMainUI(user: object) {
     const pathname: string = window.location.pathname; // Finding pathname to sort which UI function to trigger.
     if (pathname == '/index.html' ||  pathname == '/' || pathname.length === 0) { createIndexPageUI(mainContentContainer, user); };  
     if (pathname == '/demo.html') { createDemoPageUI(mainContentContainer, user); };
-    if (pathname == '/watch.html') { createWatchPartyUI(mainContentContainer, user); };
+    if (pathname == '/watch.html') { newcreateWatchPartyUI(mainContentContainer, user); };
     if (pathname == '/random.html') { createRandomTVEpisodeUI(mainContentContainer, user); };
     if (pathname == '/auth.html') { createAuthPageUI(mainContentContainer, user); };
     if (pathname == '/profile.html') {createProfilePageUI(mainContentContainer, user); };
