@@ -452,7 +452,8 @@ function createWatchPartyInfoUI(watchPartyInfo: HTMLElement) {
 
             // const collectionOfMoviesRef = collection(db, 'watchParties', watchPartyIDFromURL, 'titleOptions');
             const collectionOfMoviesRef = collection(watchPartyDocRef, 'titleOptions');
-            createWatchPartyFromDB(collectionOfMoviesRef);
+            const watchPartyMoviesContainer = document.getElementById('watchPartyMoviesContainer') as HTMLElement;
+            createWatchPartyFromDB(watchPartyMoviesContainer, collectionOfMoviesRef);
 
 
         } else {
@@ -607,22 +608,23 @@ function createWatchPartyNewWatchPartyUI(watchPartyNewWatchParty: HTMLElement) {
     })
 }
 
-async function createWatchPartyFromDB(collectionOfMoviesRef) {
+async function createWatchPartyFromDB(watchPartyMoviesContainer: HTMLElement, collectionOfMoviesRef) {
 
-    const watchPartyMoviesContainer = document.getElementById('watchPartyMovies') as HTMLElement;
-    watchPartyMoviesContainer.innerHTML = ''
+
+    console.log('createwatchpartyfromdb triggered');
+    watchPartyMoviesContainer.innerHTML = '';
     watchPartyMoviesContainer.insertAdjacentHTML('afterbegin', `
         <div id='watchPartyMovies'>
         </div>
         <div id='watchPartyMovieSearchResults'>
         </div>
-    `)
+    `);
 
     onSnapshot(collectionOfMoviesRef, (snapshot) => {
         let count = 0; // Count to keep titles to 5 or less.  Check if(statements) below.
 
         // Start of creating the Watch Party movies section in UI.
-        const watchPartyMovies = document.getElementById('watchPartyForm') as HTMLElement;
+        const watchPartyMovies = document.getElementById('watchPartyMovies') as HTMLElement;
         watchPartyMovies.innerHTML = '';
         snapshot.forEach((document: any) => {
             count++; // Adds one to count.  Keep number of movies in a watch party's options to 5 or less.
