@@ -232,8 +232,6 @@ function createWatchPartyNewWatchPartyUI(watchPartyNewWatchParty: HTMLElement) {
 
 async function createWatchPartyFromDB(watchPartyMoviesContainer: HTMLElement, collectionOfMoviesRef) {
 
-
-    console.log('createwatchpartyfromdb triggered');
     watchPartyMoviesContainer.innerHTML = '';
     watchPartyMoviesContainer.insertAdjacentHTML('afterbegin', `
         <div id='watchPartyMovies'>
@@ -255,23 +253,24 @@ async function createWatchPartyFromDB(watchPartyMoviesContainer: HTMLElement, co
 
             const title = data.title;
             const id = data.id;
-            // NEEDS MORE DATA HERE FROM THE MOVIE DB.  JUST LIKE RANDOM TV SHOW APP.
+            const moviePosterPath = data.posterPath;
+
+            const TMDBMovieLink = new URL(`https://www.themoviedb.org/movie/${id}`);
+            const TMDBMoviePoster = getTMDBImage('w154', moviePosterPath);
 
             // Creates a box container for each title.  Starting at before end, so first created is at the top in DOM/UI.
             watchPartyMovies.insertAdjacentHTML('beforeend', `
-                <div class='option-container'>
-                    <div class='vote-container'>
+                <div class='movie-card'>
+                    <a href='${TMDBMovieLink} target='_blank'><img src='${TMDBMoviePoster}' class='img-movie-watch-party'></a>
+                    <div class='movie-title-container>
+                        <p>${title}</p><button class='button-remove-title btn-remove-movie-from-watch-party' data-id='${id}'>Remove</button>
+                    </div>
+                    <div class='movie-vote-container'>
                         <button type='button' class="vote-buttons">Yes</button>
                         <button type='button' class="vote-buttons">Maybe/Indifferent</button>
                         <button type='button' class="vote-buttons">No</button>
                     </div>
-                    
-                    <div class='title-container'>
-                        <p>${title}</p>
-                    </div>
-                    
-                    <div class='add-or-remove-button-container'>
-                        <button type='button' class='button-remove-title' data-id='${id}'>-</button>
+                    <div class='movie-vote-results-container'>
                     </div>
                 </div>
             `)

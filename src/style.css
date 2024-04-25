@@ -120,7 +120,7 @@ footer {
   place-items: center;
 }
 
-.random-tv-show-content-container {
+.random-tv-show-content-container, #watchPartyMovies {
   width: 100%;
   padding: 1rem;
 
@@ -144,7 +144,7 @@ footer {
   border-radius: 1rem;
 } */
 
-.favorite-show-card {
+.favorite-show-card, .movie-card {
   background-color: lightgray;
   width: 200px;
   padding: .5rem;
