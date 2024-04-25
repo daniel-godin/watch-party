@@ -608,25 +608,7 @@ function createWatchPartyNewWatchPartyUI(watchPartyNewWatchParty: HTMLElement) {
 
                 const results = response.results;
 
-                // createNewWatchPartySearchResultsUI(results) // This part is working.
-
-                const newWatchPartySearchResults = document.getElementById('newWatchPartySearchResults') as HTMLElement;
-                newWatchPartySearchResults.innerHTML = '';
-                for (let i = 0; i < 5; i++) {
-                    const title = results[i].title;
-                    const movieID = results[i].id;
-                    const moviePosterPath = results[i].poster_path;
-
-                    const imgSRC = getTMDBImage('w154', moviePosterPath);
-
-                    newWatchPartySearchResults.insertAdjacentHTML('beforeend', `
-                        <div class='movie-search-results'>
-                            <img src='${imgSRC}' class='search-img'>
-                            <p>${title}</p>
-                            <button type='button' class='btn-create-watch-party-with-first-title' data-title='${title}' data-title-id='${movieID}'>Create Watch Party with ${title}</button>
-                        </div>
-                    `)
-                }
+                createNewWatchPartySearchResultsUI(results) // This part is working.
 
                 const btnCreateWatchPartyWithFirstTitle = document.getElementsByClassName('btn-create-watch-party-with-first-title');
                 for (let i = 0; i < btnCreateWatchPartyWithFirstTitle.length; i++) {
@@ -856,27 +838,25 @@ async function createWatchPartyFromDB(collectionOfMoviesRef) {
 
 }
 
-// function createNewWatchPartySearchResultsUI(results) {
-//     const newWatchPartySearchResults = document.getElementById('newWatchPartySearchResults') as HTMLElement;
-//     newWatchPartySearchResults.innerHTML = '';
-//     for (let i = 0; i < 5; i++) {
-//         const title = results[i].title;
-//         const movieID = results[i].id;
-//         const moviePosterPath = results[i].poster_path;
+function createNewWatchPartySearchResultsUI(results) {
+    const newWatchPartySearchResults = document.getElementById('newWatchPartySearchResults') as HTMLElement;
+    newWatchPartySearchResults.innerHTML = '';
+    for (let i = 0; i < 5; i++) {
+        const title = results[i].title;
+        const movieID = results[i].id;
+        const moviePosterPath = results[i].poster_path;
 
-//         const imgSRC = getTMDBImage('w154', moviePosterPath);
+        const imgSRC = getTMDBImage('w154', moviePosterPath);
 
-//         newWatchPartySearchResults.insertAdjacentHTML('beforeend', `
-//             <div class='movie-search-results'>
-//                 <img src='${imgSRC}' class='search-img'>
-//                 <p>${title}</p>
-//                 <button type='button' class='btn-create-watch-party-with-first-title' data-title='${title}' data-title-id='${movieID}'>Create Watch Party with ${title}</button>
-//             </div>
-//         `)
-//     }
-
-
-// }
+        newWatchPartySearchResults.insertAdjacentHTML('beforeend', `
+            <div class='movie-search-results'>
+                <img src='${imgSRC}' class='search-img'>
+                <p>${title}</p>
+                <button type='button' class='btn-create-watch-party-with-first-title' data-title='${title}' data-title-id='${movieID}'>Create Watch Party with ${title}</button>
+            </div>
+        `)
+    }
+}
 
 async function createWatchPartyInDB() {
     
