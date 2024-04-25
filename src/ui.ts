@@ -70,7 +70,7 @@ function createMainUI(user: object) {
     const pathname: string = window.location.pathname; // Finding pathname to sort which UI function to trigger.
     if (pathname == '/index.html' ||  pathname == '/' || pathname.length === 0) { createIndexPageUI(mainContentContainer, user); };  
     if (pathname == '/demo.html') { createDemoPageUI(mainContentContainer, user); };
-    if (pathname == '/watch.html') { newcreateWatchPartyUI(mainContentContainer, user); };
+    if (pathname == '/watch.html') { createWatchPartyUI(mainContentContainer, user); };
     if (pathname == '/random.html') { createRandomTVEpisodeUI(mainContentContainer, user); };
     if (pathname == '/auth.html') { createAuthPageUI(mainContentContainer, user); };
     if (pathname == '/profile.html') {createProfilePageUI(mainContentContainer, user); };
