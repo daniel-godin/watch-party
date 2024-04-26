@@ -37,7 +37,7 @@ onAuthStateChanged(auth, (user) => {
 function buildUI(user: object) {
     // console.log('What is the type of user: ', typeof(user))
     buildSkeletonUI();
-    createNavUI();
+    createNavUI(user);
     createMainUI(user);
     createFooterUI(user);
 }
@@ -52,7 +52,22 @@ function buildSkeletonUI() {
     `)
 }
 
-function createNavUI() {
+function createNavUI(user) {
+    
+    let anonStatus: boolean = user.isAnonymous; // Checks whether there is a full user, or a firebase anon user.
+
+    let profileStatus:string = 'hidden';
+    let authStatus:string = '';
+    if (anonStatus === true || user === null || user === false) { 
+        profileStatus = 'hidden';
+        authStatus = ''; 
+    }
+    if (anonStatus === false) { 
+        profileStatus = '';
+        authStatus = 'hidden';
+    }
+
+
     const navTopBar = document.getElementById('navTopBar') as HTMLElement;
     navTopBar.innerHTML= '';
     navTopBar.insertAdjacentHTML('afterbegin', `
@@ -60,8 +75,8 @@ function createNavUI() {
         <a href='./watch.html'>Watch Party</a>
         <a href='./random.html'>Random TV Episode</a>
         <a href='./watch-tracker.html'>Watch Tracker</a>
-        <a href='./profile.html'>Profile</a>
-        <a href='./auth.html'>Sign In / Sign Up</a>
+        <a href='./profile.html' class='${profileStatus}'>Profile</a>
+        <a href='./auth.html' class='${authStatus}'>Sign In / Sign Up</a>
     `)
 }
 
