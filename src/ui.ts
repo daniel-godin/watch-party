@@ -47,7 +47,7 @@ function buildSkeletonUI() {
     pageContainer.innerHTML = '';
     pageContainer.insertAdjacentHTML('afterbegin', `
         <nav id='navTopBar'></nav>
-        <main id='mainContentContainer'></main>
+        <div id='mainContentContainer'></div>
         <footer id='footerContainer'></footer>
     `)
 }
