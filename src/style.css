@@ -1,4 +1,6 @@
 :root {
+/* CSS Variables: */
+  --footer-height: 40px; 
 
 }
 
@@ -9,12 +11,23 @@
 }
 
 html {
+  margin: 0;
+  padding: 0;
   height: 100dvh;
   width: 100dvw;
 }
 
+body {
+
+}
+
+#root {
+  margin: 0;
+  padding: 0;
+}
+
 footer {
-  height: 40px;
+  height: var(--footer-height);
   width: 100%;
   background-color: lightgray;
 
@@ -29,14 +42,11 @@ footer {
   align-items: center;
 }
 
-#pageContainer {
-  margin: 0;
-  padding: 0;
-}
+
 
 #mainContentContainer {
   margin: 0;
-  margin-bottom: 45px; /* This is to prevent the bottom of the main content from going 'under' the footer */
+  margin-bottom: calc(var(--footer-height) + 5px); /* This is to prevent the bottom of the main content from going 'under' the footer */
   padding: 1rem;
   /* width: 90%; This is to prevent main content from going up agains the edge of the container. */
   display: grid;

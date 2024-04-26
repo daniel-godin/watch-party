@@ -42,7 +42,7 @@ function buildUI(user: object) {
     createFooterUI(user);
 }
 
-export const pageContainer = document.getElementById('pageContainer') as HTMLElement; // This is on every html page.  Maybe change to use body later?
+export const pageContainer = document.getElementById('root') as HTMLElement; // This is on every html page.  Maybe change to use body later?
 function buildSkeletonUI() {
     pageContainer.innerHTML = '';
     pageContainer.insertAdjacentHTML('afterbegin', `
