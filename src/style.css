@@ -333,6 +333,23 @@ footer {
   border-radius: .5rem;
 }
 
+#mainIndexPageContainer {
+  margin: 0;
+  padding: 1rem;
+  width: 90%;
+
+  display: grid;
+  gap: 1rem;
+}
+
+#mainIndexPageContainer > section {
+  margin: 0;
+  padding: 1rem;
+
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
 /* Keep this last: */
 .hidden {
   display: none;

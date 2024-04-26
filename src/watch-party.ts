@@ -119,7 +119,7 @@ function createWatchPartySearchUI(watchPartySearch: HTMLElement) {
     })
 }
 
-function createWatchPartyNewWatchPartyUI(watchPartyNewWatchParty: HTMLElement) {
+export function createWatchPartyNewWatchPartyUI(watchPartyNewWatchParty: HTMLElement) {
 
     watchPartyNewWatchParty.innerHTML = '';
     watchPartyNewWatchParty.insertAdjacentHTML('afterbegin', `
