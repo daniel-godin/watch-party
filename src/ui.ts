@@ -1,15 +1,15 @@
 // Imports:
-import { randomIdGenerator } from "./utils";
+
 
 // UI/App Imports:
 import { createIndexPageUI } from "./index.ts";
 import { createRandomTVEpisodeUI } from "./random-TV-episode";
-import { createDemoPageUI, createWatchPartyUI, newcreateWatchPartyUI } from "./watch-party";
+import { createWatchPartyUI } from "./watch-party";
 import { createAuthPageUI, createProfilePageUI } from "./auth";
+import { createWatchTrackerUI } from './watch-tracker.ts';
 
 // Firebase Imports:
-import { auth, db,  } from "./firebase";
-import { setDoc, doc, onSnapshot } from "firebase/firestore";
+import { auth, } from "./firebase";
 import { signInAnonymously, onAuthStateChanged, signOut, } from "firebase/auth";
 
 // Global Variables:
@@ -59,6 +59,7 @@ function createNavUI() {
         <a href='./index.html'>Home</a>
         <a href='./watch.html'>Watch Party</a>
         <a href='./random.html'>Random TV Episode</a>
+        <a href='./watch-tracker.html'>Watch Tracker</a>
         <a href='./profile.html'>Profile</a>
         <a href='./auth.html'>Sign In / Sign Up</a>
     `)
@@ -70,8 +71,10 @@ function createMainUI(user: object) {
     if (pathname == '/index.html' ||  pathname == '/' || pathname.length === 0) { createIndexPageUI(mainContentContainer, user); };  
     if (pathname == '/watch.html') { createWatchPartyUI(mainContentContainer, user); };
     if (pathname == '/random.html') { createRandomTVEpisodeUI(mainContentContainer, user); };
+    if (pathname == '/watch-tracker.html') {createWatchTrackerUI(mainContentContainer, user); };
     if (pathname == '/auth.html') { createAuthPageUI(mainContentContainer, user); };
     if (pathname == '/profile.html') {createProfilePageUI(mainContentContainer, user); };
+    
 }
 
 function createFooterUI(user: Object) {
