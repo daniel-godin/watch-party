@@ -36,6 +36,7 @@ footer {
 
 #mainContentContainer {
   margin: 0;
+  margin-bottom: 45px; /* This is to prevent the bottom of the main content from going 'under' the footer */
   padding: 1rem;
   /* width: 90%; This is to prevent main content from going up agains the edge of the container. */
   display: grid;
@@ -47,7 +48,7 @@ footer {
   top: 0;
   left: 0;
   right: 0;
-  
+
   width: 100%;
   height: 50px;
   background-color: darkgrey;
