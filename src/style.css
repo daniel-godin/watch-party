@@ -305,11 +305,12 @@ footer {
   gap: .5rem;
 }
 
-#newWatchPartySearchResults {
+#newWatchPartySearchResults, #watchPartyMovieSearchResults {
   margin: 0;
   padding: .5rem;
 
   display: grid;
+  gap: .5rem;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 

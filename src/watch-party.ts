@@ -262,8 +262,8 @@ async function createWatchPartyFromDB(watchPartyMoviesContainer: HTMLElement, co
             watchPartyMovies.insertAdjacentHTML('beforeend', `
                 <div class='movie-card'>
                     <a href='${TMDBMovieLink} target='_blank'><img src='${TMDBMoviePoster}' class='img-movie-watch-party'></a>
-                    <div class='movie-title-container>
-                        <p>${title}</p><button class='button-remove-title btn-remove-movie-from-watch-party' data-id='${id}'>Remove</button>
+                    <div class='movie-title-container'>
+                        <p>${title}</p>
                     </div>
                     <div class='movie-vote-container'>
                         <button type='button' class="vote-buttons">Yes</button>
