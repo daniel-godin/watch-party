@@ -194,7 +194,7 @@ export async function createProfilePageUI(mainContentContainer: HTMLElement, use
 
     mainContentContainer.innerHTML = '';
     mainContentContainer.insertAdjacentHTML('afterbegin', `
-        <div id='profilePageContainer'>
+        <main id='profilePageContainer'>
 
             <form method='POST' id='formUpdateProfile' class='profile-forms'>
 
@@ -228,7 +228,7 @@ export async function createProfilePageUI(mainContentContainer: HTMLElement, use
                 <button type='button' id='btnDeleteUser'>Delete Account (Warning!!!)</button>
             </section>
 
-        </div>
+        </main>
     `)
 
     const formUpdateProfile = document.getElementById('formUpdateProfile') as HTMLFormElement;

@@ -56,6 +56,11 @@ footer {
   place-items: center;
 }
 
+main {
+  min-width: 300px;
+  width: 90%;
+}
+
 #navTopBar {
   position: sticky;
   top: 0;

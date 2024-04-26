@@ -14,19 +14,17 @@ export async function createRandomTVEpisodeUI(mainContentContainer: HTMLElement,
 
     mainContentContainer.innerHTML = '';
     mainContentContainer.insertAdjacentHTML('afterbegin', `
-        <div id='randomTVShowPageContainer'>
+        <main id='randomTVShowPageContainer'>
             <div id='randomResultContainer'>
             </div>
-            <div id='randomAllButtonContainer'>
-                <button id='btnRandomAll'>Random Episode From All Your Shows</button>
+            <div id='randomAllButtonContainer' class=''>
             </div>
             <div id='favoriteShowsContainer' class='random-tv-show-content-container'>
             </div>
             <div id='searchResultsAddFavoriteTVShowContainer' class='random-tv-show-content-container'>
             </div>
-        </div>
+        </main>
     `)
-    const btnRandomAll = document.getElementById('btnRandomAll') as HTMLButtonElement;
     const randomResultContainer = document.getElementById('randomResultContainer') as HTMLElement;
     const searchResultsAddFavoriteTVShowContainer = document.getElementById('searchResultsAddFavoriteTVShowContainer') as HTMLElement;
 
@@ -68,6 +66,9 @@ export async function createRandomTVEpisodeUI(mainContentContainer: HTMLElement,
             `)
         })
 
+        console.log('array of fav shows array length: ', arrayOfFavoriteShowsByID.length);
+
+
         favoriteShowsContainer.insertAdjacentHTML('beforeend', `
             <div id='addFavoriteTVShowContainer' class='favorite-show-card'>
                 <form id='formAddFavoriteTVShow'>
@@ -78,8 +79,16 @@ export async function createRandomTVEpisodeUI(mainContentContainer: HTMLElement,
             </div>
         `)
 
-        if (arrayOfFavoriteShowsByID.length === 0) { console.log('array of shows is zero'); };
-        if (arrayOfFavoriteShowsByID.length >= 1) { 
+        const randomAllButtonContainer = document.getElementById('randomAllButtonContainer') as HTMLElement;
+        if (arrayOfFavoriteShowsByID.length < 2) { 
+            randomAllButtonContainer.classList.add('hidden'); // Hides the Random All Container.  No need to have a Random All if there are fewer than 2 shows.
+        };
+        if (arrayOfFavoriteShowsByID.length >= 2) { 
+            randomAllButtonContainer.insertAdjacentHTML('afterbegin', `
+                <button id='btnRandomAll'>Random Episode From All Your Shows</button>
+            `)
+
+            const btnRandomAll = document.getElementById('btnRandomAll') as HTMLButtonElement;
             btnRandomAll.addEventListener('click', async (e) => {
                 e.preventDefault();
                 const randomShow = arrayOfFavoriteShowsByID[Math.floor(Math.random() * arrayOfFavoriteShowsByID.length)];
@@ -94,7 +103,6 @@ export async function createRandomTVEpisodeUI(mainContentContainer: HTMLElement,
                 e.preventDefault();
                 const showID: number = e.target.dataset.showId;
                 const showArray: number[] = [showID];
-
 
                 displayRandomEpisode(showArray, userID, showID, randomResultContainer);
             })
