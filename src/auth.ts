@@ -57,18 +57,37 @@ export async function createAuthPageUI(mainContentContainer: HTMLElement, user) 
                         <input type='email' id='inputEmail' class='auth-input' required>
                     </label>
                     <label>Password:
-                        <input type='password' id='inputPassword' class='auth-input' min='8' max='64' required>
+                        <input type='password' id='inputPassword' name='password' class='auth-input' min='8' max='64' required>
+                    </label>
+                    <label>Confirm Password:
+                        <input type='password' id='inputPasswordConfirm' name='confirmPassword' class='auth-input' min='8' max='64' required>
                     </label>
                     <button type='submit' id='btnAuthSignup'>Sign Up</button>
                 </form>
-            `)
+            `);
+
+
+            // Password Confirm Check:
+            const inputPassword = document.getElementById('inputPassword') as HTMLInputElement;
+            const inputPasswordConfirm = document.getElementById('inputPasswordConfirm') as HTMLInputElement;
+            inputPassword.addEventListener('change', () => passCheck(inputPassword, inputPasswordConfirm));
+            inputPasswordConfirm.addEventListener('change',() => passCheck(inputPassword, inputPasswordConfirm));
+            function passCheck(password:HTMLInputElement, confirm:HTMLInputElement) {
+                if (password.value === confirm.value) {
+                    confirm.setCustomValidity('');
+                } else {
+                    confirm.setCustomValidity('Passwords Do Not Match');
+                }
+            };
+
+            // Sign Up Form Submitted After Password Confirm Check:
             const formAuth = document.getElementById('formAuth') as HTMLFormElement;
             formAuth.addEventListener('submit', (e) => {
                 e.preventDefault();
 
                 const inputEmail = document.getElementById('inputEmail') as HTMLInputElement;
                 const inputPassword = document.getElementById('inputPassword') as HTMLInputElement;
-        
+
                 const email: string = inputEmail.value;
                 const password: string  = inputPassword.value;
                 const displayName: string = 'Anonymous User';
@@ -112,7 +131,9 @@ export async function createAuthPageUI(mainContentContainer: HTMLElement, user) 
 
                         mainContentContainer.innerHTML = '';
                         mainContentContainer.insertAdjacentHTML('afterbegin', `
-                            <p>Successfully Signed Up.  You are being redirected in 3 seconds.</p>
+                            <p>Successfully Signed Up!</p>
+                            <p>You should receive a confirmation email to confirm your email</p>
+                            <p>You are being redirected in 3 seconds.</p>
                         `)
 
                         setTimeout(() => {
