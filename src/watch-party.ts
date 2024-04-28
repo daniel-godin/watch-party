@@ -321,10 +321,8 @@ async function createWatchPartyFromDB(watchPartyMoviesContainer: HTMLElement, co
                                 const movieID = btnAddMovieToParty[i].dataset.titleId;
 
                                 // Fetch Movie Data From TMDB...
-
                                 let TMDBMovieSearchURL = new URL(`https://api.themoviedb.org/3/movie/${movieID}`);
 
-                                
                                 fetch(TMDBMovieSearchURL, TMDBOptions)
                                     .then(response => response.json())
                                     .then(response => {
@@ -338,18 +336,10 @@ async function createWatchPartyFromDB(watchPartyMoviesContainer: HTMLElement, co
                                         }
 
                                         setDoc(doc(collectionOfMoviesRef, movieID), newMovieObject);
-                                        console.log('New Movie Added To Movie Watch Party Collection');
-                                        
-                                        
-                            
                                     })
                                     .catch(err => console.error(err));
-
-
                             })
                         }
-
-
                     })
                     .catch(err => console.error(err));
             })
@@ -366,8 +356,6 @@ async function createWatchPartyFromDB(watchPartyMoviesContainer: HTMLElement, co
             });
         };
     })
-
-
 }
 
 function createNewWatchPartySearchResultsUI(results) {
