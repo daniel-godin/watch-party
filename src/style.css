@@ -332,7 +332,7 @@ main {
   margin: 0;
   padding: .5rem;
 
-  display: grid;
+  display: none;
   gap: .5rem;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }

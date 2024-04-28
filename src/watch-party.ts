@@ -92,7 +92,6 @@ function createWatchPartySearchUI(watchPartyInfoContainer: HTMLElement, watchPar
         </form>
     `)
 
-
     const formSearchForWatchPartyID = document.getElementById('formSearchForWatchPartyID');
     const inputSearchForWatchPartyID = document.getElementById('inputSearchForWatchPartyID');
 
@@ -222,6 +221,7 @@ export function createWatchPartyNewWatchPartyUI(watchPartyInfoContainer: HTMLEle
 
 async function createWatchPartyFromDB(watchPartyMoviesContainer: HTMLElement, collectionOfMoviesRef) {
 
+    // Scaffolding for watchPartyMovies Section:
     watchPartyMoviesContainer.innerHTML = '';
     watchPartyMoviesContainer.insertAdjacentHTML('afterbegin', `
         <div id='watchPartyMovies'>
@@ -294,6 +294,7 @@ async function createWatchPartyFromDB(watchPartyMoviesContainer: HTMLElement, co
 
                         const watchPartyMovieSearchResults = document.getElementById('watchPartyMovieSearchResults') as HTMLElement;
                         watchPartyMovieSearchResults.innerHTML = ''; // Resets Container.
+                        watchPartyMovieSearchResults.style.display = 'grid';
 
                         // Limiting display to first 5 results for now.
                         for (let i = 0; i < 5; i++) {
@@ -372,6 +373,7 @@ async function createWatchPartyFromDB(watchPartyMoviesContainer: HTMLElement, co
 function createNewWatchPartySearchResultsUI(results) {
     const newWatchPartySearchResults = document.getElementById('newWatchPartySearchResults') as HTMLElement;
     newWatchPartySearchResults.innerHTML = '';
+    newWatchPartySearchResults.style.display = 'grid'; // styled as 'none' until a search occurs.  Taking it, and it's padding/styling, out of the DOM until a search occurs.
     for (let i = 0; i < 5; i++) {
         const title = results[i].title;
         const movieID = results[i].id;
