@@ -53,12 +53,9 @@ function createWatchPartyInfoUI(watchPartyInfo: HTMLElement, watchPartySearch: H
 
             const data = snapshot.data();
 
-            const watchPartyID:string = data.watchPartyID;
             const watchPartyName:string = data.watchPartyName;
             const dateCreated = data.dateCreated;
             const dateOfWatchParty = data.dateOfWatchParty;
-
-            const watchPartyURL = window.location.href;
 
             const watchPartyInfo = document.getElementById('watchPartyInfo') as HTMLElement;
             watchPartyInfo.innerHTML = '';
@@ -70,28 +67,18 @@ function createWatchPartyInfoUI(watchPartyInfo: HTMLElement, watchPartySearch: H
                 </div>
             `)
 
-            const copyWatchPartyURLText = document.getElementById('txtWatchPartyURL')?.innerText;
+            const copyWatchPartyURLText: string = window.location.href;
             const btnCopyWatchPartyURL = document.getElementById('btnCopyWatchPartyURL') as HTMLButtonElement;
             copyToClipboard(btnCopyWatchPartyURL, copyWatchPartyURLText);
 
-            // const collectionOfMoviesRef = collection(db, 'watchParties', watchPartyIDFromURL, 'titleOptions');
             const collectionOfMoviesRef = collection(watchPartyDocRef, 'titleOptions');
             const watchPartyMoviesContainer = document.getElementById('watchPartyMoviesContainer') as HTMLElement;
             createWatchPartyFromDB(watchPartyMoviesContainer, collectionOfMoviesRef);
 
 
         } else {
-            // const watchPartyInfo = document.getElementById('watchPartyInfo') as HTMLElement;
             watchPartyInfo.classList.add('hidden');
-            // watchPartyInfo.innerHTML = '';
-            // watchPartyInfo.insertAdjacentHTML('afterbegin', `
-            //     <h1>Watch Page Not Found</h1>
-            //     <p>Please search below, or <a href='./index.html'>Go Back To Home Page</a>.</p>
-            // `)
         }
-
-
-
     });
 }
 
