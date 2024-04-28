@@ -11,13 +11,13 @@ export async function createWatchPartyUI(mainContentContainer: HTMLElement, user
 
     createWatchPartyScaffolding(mainContentContainer);
 
-    const watchPartyInfo = document.getElementById('watchPartyInfo') as HTMLElement;
+    const watchPartyInfoContainer = document.getElementById('watchPartyInfoContainer') as HTMLElement;
     const watchPartySearch = document.getElementById('watchPartySearch') as HTMLElement;
     const watchPartyNewWatchParty = document.getElementById('watchPartyNewWatchParty') as HTMLElement;
 
-    createWatchPartyInfoUI(watchPartyInfo, watchPartySearch, watchPartyNewWatchParty);
-    createWatchPartySearchUI(watchPartyInfo, watchPartySearch, watchPartyNewWatchParty);
-    createWatchPartyNewWatchPartyUI(watchPartyInfo, watchPartySearch, watchPartyNewWatchParty);
+    createWatchPartyInfoUI(watchPartyInfoContainer, watchPartySearch, watchPartyNewWatchParty);
+    createWatchPartySearchUI(watchPartyInfoContainer, watchPartySearch, watchPartyNewWatchParty);
+    createWatchPartyNewWatchPartyUI(watchPartyInfoContainer, watchPartySearch, watchPartyNewWatchParty);
 }
 
 function createWatchPartyScaffolding(mainContentContainer:HTMLElement){
@@ -25,7 +25,7 @@ function createWatchPartyScaffolding(mainContentContainer:HTMLElement){
         mainContentContainer.innerHTML = '';
         mainContentContainer.insertAdjacentHTML('afterbegin', `
             <main id='watchPartyPageContainer'>
-                <section id='watchPartyInfo'>
+                <section id='watchPartyInfoContainer'>
                 </section>
                 <section id='watchPartySearch'>
                 </section>
@@ -35,7 +35,7 @@ function createWatchPartyScaffolding(mainContentContainer:HTMLElement){
         `)
 }
 
-function createWatchPartyInfoUI(watchPartyInfo: HTMLElement, watchPartySearch: HTMLElement, watchPartyNewWatchParty:HTMLElement) {
+function createWatchPartyInfoUI(watchPartyInfoContainer: HTMLElement, watchPartySearch: HTMLElement, watchPartyNewWatchParty:HTMLElement) {
 
     let watchPartyIDFromURL = window.location.search;
     watchPartyIDFromURL = watchPartyIDFromURL.slice(1); // Slicing off the "?", so I can search for it in Firestore Docs.
@@ -57,12 +57,13 @@ function createWatchPartyInfoUI(watchPartyInfo: HTMLElement, watchPartySearch: H
             const dateCreated = data.dateCreated;
             const dateOfWatchParty = data.dateOfWatchParty;
 
-            const watchPartyInfo = document.getElementById('watchPartyInfo') as HTMLElement;
-            watchPartyInfo.innerHTML = '';
-            watchPartyInfo.insertAdjacentHTML('afterbegin', `
-                <h1>Welcome to the ${watchPartyName} Watch Party Page</h1>
-                <p>Date of Party: ${dateOfWatchParty}</p>
-                <p>Watch Party Unique URL:  </p><button id='btnCopyWatchPartyURL' type='button'>Copy URL</button>
+            watchPartyInfoContainer.innerHTML = '';
+            watchPartyInfoContainer.insertAdjacentHTML('afterbegin', `
+                <div id='watchPartyInfo'>
+                    <h1>Welcome to the ${watchPartyName} Watch Party Page</h1>
+                    <p>Date of Party: ${dateOfWatchParty}</p>
+                    <p>Watch Party Unique URL:  </p><button id='btnCopyWatchPartyURL' type='button'>Copy URL</button>
+                </div>
                 <div id='watchPartyMoviesContainer'>
                 </div>
             `)
@@ -75,14 +76,13 @@ function createWatchPartyInfoUI(watchPartyInfo: HTMLElement, watchPartySearch: H
             const watchPartyMoviesContainer = document.getElementById('watchPartyMoviesContainer') as HTMLElement;
             createWatchPartyFromDB(watchPartyMoviesContainer, collectionOfMoviesRef);
 
-
         } else {
-            watchPartyInfo.classList.add('hidden');
+            watchPartyInfoContainer.style.display = 'none'; // Hides watchPartyInfo section if a document is not found.
         }
     });
 }
 
-function createWatchPartySearchUI(watchPartyInfo: HTMLElement, watchPartySearch: HTMLElement, watchPartyNewWatchParty:HTMLElement) {
+function createWatchPartySearchUI(watchPartyInfoContainer: HTMLElement, watchPartySearch: HTMLElement, watchPartyNewWatchParty:HTMLElement) {
 
     watchPartySearch.innerHTML = '';
     watchPartySearch.insertAdjacentHTML('afterbegin', `
@@ -109,7 +109,7 @@ function createWatchPartySearchUI(watchPartyInfo: HTMLElement, watchPartySearch:
     })
 }
 
-export function createWatchPartyNewWatchPartyUI(watchPartyInfo: HTMLElement, watchPartySearch: HTMLElement, watchPartyNewWatchParty:HTMLElement) {
+export function createWatchPartyNewWatchPartyUI(watchPartyInfoContainer: HTMLElement, watchPartySearch: HTMLElement, watchPartyNewWatchParty:HTMLElement) {
 
     watchPartyNewWatchParty.innerHTML = '';
     watchPartyNewWatchParty.insertAdjacentHTML('afterbegin', `
