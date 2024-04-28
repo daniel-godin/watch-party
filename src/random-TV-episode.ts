@@ -68,7 +68,6 @@ export async function createRandomTVEpisodeUI(mainContentContainer: HTMLElement,
 
         console.log('array of fav shows array length: ', arrayOfFavoriteShowsByID.length);
 
-
         favoriteShowsContainer.insertAdjacentHTML('beforeend', `
             <div id='addFavoriteTVShowContainer' class='favorite-show-card'>
                 <form id='formAddFavoriteTVShow'>
@@ -251,12 +250,16 @@ async function displayRandomEpisode(arrayOfShows: number[], userID, showID, rand
                         <img src='${getShowPoster}' href='${showURL}' class='image-favorite-tv-show-posters'>
                     </div>
                     <div id='randomResultInfoContainer'>
-                        <p>${show}</p>
-                        <p>Season ${season} Episode ${epNum}</p>
-                        <p>${name} - Runtime: ${length}</p>
-                        <p>${description}</p>
-                        <p>Original Air Date: ${airDate}</p>
-                        <p><a target='_blank' href='${showURL}'>Link to The Movie DB Page For Full Information</a></p>
+                        <header>${show}</header>
+                        <ul>
+                            <li>Season ${season}</li>
+                            <li>Episode ${epNum}</li>
+                            <li>${name}</li>
+                            <li>${description}</li>
+                            <li>Original Air Date: ${airDate}</li>
+                            <li>Runtime: ${length}</li>
+                            <li><a target='_blank' href='${showURL}'>Link to The Movie DB Page For Full Information</a></li>
+                        </ul>
                         <button type='button' id='btnRandomAgain'>Random Again</button>
                     </div>
                 `)
