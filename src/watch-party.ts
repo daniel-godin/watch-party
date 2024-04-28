@@ -4,7 +4,7 @@ import { TMDBOptions, getTMDBImage } from "./tmdbUtilities";
 
 // Firebase Imports:
 import { auth, db,  } from "./firebase";
-import { setDoc, doc, onSnapshot, collection, deleteDoc, } from "firebase/firestore";
+import { setDoc, doc, onSnapshot, collection, deleteDoc, Timestamp, } from "firebase/firestore";
 
 
 export async function createWatchPartyUI(mainContentContainer: HTMLElement, user: Object) {
@@ -156,17 +156,14 @@ export function createWatchPartyNewWatchPartyUI(watchPartyInfoContainer: HTMLEle
                             .then(response => response.json())
                             .then(response => {
 
-
-                                console.log('response: ', response);
-
-
                                 const watchPartyID = randomIdGenerator();
+                                const watchPartyDateOfCreation = Timestamp.now();
 
                                 const watchPartyObj = {
                                     watchPartyID: watchPartyID,
-                                    dateCreated: "date string",
-                                    dateOfWatchParty: 'date string',
-                                    guests: 'array of guest names in strings',            
+                                    dateCreated: watchPartyDateOfCreation,
+                                    dateOfWatchParty: '',
+                                    guests: [''],            
                                 }
 
                                 const newMovieObject = {
@@ -176,8 +173,6 @@ export function createWatchPartyNewWatchPartyUI(watchPartyInfoContainer: HTMLEle
                                     runtime: response.runtime,
                                     description: response.overview,
                                 }
-
-
 
                                 try {
                                     setDoc(doc(db, 'watchParties', watchPartyID, 'titleOptions', movieID), newMovieObject);
