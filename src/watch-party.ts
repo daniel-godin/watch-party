@@ -9,18 +9,7 @@ import { setDoc, doc, onSnapshot, collection, deleteDoc, } from "firebase/firest
 
 export async function createWatchPartyUI(mainContentContainer: HTMLElement, user: Object) {
 
-    // Creates scaffolding for the watch party page.
-    mainContentContainer.innerHTML = '';
-    mainContentContainer.insertAdjacentHTML('afterbegin', `
-        <main id='watchPartyPageContainer'>
-            <section id='watchPartyInfo'>
-            </section>
-            <section id='watchPartySearch'>
-            </section>
-            <section id='watchPartyNewWatchParty'>
-            </section>
-        </main>
-    `)
+    createWatchPartyScaffolding(mainContentContainer);
 
     const watchPartyInfo = document.getElementById('watchPartyInfo') as HTMLElement;
     const watchPartySearch = document.getElementById('watchPartySearch') as HTMLElement;
@@ -29,6 +18,21 @@ export async function createWatchPartyUI(mainContentContainer: HTMLElement, user
     createWatchPartyInfoUI(watchPartyInfo);
     createWatchPartySearchUI(watchPartySearch);
     createWatchPartyNewWatchPartyUI(watchPartyNewWatchParty);
+}
+
+function createWatchPartyScaffolding(mainContentContainer:HTMLElement){
+        // Creates scaffolding for the watch party page.  All other UI elements attach to these points.
+        mainContentContainer.innerHTML = '';
+        mainContentContainer.insertAdjacentHTML('afterbegin', `
+            <main id='watchPartyPageContainer'>
+                <section id='watchPartyInfo'>
+                </section>
+                <section id='watchPartySearch'>
+                </section>
+                <section id='watchPartyNewWatchParty'>
+                </section>
+            </main>
+        `)
 }
 
 function createWatchPartyInfoUI(watchPartyInfo: HTMLElement) {
