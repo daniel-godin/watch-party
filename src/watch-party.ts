@@ -15,9 +15,9 @@ export async function createWatchPartyUI(mainContentContainer: HTMLElement, user
     const watchPartySearch = document.getElementById('watchPartySearch') as HTMLElement;
     const watchPartyNewWatchParty = document.getElementById('watchPartyNewWatchParty') as HTMLElement;
 
-    createWatchPartyInfoUI(watchPartyInfo);
-    createWatchPartySearchUI(watchPartySearch);
-    createWatchPartyNewWatchPartyUI(watchPartyNewWatchParty);
+    createWatchPartyInfoUI(watchPartyInfo, watchPartySearch, watchPartyNewWatchParty);
+    createWatchPartySearchUI(watchPartyInfo, watchPartySearch, watchPartyNewWatchParty);
+    createWatchPartyNewWatchPartyUI(watchPartyInfo, watchPartySearch, watchPartyNewWatchParty);
 }
 
 function createWatchPartyScaffolding(mainContentContainer:HTMLElement){
@@ -35,7 +35,7 @@ function createWatchPartyScaffolding(mainContentContainer:HTMLElement){
         `)
 }
 
-function createWatchPartyInfoUI(watchPartyInfo: HTMLElement) {
+function createWatchPartyInfoUI(watchPartyInfo: HTMLElement, watchPartySearch: HTMLElement, watchPartyNewWatchParty:HTMLElement) {
 
     let watchPartyIDFromURL = window.location.search;
     watchPartyIDFromURL = watchPartyIDFromURL.slice(1); // Slicing off the "?", so I can search for it in Firestore Docs.
@@ -46,6 +46,10 @@ function createWatchPartyInfoUI(watchPartyInfo: HTMLElement) {
     onSnapshot(watchPartyDocRef, (snapshot) => { // Live Listener that watches the main Watch Party Doc.  Sub-Coll under it with title docs.  That is in it's on onSnapshot Listener.
         // If... Else:  If Document Found matching ?search URL param, create the watch party page, else, create a "Not Found" Message.
         if(snapshot.exists()) {
+
+            watchPartySearch.classList.add('hidden');
+            watchPartyNewWatchParty.classList.add('hidden');
+
             const data = snapshot.data();
 
             const watchPartyID:string = data.watchPartyID;
@@ -97,7 +101,7 @@ function createWatchPartyInfoUI(watchPartyInfo: HTMLElement) {
     });
 }
 
-function createWatchPartySearchUI(watchPartySearch: HTMLElement) {
+function createWatchPartySearchUI(watchPartyInfo: HTMLElement, watchPartySearch: HTMLElement, watchPartyNewWatchParty:HTMLElement) {
 
     watchPartySearch.innerHTML = '';
     watchPartySearch.insertAdjacentHTML('afterbegin', `
@@ -124,7 +128,7 @@ function createWatchPartySearchUI(watchPartySearch: HTMLElement) {
     })
 }
 
-export function createWatchPartyNewWatchPartyUI(watchPartyNewWatchParty: HTMLElement) {
+export function createWatchPartyNewWatchPartyUI(watchPartyInfo: HTMLElement, watchPartySearch: HTMLElement, watchPartyNewWatchParty:HTMLElement) {
 
     watchPartyNewWatchParty.innerHTML = '';
     watchPartyNewWatchParty.insertAdjacentHTML('afterbegin', `
