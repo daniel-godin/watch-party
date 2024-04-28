@@ -47,8 +47,9 @@ function createWatchPartyInfoUI(watchPartyInfo: HTMLElement, watchPartySearch: H
         // If... Else:  If Document Found matching ?search URL param, create the watch party page, else, create a "Not Found" Message.
         if(snapshot.exists()) {
 
-            watchPartySearch.classList.add('hidden');
-            watchPartyNewWatchParty.classList.add('hidden');
+            // Hide these elements and their children if FireStore doc found.  No need for search or creation of a new watch party.
+            watchPartySearch.style.display = 'none';
+            watchPartyNewWatchParty.style.display = 'none';
 
             const data = snapshot.data();
 
