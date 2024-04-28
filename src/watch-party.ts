@@ -65,20 +65,13 @@ function createWatchPartyInfoUI(watchPartyInfo: HTMLElement, watchPartySearch: H
             watchPartyInfo.insertAdjacentHTML('afterbegin', `
                 <h1>Welcome to the ${watchPartyName} Watch Party Page</h1>
                 <p>Date of Party: ${dateOfWatchParty}</p>
-                <p>Watch Party Unique ID:  <span id='txtWatchPartyID'>${watchPartyID}</span></p>
-                    <button id='btnCopyWatchPartyID' type='button'>Copy ID</button>
-                <p>Watch Party Unique URL:  <span id='txtWatchPartyURL'>${watchPartyURL}</span></p>
-                    <button id='btnCopyWatchPartyURL' type='button'>Copy URL</button>
+                <p>Watch Party Unique URL:  </p><button id='btnCopyWatchPartyURL' type='button'>Copy URL</button>
                 <div id='watchPartyMoviesContainer'>
                 </div>
             `)
 
-            const copyWatchPartyIDText = document.getElementById('txtWatchPartyID')?.innerText;
             const copyWatchPartyURLText = document.getElementById('txtWatchPartyURL')?.innerText;
-            const btnCopyWatchPartyID = document.getElementById('btnCopyWatchPartyID') as HTMLButtonElement;
             const btnCopyWatchPartyURL = document.getElementById('btnCopyWatchPartyURL') as HTMLButtonElement;
-
-            copyToClipboard(btnCopyWatchPartyID, copyWatchPartyIDText);
             copyToClipboard(btnCopyWatchPartyURL, copyWatchPartyURLText);
 
             // const collectionOfMoviesRef = collection(db, 'watchParties', watchPartyIDFromURL, 'titleOptions');
