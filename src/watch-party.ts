@@ -84,11 +84,12 @@ function createWatchPartyInfoUI(watchPartyInfo: HTMLElement) {
 
         } else {
             // const watchPartyInfo = document.getElementById('watchPartyInfo') as HTMLElement;
-            watchPartyInfo.innerHTML = '';
-            watchPartyInfo.insertAdjacentHTML('afterbegin', `
-                <h1>Watch Page Not Found</h1>
-                <p>Please search below, or <a href='./index.html'>Go Back To Home Page</a>.</p>
-            `)
+            watchPartyInfo.classList.add('hidden');
+            // watchPartyInfo.innerHTML = '';
+            // watchPartyInfo.insertAdjacentHTML('afterbegin', `
+            //     <h1>Watch Page Not Found</h1>
+            //     <p>Please search below, or <a href='./index.html'>Go Back To Home Page</a>.</p>
+            // `)
         }
 
 
