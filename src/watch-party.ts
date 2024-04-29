@@ -56,13 +56,22 @@ function createWatchPartyInfoUI(watchPartyInfoContainer: HTMLElement, watchParty
             const watchPartyName:string = data.watchPartyName;
             const dateCreated = data.dateCreated;
             const dateOfWatchParty = data.dateOfWatchParty;
+            const locationOfWatchParty = data.locationofWatchParty;
 
             watchPartyInfoContainer.innerHTML = '';
             watchPartyInfoContainer.insertAdjacentHTML('afterbegin', `
                 <div id='watchPartyInfo'>
-                    <h1>Welcome to the ${watchPartyName} Watch Party Page</h1>
-                    <p>Date of Party: ${dateOfWatchParty}</p>
-                    <p>Watch Party Unique URL:  </p><button id='btnCopyWatchPartyURL' type='button'>Copy URL</button>
+                    <h1>Welcome to Your Watch Party Page</h1>
+                    <div>
+                        <p>Location of Party: ${locationOfWatchParty} (example:  Heidi's House)</p>
+                    <div>
+                        <p>Date of Party: ${dateOfWatchParty}</p>
+                        <input type='datetime-local' id='inputWatchPartyDateTime'>
+                    </div>
+                    <div>
+                        <p>Watch Party Unique URL:  </p>
+                        <button id='btnCopyWatchPartyURL' type='button'>Copy URL To Share</button>
+                    </div>
                 </div>
                 <div id='watchPartyMoviesContainer'>
                 </div>
@@ -159,14 +168,15 @@ export function createWatchPartyNewWatchPartyUI(watchPartyInfoContainer: HTMLEle
                                 const watchPartyID = randomIdGenerator();
                                 const watchPartyDateOfCreation = Timestamp.now();
 
-                                const watchPartyObj = {
+                                const watchPartyObj: watchParty = {
                                     watchPartyID: watchPartyID,
                                     dateCreated: watchPartyDateOfCreation,
                                     dateOfWatchParty: '',
+                                    locationOfWatchParty: '',
                                     guests: [''],            
                                 }
 
-                                const newMovieObject = {
+                                const newMovieObject: watchPartyTitle = {
                                     id: response.id,
                                     title: response.title,
                                     posterPath: response.poster_path,

@@ -367,6 +367,16 @@ main {
   border-radius: 10px;
 }
 
+#watchPartyInfo {
+  display: grid;
+  gap: 1rem;
+}
+
+#watchPartyInfo > div {
+  display: flex;
+  gap: 1rem;
+}
+
 /* Keep this last: */
 .hidden {
   display: none;
