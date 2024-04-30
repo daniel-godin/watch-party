@@ -4,7 +4,7 @@ import { TMDBOptions, getTMDBImage } from "./tmdbUtilities";
 
 // Firebase Imports:
 import { auth, db,  } from "./firebase";
-import { setDoc, doc, onSnapshot, collection, deleteDoc, Timestamp, } from "firebase/firestore";
+import { setDoc, doc, onSnapshot, collection, deleteDoc, Timestamp, updateDoc, } from "firebase/firestore";
 
 
 export async function createWatchPartyUI(mainContentContainer: HTMLElement, user: Object) {
@@ -65,8 +65,8 @@ function createWatchPartyInfoUI(watchPartyInfoContainer: HTMLElement, watchParty
                     <div>
                         <p>Location of Party: ${locationOfWatchParty} (example:  Heidi's House)</p>
                     <div>
-                        <p>Date of Party: ${dateOfWatchParty}</p>
-                        <input type='datetime-local' id='inputWatchPartyDateTime'>
+                        <p>Date of Party:</p>
+                        <input type='datetime-local' id='inputWatchPartyDateTime' value='${dateOfWatchParty}' />
                     </div>
                     <div>
                         <p>Watch Party Unique URL:  </p>
@@ -77,10 +77,22 @@ function createWatchPartyInfoUI(watchPartyInfoContainer: HTMLElement, watchParty
                 </div>
             `)
 
+            // This takes the datetime-local input and updates the watch party Firestore doc.
+            const inputWatchPartyDateTime = document.getElementById('inputWatchPartyDateTime') as HTMLInputElement;
+            inputWatchPartyDateTime.addEventListener('change', (e) => {
+                e.preventDefault();
+                const newDate = inputWatchPartyDateTime.value;
+                updateDoc(watchPartyDocRef, {
+                    dateOfWatchParty: newDate
+                })
+            })
+
+            // Button to copy the URL of the Watch Party.  This allows the user to share the URL with others.  It is a public URL.
             const copyWatchPartyURLText: string = window.location.href;
             const btnCopyWatchPartyURL = document.getElementById('btnCopyWatchPartyURL') as HTMLButtonElement;
             copyToClipboard(btnCopyWatchPartyURL, copyWatchPartyURLText);
 
+            // Displays the movies selected for Watch Party.  Data from Firestore sub-coll of docs of watch party doc.
             const collectionOfMoviesRef = collection(watchPartyDocRef, 'titleOptions');
             const watchPartyMoviesContainer = document.getElementById('watchPartyMoviesContainer') as HTMLElement;
             createWatchPartyFromDB(watchPartyMoviesContainer, collectionOfMoviesRef);
