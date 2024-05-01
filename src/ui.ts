@@ -46,13 +46,13 @@ export const pageContainer = document.getElementById('root') as HTMLElement; // 
 function buildSkeletonUI() {
     pageContainer.innerHTML = '';
     pageContainer.insertAdjacentHTML('afterbegin', `
-        <nav id='navTopBar'></nav>
+        <div id='navContainer'></div>
         <div id='mainContentContainer'></div>
-        <footer id='footerContainer'></footer>
+        <div id='footerContainer'></div>
     `)
 }
 
-function createNavUI(user) {
+function createNavUI(user:any) {
     
     let anonStatus: boolean = user.isAnonymous; // Checks whether there is a full user, or a firebase anon user.
 
@@ -67,21 +67,22 @@ function createNavUI(user) {
         authStatus = 'hidden';
     }
 
-
-    const navTopBar = document.getElementById('navTopBar') as HTMLElement;
-    navTopBar.innerHTML= '';
-    navTopBar.insertAdjacentHTML('afterbegin', `
-        <a href='./index.html'>Home</a>
-        <a href='./watch.html'>Watch Party</a>
-        <a href='./random.html'>Random TV Episode</a>
-        <a href='./watch-tracker.html'>Watch Tracker</a>
-        <a href='./profile.html' class='${profileStatus}'>Profile</a>
-        <a href='./auth.html' class='${authStatus}'>Sign In / Sign Up</a>
+    const navContainer = document.getElementById('navContainer') as HTMLDivElement;
+    navContainer.innerHTML= '';
+    navContainer.insertAdjacentHTML('afterbegin', `
+        <nav id='navTopBar'>
+            <a href='./index.html'>Home</a>
+            <a href='./watch.html'>Watch Party</a>
+            <a href='./random.html'>Random TV Episode</a>
+            <a href='./watch-tracker.html'>Watch Tracker</a>
+            <a href='./profile.html' class='${profileStatus}'>Profile</a>
+            <a href='./auth.html' class='${authStatus}'>Sign In / Sign Up</a>
+        </nav>
     `)
 }
 
 function createMainUI(user: object) {
-    const mainContentContainer = document.getElementById('mainContentContainer') as HTMLElement;
+    const mainContentContainer = document.getElementById('mainContentContainer') as HTMLDivElement;
     const pathname: string = window.location.pathname; // Finding pathname to sort which UI function to trigger.
     if (pathname == '/index.html' ||  pathname == '/' || pathname.length === 0) { createIndexPageUI(mainContentContainer, user); };  
     if (pathname == '/watch.html') { createWatchPartyUI(mainContentContainer, user); };
@@ -97,12 +98,14 @@ function createFooterUI(user: Object) {
     let userCheck: string = '';
     if (user.isAnonymous === true) { userCheck = 'hidden'; }; // Checks whether a user isAnonymous.  If yes... applies 'hidden' class to signOut button.
 
-    const footerContainer = document.getElementById('footerContainer') as HTMLElement;
+    const footerContainer = document.getElementById('footerContainer') as HTMLDivElement;
     footerContainer.innerHTML = '';
     footerContainer.insertAdjacentHTML('afterbegin', `
-        <p>Created by <a href='http://danielgodin.org' target='_blank'>Daniel Godin</a></p>
-        <p>All Movie and TV Data is from <a href='https://themoviedb.org' target="_blank">The Movie DB</a></p>
-        <button type='button' id='btnSignOut' class='${userCheck}'>Sign Out</button>
+        <footer>
+            <p>Created by <a href='http://danielgodin.org' target='_blank'>Daniel Godin</a></p>
+            <p>All Movie and TV Data is from <a href='https://themoviedb.org' target="_blank">The Movie DB</a></p>
+            <button type='button' id='btnSignOut' class='${userCheck}'>Sign Out</button>
+        </footer>
     `)
 
     const btnSignOut = document.getElementById('btnSignOut') as HTMLButtonElement;
