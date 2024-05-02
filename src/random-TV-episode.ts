@@ -46,11 +46,11 @@ export async function createRandomTVEpisodeUI(mainContentContainer: HTMLElement,
 
             const TMDBTVShowLink = new URL(`https://www.themoviedb.org/tv/${id}`);
 
-            const showPoster = getTMDBImage('w154', showPosterPath);
+            const showPoster = getTMDBImage('w185', showPosterPath);
 
             favoriteShowsContainer.insertAdjacentHTML('beforeend', `
                 <div class='favorite-show-card'>
-                    <a href='${TMDBTVShowLink}' target='_blank'><img src='${showPoster}' class='image-favorite-tv-show-posters'></a>
+                    <a href='${TMDBTVShowLink}' class='link-img-poster' target='_blank'><img src='${showPoster}' class='image-favorite-tv-show-posters'></a>
                     <div class='favorite-show-name-and-remove-btn-container'>
                         <p>${title}</p>
                         <button type='button' class='button-remove-favorite-show' data-show-id='${id}'>
@@ -61,7 +61,7 @@ export async function createRandomTVEpisodeUI(mainContentContainer: HTMLElement,
                             </svg>
                         </button>
                     </div>
-                    <button type='button' class='random-tv-button random-tv-button-style' data-show-id='${id}' data-show-name='${title}'>Random ${title} Episode</button>
+                    <button type='button' class='random-tv-button btn-style-default' data-show-id='${id}' data-show-name='${title}'>Random ${title} Episode</button>
                 </div>
             `)
         })
@@ -73,7 +73,7 @@ export async function createRandomTVEpisodeUI(mainContentContainer: HTMLElement,
                 <form id='formAddFavoriteTVShow'>
                     <img height='231' width='154'>
                     <input id='inputAddFavoriteTVShow' type='text' placeholder='Add A Favorite Show'>
-                    <button id='btnAddFavoriteTVShow' class='random-tv-button-style' type='submit'>Search</button>
+                    <button id='btnAddFavoriteTVShow' class='random-tv-button-style btn-style-default' type='submit'>Search</button>
                 </form>
             </div>
         `)
@@ -84,7 +84,7 @@ export async function createRandomTVEpisodeUI(mainContentContainer: HTMLElement,
         };
         if (arrayOfFavoriteShowsByID.length >= 2) { 
             randomAllButtonContainer.insertAdjacentHTML('afterbegin', `
-                <button id='btnRandomAll'>Random Episode From All Your Shows</button>
+                <button id='btnRandomAll' class='btn-style-default'>Random Episode From All Your Shows</button>
             `)
 
             const btnRandomAll = document.getElementById('btnRandomAll') as HTMLButtonElement;
@@ -156,7 +156,7 @@ export async function createRandomTVEpisodeUI(mainContentContainer: HTMLElement,
                         <div class='favorite-show-card red-border'>
                             <img src='${showPoster}'>
                             <p>${title}</p>
-                            <button class='btn-add-favorite-tv-show' data-show-id='${showID}'>Add To Favorites</button>
+                            <button class='btn-add-favorite-tv-show btn-style-default' data-show-id='${showID}'>Add To Favorites</button>
                         </div>
                     `)
                 }
@@ -260,7 +260,7 @@ async function displayRandomEpisode(arrayOfShows: number[], userID, showID, rand
                             <li>Runtime: ${length}</li>
                             <li><a target='_blank' href='${showURL}'>Link to The Movie DB Page For Full Information</a></li>
                         </ul>
-                        <button type='button' id='btnRandomAgain'>Random Again</button>
+                        <button type='button' id='btnRandomAgain' class='btn-default'>Random Again</button>
                     </div>
                 `)
 
