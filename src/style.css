@@ -272,6 +272,9 @@ main {
   display: grid;
   grid-template-columns: 1fr 40px;
   align-items: center;
+  display: none;
+  /* Diplsaying 'none' right now.  Honestly it looks much, much better.  I will need to add an overall button to display: block so I can delete things. */
+  
 
 }
 
