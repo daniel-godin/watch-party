@@ -1,6 +1,12 @@
 :root {
 /* CSS Variables: */
   --footer-height: 40px; 
+  /* CSS HSL */
+  --color-sky-blue: hsla(199, 64%, 73%, 1);
+  --color-blue-green: hsla(192, 70%, 43%, 1);
+  --color-prussian-blue: hsla(200, 95%, 14%, 1);
+  --color-selective-yellow: hsla(43, 100%, 51%, 1);
+  --color-ut-orange: hsla(32, 100%, 49%, 1);
 
 }
 
