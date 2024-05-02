@@ -46,7 +46,7 @@ export const pageContainer = document.getElementById('root') as HTMLElement; // 
 function buildSkeletonUI() {
     pageContainer.innerHTML = '';
     pageContainer.insertAdjacentHTML('afterbegin', `
-        <div id='navContainer'></div>
+        <nav id='navContainer'></nav>
         <div id='mainContentContainer'></div>
         <div id='footerContainer'></div>
     `)
@@ -67,18 +67,28 @@ function createNavUI(user:any) {
         authStatus = 'hidden';
     }
 
-    const navContainer = document.getElementById('navContainer') as HTMLDivElement;
+    const navContainer = document.getElementById('navContainer') as HTMLElement;
     navContainer.innerHTML= '';
+
+    // if (screen 500px or less.  Hamburger Menu)
+    // if (screen 501px or more.  Desktop Menu.  I think)
+
+
     navContainer.insertAdjacentHTML('afterbegin', `
-        <nav id='navTopBar'>
-            <a href='./index.html'>Home</a>
-            <a href='./watch.html'>Watch Party</a>
-            <a href='./random.html'>Random TV Episode</a>
-            <a href='./watch-tracker.html'>Watch Tracker</a>
-            <a href='./profile.html' class='${profileStatus}'>Profile</a>
-            <a href='./auth.html' class='${authStatus}'>Sign In / Sign Up</a>
-        </nav>
+        <a href='./index.html'>Home</a>
+        <a href='./watch.html'>Watch Party</a>
+        <a href='./random.html'>Random TV Episode</a>
+        <a href='./watch-tracker.html'>Watch Tracker</a>
+        <a href='./profile.html' class='${profileStatus}'>Profile</a>
+        <a href='./auth.html' class='${authStatus}'>Sign In / Sign Up</a>
     `)
+
+    // navContainer.insertAdjacentHTML('afterbegin', `
+    //     <nav id='navMobileMenu' class='nav-menu'>
+            
+
+    //     </nav>
+    // `)
 }
 
 function createMainUI(user: object) {

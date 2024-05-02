@@ -37,6 +37,31 @@ body {
   height: 100%;
 }
 
+#navContainer {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  width: 100%;
+  height: 50px;
+  background-color: darkgrey;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
+  justify-items: center;
+  align-items: center;
+}
+
+#navContainer > a {
+  text-decoration: none;
+  color: black;
+}
+
+#navContainer > a:hover {
+  background-color: white;
+}
+
 footer {
   height: var(--footer-height);
   width: 100%;
@@ -67,30 +92,7 @@ main {
   width: 90%;
 }
 
-#navTopBar {
-  position: sticky;
-  top: 0;
-  left: 0;
-  right: 0;
 
-  width: 100%;
-  height: 50px;
-  background-color: darkgrey;
-
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
-  justify-items: center;
-  align-items: center;
-}
-
-#navTopBar > a {
-  text-decoration: none;
-  color: black;
-}
-
-#navTopBar > a:hover {
-  background-color: white;
-}
 
 .main-container {
   width: 90%;
